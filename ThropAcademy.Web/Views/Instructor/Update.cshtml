@@ -1,0 +1,76 @@
+﻿@model Throb.Data.Entities.Instructor
+@{
+    ViewData["Title"] = "تعديل بيانات المدرب";
+    // ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties
+}
+
+
+@* ⚠️ ملاحظة: يمكنك دمج الروابط التالية في _Layout.cshtml *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+
+<div class="update-page d-flex align-items-center justify-content-center">
+    <div class="update-card shadow-lg p-4 rounded-3">
+
+        <h1 class="page-title text-center mb-4"><i class="fas fa-edit me-2"></i> @ViewData["Title"]</h1>
+
+        @Html.ValidationSummary(true, "InstructorErrors", new { @class = "alert alert-danger custom-alert" })
+
+        <form asp-action="Update" method="post" asp-controller="Instructor">
+
+            @* حقل مخفي لحفظ ID المدرب *@
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold">الاسم الكامل</label>
+                    <input asp-for="Name" class="form-control form-control-modern rounded-pill" placeholder="اسم المدرب الكامل" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">البريد الإلكتروني</label>
+                    <input asp-for="Email" type="email" class="form-control form-control-modern rounded-pill" placeholder="البريد الإلكتروني" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold">كلمة المرور الجديدة</label>
+                    <input asp-for="Password" type="password" class="form-control form-control-modern rounded-pill" placeholder="اترك فارغاً لعدم التغيير" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label class="form-label fw-semibold">الكورسات المسجل بها</label>
+                    <p class="text-muted small mb-1"> (يتم عرضها وتعديلها في صفحة منفصلة) </p>
+                    @* يمكن إضافة قائمة اختيار متعدد هنا إذا لزم الأمر، لكن تم الحفاظ على التصميم الأصلي *@
+                    @*
+                    <select asp-for="Courses" class="form-control form-control-modern form-control-select" asp-items="ViewBag.Courses" multiple="multiple" name="selectedCourses"></select>
+                    *@
+                    <span asp-validation-for="Courses" class="text-danger small"></span>
+                </div>
+            </div>
+
+            @* زر Update الرئيسي وزر العودة *@
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-action-main">
+                    <i class="fas fa-save me-2"></i> حفظ التحديثات
+                </button>
+                <a asp-action="Index" class="btn btn-action-secondary">
+                    <i class="fas fa-arrow-alt-circle-left me-2"></i> العودة للقائمة
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/Instructor/Update.css" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

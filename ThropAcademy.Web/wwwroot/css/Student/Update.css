@@ -1,0 +1,180 @@
+﻿/* wwwroot/css/instructor-management-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif;
+    color: var(--dark-text);
+}
+
+.page-title {
+    color: var(--purple-main);
+    font-weight: 800;
+    font-size: 2.5rem;
+    border-bottom: 3px solid var(--pink-accent);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* زر إنشاء مدرب جديد */
+.btn-create-action {
+    background: linear-gradient(90deg, var(--pink-accent), var(--purple-main));
+    color: white;
+    font-weight: 700;
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .btn-create-action:hover {
+        background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+/* شريط البحث */
+.search-form {
+    max-width: 350px;
+    width: 100%;
+}
+
+.search-input {
+    border-radius: 50px 0 0 50px !important;
+    border-right: none;
+    height: 45px;
+}
+
+.btn-search-icon {
+    background-color: var(--purple-main);
+    color: white;
+    border-radius: 0 50px 50px 0 !important;
+    border: none;
+    transition: background-color 0.3s;
+    height: 45px;
+}
+
+    .btn-search-icon:hover {
+        background-color: var(--pink-accent);
+    }
+
+/* تصميم الجدول الإداري */
+.instructor-management-table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.instructor-table {
+    margin-bottom: 0;
+}
+
+    .instructor-table thead {
+        background-color: var(--purple-main);
+        color: white;
+        font-size: 0.95rem;
+    }
+
+    .instructor-table th {
+        padding: 12px;
+        vertical-align: middle;
+        border-color: rgba(255, 255, 255, 0.2);
+        font-weight: 700;
+    }
+
+    .instructor-table tbody tr:hover {
+        background-color: rgba(107, 70, 193, 0.05) !important;
+    }
+
+    .instructor-table tbody td {
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    .instructor-table .col-id {
+        width: 5%;
+        font-weight: bold;
+        color: var(--pink-accent);
+    }
+
+.password-hidden {
+    color: #999;
+    font-style: italic;
+}
+
+/* تنسيق الكورسات المسجلة (شارة) */
+.course-badge {
+    display: inline-block;
+    background-color: var(--orange-action);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin: 2px;
+}
+
+.col-courses {
+    max-width: 250px;
+    white-space: normal;
+}
+
+/* أزرار الإجراءات في الجدول */
+.action-button {
+    width: 10%;
+    text-align: center;
+}
+
+    .action-button a {
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        transition: transform 0.2s ease;
+    }
+
+        .action-button a:hover {
+            transform: scale(1.05);
+        }
+
+/* ألوان الأزرار */
+.btn-details {
+    background-color: var(--orange-action);
+    color: white;
+}
+
+.btn-update {
+    background-color: var(--purple-main);
+    color: white;
+}
+
+.btn-delete {
+    background-color: var(--pink-accent);
+    color: white;
+}
+
+/* رسالة عدم وجود مدربين */
+.alert-empty {
+    background-color: var(--purple-main);
+    color: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+}
+
+    .alert-empty h3 {
+        color: var(--orange-action);
+        font-weight: 700;
+    }

@@ -1,0 +1,152 @@
+﻿/* wwwroot/css/privacy-policy-style.css */
+
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f5f7fa; /* خلفية أفتح قليلاً */
+    --dark-text: #2c3e50;
+    --section-bg: #ffffff;
+    --highlight-bg: rgba(107, 70, 193, 0.08); /* لون بنفسجي فاتح جدا */
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.8;
+    color: var(--dark-text);
+}
+
+/* حاوية المحتوى الرئيسية */
+.policy-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 35px;
+    background-color: var(--section-bg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border-top: 5px solid var(--purple-main); /* شريط علوي بنفسجي */
+}
+
+/* العنوان الرئيسي */
+h1 {
+    color: var(--purple-main);
+    font-size: 2.5em;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: 800;
+    border-bottom: 3px solid var(--pink-accent);
+    padding-bottom: 15px;
+}
+
+/* العناوين الفرعية */
+h2 {
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.7em;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+p {
+    color: var(--dark-text);
+    font-size: 1.05em;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+/* تنسيق القوائم */
+ul {
+    padding-right: 25px;
+    margin-bottom: 30px;
+    list-style: none; /* إزالة التنقيط الافتراضي */
+}
+
+    ul li {
+        margin-bottom: 12px;
+        font-size: 1.05em;
+        color: #444;
+        position: relative;
+        padding-right: 25px;
+    }
+
+        /* أيقونة تنقيط مخصصة */
+        ul li::before {
+            content: "\f058"; /* رمز علامة الصح */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: var(--orange-action);
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+/* التمييز */
+.highlight {
+    background-color: var(--highlight-bg);
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: var(--purple-main);
+}
+
+/* زر الاتصال */
+.btn-contact-main {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 20px auto;
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+    .btn-contact-main:hover {
+        background: linear-gradient(90deg, var(--pink-accent), var(--purple-main));
+        transform: translateY(-3px);
+        color: white;
+    }
+
+/* معلومات التواصل في النهاية */
+.contact-info li {
+    font-size: 1em;
+    color: var(--purple-main);
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-bottom: 20px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+/* Animations (لتحسين تجربة القراءة) */
+.policy-container > * {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.policy-container p {
+    animation-delay: 0.2s;
+}
+
+.policy-container h2:nth-of-type(1) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}

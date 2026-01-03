@@ -1,0 +1,102 @@
+﻿@model SignUpViewModel
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+@* ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties *@
+
+<div class="signup-page d-flex align-items-center justify-content-center">
+
+    <div class="background-animation">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <div class="card shadow-lg signup-card position-relative">
+
+                    <div class="book-icon-wrapper">
+                        <i class="fas fa-user-plus book-icon"></i>
+                    </div>
+
+                    <div class="card-body p-5 pt-5">
+                        <h2 class="text-center text-gradient signup-title mt-4">Create Your Account</h2>
+                        <p class="text-center text-muted mb-4 small">Join LearnHub and start your journey today!</p>
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" style="z-index: 10;">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <p class="mb-0">@error.ErrorMessage</p>
+                                }
+                            </div>
+                        }
+
+                        <form asp-action="SignUp" method="post" autocomplete="off" id="signupForm">
+
+                            <div class="form-group mb-3">
+                                <label for="Email" class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control form-control-modern rounded-pill" id="Email" asp-for="Email" autocomplete="off" placeholder="Your email address" required />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="FirstName" class="form-label fw-semibold">First Name</label>
+                                        <input type="text" class="form-control form-control-modern rounded-pill" id="FirstName" asp-for="FirstName" autocomplete="off" placeholder="Your first name" required />
+                                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="LastName" class="form-label fw-semibold">Last Name</label>
+                                        <input type="text" class="form-control form-control-modern rounded-pill" id="LastName" asp-for="LastName" autocomplete="off" placeholder="Your last name" required />
+                                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div> @* نهاية الصف (Row) *@
+
+                            <div class="form-group mb-3">
+                                <label for="Password" class="form-label fw-semibold">Password</label>
+                                <input type="password" class="form-control form-control-modern rounded-pill" id="Password" asp-for="Password" autocomplete="new-password" placeholder="Create a password" required />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="ConfirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                                <input type="password" class="form-control form-control-modern rounded-pill" id="ConfirmPassword" asp-for="ConfirmPassword" autocomplete="new-password" placeholder="Confirm your password" required />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient btn-submit w-100 py-2 rounded-pill">Sign Up</button>
+                        </form>
+
+                        <p class="text-center mt-4 small">
+                            <a href="@Url.Action("Login", "Account")" class="text-decoration-none signup-link">Already have an account? <span class="fw-semibold">Log in here.</span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/Account/SignUp.css" />
+
+@* 🟢 ربط ملف JavaScript الخارجي *@
+@section Scripts {
+    <script src="~/js/Account/SignUp.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

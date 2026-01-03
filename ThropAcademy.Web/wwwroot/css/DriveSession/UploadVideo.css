@@ -1,0 +1,97 @@
+﻿/* wwwroot/css/upload-video-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8f9fa;
+    --dark-text: #2d3748;
+}
+
+.upload-page {
+    min-height: 100vh;
+    /* خلفية ثابتة بتدرج المنصة */
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--purple-main) 100%);
+    font-family: 'Cairo', sans-serif;
+    padding: 3rem 0;
+}
+
+/* بطاقة الرفع الرئيسية */
+.upload-card {
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    position: relative;
+}
+
+/* أيقونة العنوان */
+.upload-icon {
+    color: var(--purple-main);
+    font-size: 2.5rem;
+}
+
+.upload-title {
+    background: linear-gradient(90deg, var(--pink-accent), var(--purple-main));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    font-size: 2rem;
+}
+
+/* تصميم حقول الإدخال */
+.form-control-modern {
+    border: 1px solid #e0e0e0;
+    height: 50px;
+    padding: 0 1.5rem;
+    border-radius: 50px !important;
+    background-color: var(--light-bg);
+    transition: all 0.3s ease;
+}
+
+    .form-control-modern:focus {
+        border-color: var(--purple-main);
+        box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.2);
+        background-color: white;
+    }
+
+/* حقل اختيار الملف (Input Type File) */
+.form-control-file {
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    color: var(--dark-text);
+    background-color: var(--light-bg);
+}
+
+/* حقل الاختيار المتعدد (Select) */
+.form-control-select {
+    height: 150px; /* لتظهر كصندوق اختيار بدلاً من شريط واحد */
+    border-radius: 10px !important;
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+/* زر الرفع */
+.btn-gradient {
+    background: linear-gradient(90deg, var(--pink-accent), var(--orange-action));
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 12px 25px;
+    border-radius: 50px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+    transform: scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+}

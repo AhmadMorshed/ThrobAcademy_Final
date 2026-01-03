@@ -1,0 +1,109 @@
+﻿/* wwwroot/css/payment-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --security-green: #48BB78; /* لون للأمان */
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif;
+    color: var(--dark-text);
+}
+
+.payment-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--purple-main) 100%);
+    padding: 3rem 0;
+}
+
+.payment-card {
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 18px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    position: relative;
+}
+
+.page-title {
+    color: var(--security-green); /* لون أخضر للأمان */
+    font-weight: 800;
+    font-size: 2.2rem;
+    border-bottom: 3px solid var(--purple-main);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.security-message {
+    color: var(--purple-main);
+    font-weight: 600;
+}
+
+/* تنسيق الحقول الحديثة */
+.form-control-modern {
+    border: 1px solid #ddd;
+    height: 50px;
+    padding: 0 1.5rem 0 3.5rem; /* مساحة للأيقونة */
+    border-radius: 50px !important;
+    background-color: var(--light-bg);
+    transition: all 0.3s ease;
+}
+
+    .form-control-modern:focus {
+        border-color: var(--purple-main);
+        box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.2);
+        background-color: white;
+    }
+
+.form-label {
+    color: var(--dark-text);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* الأيقونات داخل الحقول */
+.input-icon {
+    position: absolute;
+    /* تم تغيير right إلى left لمواكبة الاتجاه من اليمين لليسار (RTL) في التصميم العربي */
+    left: 1.5rem;
+    right: auto;
+    top: 60%;
+    transform: translateY(-50%);
+    color: var(--purple-main);
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.small-icon {
+    left: 1.2rem;
+    font-size: 0.9rem;
+}
+
+/* زر الإجراء الرئيسي */
+.btn-action-main {
+    background: linear-gradient(90deg, var(--security-green), #218838);
+    border: none;
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+    .btn-action-main:hover {
+        background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        color: white;
+    }

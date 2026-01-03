@@ -1,0 +1,184 @@
+﻿@model Throb.Data.Entities.ExamRequestModel
+@{
+    ViewData["Title"] = "هندسة الاختبار الذكي - Throb Academy";
+
+    var questionsList = ViewBag.Questions as IEnumerable<Throb.Data.Entities.Question> ?? new List<Throb.Data.Entities.Question>();
+    var selectedIds = ViewBag.SelectedIds as List<int> ?? new List<int>();
+    var courseId = ViewBag.CourseId;
+}
+
+<link rel="stylesheet" href="~/css/Transcription/CreateExam.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<div class="page-background">
+    <div class="container d-flex flex-column justify-content-center align-items-center py-5">
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show w-100 mb-4 shadow-sm" role="alert" style="max-width: 1000px; border-radius: 15px;">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
+                    <div>
+                        <strong>تنبيه ذكي:</strong> @ViewBag.ErrorMessage
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="main-exam-card animate-fade-up">
+
+            <div class="exam-hero text-center mb-5">
+                <span class="hero-badge shadow-sm">AI-BASED SELECTION</span>
+                <h1 class="display-5 fw-extrabold mt-3 main-head-title">هندسة الاختبار الذكي</h1>
+                <p class="text-secondary">اختر موضوعاً ليقوم النظام بتحديد أفضل الأسئلة من بنكك الخاص</p>
+            </div>
+
+            <div class="ai-panel mb-5 shadow-sm border-primary-subtle">
+                <div class="ai-header d-flex align-items-center mb-3">
+                    <div class="ai-icon-sparkle">✨</div>
+                    <h6 class="m-0 ms-2 fw-bold text-dark">مساعد الاختيار الذكي</h6>
+                </div>
+
+                <form asp-action="CohereCommand" asp-controller="Transcription" method="post" id="aiSelectForm">
+                    <input type="hidden" name="courseId" value="@courseId" />
+                    <div class="ai-input-group">
+                        <input name="topic" class="form-control border-0 shadow-none"
+                               placeholder="مثلاً: اختر لي 5 أسئلة متوسطة الصعوبة عن موضوع الجبر..." required />
+                        <button type="submit" class="btn-ai-apply shadow" id="aiSubmitBtn">
+                            <span class="btn-text">تطبيق الاختيار</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+                    </div>
+                    <small class="text-muted mt-2 d-block ms-2">
+                        <i class="bi bi-info-circle me-1"></i> سيقوم الذكاء الاصطناعي بوضع علامة صح على الأسئلة المناسبة أدناه.
+                    </small>
+                </form>
+            </div>
+
+            <form asp-action="CreateExam" asp-controller="Transcription" method="post" id="examForm">
+                <input type="hidden" name="CourseId" value="@courseId" />
+                <input type="hidden" id="DurationMinutes" name="DurationMinutes" value="0" />
+
+                <div class="row mb-5 g-4 align-items-end">
+                    <div class="col-md-8">
+                        <h6 class="section-label-modern mb-3">هيكلية الاختبار</h6>
+                        <div class="type-selector-premium"style="display:flex">
+                            <input type="radio" asp-for="ExamType" id="quiz" value="Quiz" checked hidden />
+                            <label for="quiz" class="type-pill-modern">
+                                <i class="bi bi-lightning-charge-fill me-1"></i> Quiz
+                            </label>
+
+                            <input type="radio" asp-for="ExamType" id="practical" value="Practical" hidden />
+                            <label for="practical" class="type-pill-modern">
+                                <i class="bi bi-tools me-1"></i> Practical
+                            </label>
+
+                            <input type="radio" asp-for="ExamType" id="final" value="Final" hidden />
+                            <label for="final" class="type-pill-modern">
+                                <i class="bi bi-mortarboard-fill me-1"></i> Final
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-start">
+                        <div class="auto-time-glass shadow-sm">
+                            <i class="bi bi-stopwatch-fill fs-3 text-primary"></i>
+                            <div class="d-inline-block ms-3 text-end">
+                                <span class="d-block fw-black fs-2 lh-1 text-primary" id="autoTime">0</span>
+                                <small class="text-muted fw-bold">دقيقة إجمالية</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container mb-5 p-4 rounded-5 bg-light-soft border">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="section-icon-bg me-3"><i class="bi bi-bar-chart-steps"></i></div>
+                        <h6 class="m-0 fw-bold text-dark">توزيع مستويات الصعوبة</h6>
+                    </div>
+                    <div class="difficulty-premium-grid">
+                        <div class="diff-card-modern easy">
+                            <div class="diff-header"><span class="dot"></span> <label>سهل</label></div>
+                            <div class="diff-body">
+                                <input asp-for="EasyCount" type="number" class="modern-num-input" value="0" />
+                                <span class="unit">سؤال</span>
+                            </div>
+                        </div>
+                        <div class="diff-card-modern medium">
+                            <div class="diff-header"><span class="dot"></span> <label>متوسط</label></div>
+                            <div class="diff-body">
+                                <input asp-for="MediumCount" type="number" class="modern-num-input" value="0" />
+                                <span class="unit">سؤال</span>
+                            </div>
+                        </div>
+                        <div class="diff-card-modern hard">
+                            <div class="diff-header"><span class="dot"></span> <label>صعب</label></div>
+                            <div class="diff-body">
+                                <input asp-for="HardCount" type="number" class="modern-num-input" value="0" />
+                                <span class="unit">سؤال</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h6 class="m-0 fw-bold"><i class="bi bi-database-fill-check text-primary me-2"></i> بنك الأسئلة المتاح</h6>
+                        <div class="filter-group-premium">
+                            <button type="button" class="f-btn active" data-filter="all">الكل</button>
+                            <button type="button" class="f-btn" data-filter="mcq">MCQ</button>
+                            <button type="button" class="f-btn" data-filter="truefalse">T/F</button>
+                        </div>
+                    </div>
+
+                    <div class="questions-scroll-container">
+                        @if (!questionsList.Any())
+                        {
+                            <div class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                                لا توجد أسئلة متاحة في هذا الكورس حالياً.
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var q in questionsList)
+                            {
+                                bool isSel = selectedIds.Contains(q.QuestionId);
+                                <div class="q-card-premium @(isSel ? "is-selected shadow-highlight" : "")" data-type="@q.QuestionType?.ToLower()">
+                                    <div class="q-checkbox-wrapper">
+                                        <input type="checkbox" class="q-check-input" name="SelectedQuestionIds"
+                                               value="@q.QuestionId" @(isSel ? "checked" : "") />
+                                        <div class="q-checkbox-custom"></div>
+                                    </div>
+                                    <div class="q-content">
+                                        <div class="q-badges">
+                                            <span class="badge-item type">@q.QuestionType</span>
+                                            <span class="badge-item diff @q.Difficulty?.ToLower()">@q.Difficulty</span>
+                                        </div>
+                                        <p class="q-text-main">@q.QuestionText</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <button type="submit" class="btn-primary-premium">
+                        حفظ ومتابعة الاختبار <i class="bi bi-arrow-left-circle-fill ms-3"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="floating-stat-card shadow-lg">
+    <div class="stat-icon"><i class="bi bi-check-all"></i></div>
+    <div class="stat-info">
+        <span class="stat-val badge-val">@selectedIds.Count</span>
+        <span class="stat-label">أسئلة مختارة</span>
+    </div>
+</div>
+
+<script src="~/js/Transcription/CreateExam.js" asp-append-version="true"></script>

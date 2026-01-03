@@ -1,0 +1,281 @@
+﻿@model Throb.Data.Entities.UserExamResult
+@{
+    Layout = null;
+    string studentName = !string.IsNullOrWhiteSpace(Model.UserId) ? Model.UserId : "اسم المتدرب";
+    string courseName = ViewBag.CourseName ?? "الدورة التدريبية";
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>شهادة اعتماد ملكية - @courseName</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Cinzel:wght@600;800;900&family=Alex+Brush&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            background: #0b0d17; /* خلفية داكنة ملكية */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #d4af37, #f5e7a1);
+            color: #1a1c2c;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0,0,0,.4);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* الحاوية الخارجية مع تأثير الإطار الذهبي المتدرج */
+        .certificate-shell {
+            width: 1000px;
+            height: 700px;
+            padding: 15px;
+            background: linear-gradient(135deg, #b38728 0%, #fcf6ba 45%, #bf953f 50%, #fcf6ba 55%, #aa771c 100%);
+            border-radius: 10px;
+            box-shadow: 0 50px 100px rgba(0,0,0,.8);
+            transform: scale(0.95); /* لضمان الملاءمة للشاشة بدون سكرول */
+        }
+
+        .certificate {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            background-image: radial-gradient(#fdfbf0 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: relative;
+            padding: 40px 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid #d4af37;
+        }
+
+            /* دمج صورة الصقر كعلامة مائية احترافية خلف النصوص */
+            .certificate::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 450px;
+                height: 450px;
+                background: url('~/Images/img_eagle.png') no-repeat center; /* استخدم مسار صورة الصقر الخاصة بك */
+                background-size: contain;
+                opacity: 0.06;
+                pointer-events: none;
+            }
+
+        .academy-name {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            color: #8c6d1f;
+            font-size: 26px;
+            letter-spacing: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 80px;
+            margin: 5px 0 0;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #cfad4b 22%, #af8f33 50%, #6b5311 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));
+        }
+
+        .sub-title {
+            letter-spacing: 12px;
+            font-size: 13px;
+            color: #666;
+            font-weight: bold;
+            margin-top: -10px;
+            text-transform: uppercase;
+        }
+
+        .student-box {
+            margin: 20px 0;
+        }
+
+        .presented-to {
+            font-size: 18px;
+            color: #555;
+            font-weight: 700;
+        }
+
+        /* إبداع في خط اسم الطالب باستخدام وزن عريض جداً ولون ملكي داكن */
+        .student-name {
+            font-size: 60px;
+            font-weight: 900;
+            color: #1a1c2c;
+            margin: 10px 0;
+            display: inline-block;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+        }
+
+            .student-name::after {
+                content: "";
+                display: block;
+                width: 80%;
+                height: 3px;
+                background: linear-gradient(to right, transparent, #d4af37, transparent);
+                margin: 5px auto;
+            }
+
+        .course-info {
+            font-size: 19px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .course-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #8c6d1f;
+            display: block;
+            margin-top: 5px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: auto;
+            padding: 0 20px 10px;
+        }
+
+        .footer-item {
+            width: 260px;
+            text-align: center;
+        }
+
+        .footer-date {
+            font-size: 20px;
+            font-weight: 900;
+            color: #333;
+        }
+
+        /* تنسيق صورة الختم المرفوعة */
+        .seal-img {
+            width: 150px;
+            filter: drop-shadow(0 10px 15px rgba(182, 142, 45, 0.3));
+            margin-bottom: -10px;
+        }
+
+        /* تنسيق توقيع Eng. Ahmed بخط يدوي إبداعي */
+        .signature-img {
+            font-family: 'Alex Brush', cursive;
+            font-size: 50px;
+            color: #1a1c2c;
+            display: block;
+            margin-bottom: -15px;
+            transform: rotate(-3deg);
+        }
+
+        .line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d4af37 50%, transparent);
+            margin: 10px 0;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #888;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        @@media print {
+            body {
+                background: white;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .certificate-shell {
+                transform: scale(1);
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">
+        <i class="bi bi-printer-fill me-2"></i> طباعة الشهادة الملكية
+    </button>
+
+    <div class="certificate-shell">
+        <div class="certificate">
+
+            <div class="academy-name">THROB ACADEMY</div>
+
+            <div>
+                <h1 class="main-title">CERTIFICATE</h1>
+                <div class="sub-title">Of Professional Achievement</div>
+            </div>
+
+            <div class="student-box">
+                <p class="presented-to">تمنح هذه الشهادة بكل فخر للمتدرب / Presented to</p>
+                <div class="student-name">@studentName</div>
+            </div>
+
+            <div class="course-info">
+                لاجتيازه بنجاح الدورة التدريبية الاحترافية المقررة في:
+                <span class="course-name">@courseName</span>
+            </div>
+
+            <div class="footer">
+                <div class="footer-item">
+                    <div class="footer-date">@Model.CompletedAt.ToString("dd / MM / yyyy")</div>
+                    <div class="line"></div>
+                    <div class="label">تاريخ الإصدار / ISSUE DATE</div>
+                </div>
+
+                <div class="footer-item">
+                    <img src="ThropAcademy.Web\wwwroot\Images\ima.jpg" class="seal-img" alt="Official Seal">
+                </div>
+
+                <div class="footer-item">
+                    <span class="signature-img">Eng. Ahmed</span>
+                    <div class="line"></div>
+                    <div class="label">توقيع الاعتماد / AUTHORIZED SIGNATURE</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

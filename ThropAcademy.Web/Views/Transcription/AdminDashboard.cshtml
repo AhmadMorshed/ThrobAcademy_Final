@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Throb.Data.Entities.UserExamResult>
+@{
+    ViewData["Title"] = "لوحة تحكم الإدارة";
+    // جلب القاموس مرة واحدة في بداية الصفحة لتحسين الأداء
+    var namesMap = ViewBag.CourseNames as Dictionary<int, string>;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container-fluid py-4" style="direction: rtl; background-color: #f4f7fe; min-height: 100vh;">
+    <div class="mb-4 text-end">
+        <h3 class="fw-bold">لوحة تحكم الأداء العام</h3>
+        <p class="text-muted">مراقبة نتائج الطلاب وإحصائيات الاختبارات الذكية</p>
+    </div>
+
+    @* --- بطاقات الإحصائيات --- *@
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3" style="border-radius: 15px;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="bg-primary-subtle p-3 rounded-3 text-primary"><i class="bi bi-people-fill fs-3"></i></div>
+                    <div class="text-end">
+                        <h6 class="text-muted mb-0">إجمالي الاختبارات</h6>
+                        <h4 class="fw-bold mb-0">@ViewBag.TotalExams</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3" style="border-radius: 15px;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="bg-success-subtle p-3 rounded-3 text-success"><i class="bi bi-graph-up-arrow fs-3"></i></div>
+                    <div class="text-end">
+                        <h6 class="text-muted mb-0">نسبة النجاح</h6>
+                        <h4 class="fw-bold mb-0">@ViewBag.PassRate%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3" style="border-radius: 15px;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="bg-warning-subtle p-3 rounded-3 text-warning"><i class="bi bi-star-fill fs-3"></i></div>
+                    <div class="text-end">
+                        <h6 class="text-muted mb-0">متوسط الدرجات</h6>
+                        <h4 class="fw-bold mb-0">@ViewBag.AverageScore%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3" style="border-radius: 15px;">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="bg-danger-subtle p-3 rounded-3 text-danger"><i class="bi bi-trophy fs-3"></i></div>
+                    <div class="text-end">
+                        <h6 class="text-muted mb-0">أعلى درجة</h6>
+                        <h4 class="fw-bold mb-0">@ViewBag.TopScore%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- جدول النتائج --- *@
+    <div class="card border-0 shadow-sm" style="border-radius: 20px;">
+        <div class="card-header bg-white border-0 p-4">
+            <h5 class="fw-bold mb-0 text-dark text-end">آخر المحاولات المسجلة</h5>
+        </div>
+        <div class="table-responsive px-4 pb-4">
+            <table class="table table-borderless align-middle text-end">
+                <thead class="text-muted" style="background-color: #f9fbfd;">
+                    <tr>
+                        <th class="text-end">المستخدم</th>
+                        <th class="text-end">اسم الدورة</th>
+                        <th class="text-end">نوع الامتحان</th>
+                        <th class="text-end">النسبة</th>
+                        <th class="text-end">التاريخ</th>
+                        <th class="text-end">الحالة</th>
+                        <th class="text-end">الشهادة</th> @* العمود الجديد *@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var res in Model)
+                    {
+                        <tr class="border-bottom">
+                            <td class="py-3">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <span class="fw-semibold me-2">@res.UserId</span>
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" style="width: 35px; height: 35px;">
+                                        @if (!string.IsNullOrEmpty(res.UserId) && res.UserId.Length > 0)
+                                        {
+                                            @res.UserId.Substring(0, 1).ToUpper()
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-person"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    var courseDisplayName = namesMap != null && namesMap.ContainsKey(res.CourseId)
+                                    ? namesMap[res.CourseId]
+                                    : "دورة #" + res.CourseId;
+                                }
+                                <span class="fw-bold text-primary">@courseDisplayName</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark">
+                                @(res.ExamType == "Final" ? "Final" :
+                                                                res.ExamType == "Quiz" ? "Quiz" : res.ExamType == "Practical" ? "Practical" : "")
+
+
+
+
+
+                              @*   <h1 class="exam-main-title">
+                                    @(Model.ExamType == "Final" ? "Final" :
+                                                                        Model.ExamType == "Quiz" ? "Quiz" : Model.ExamType == "Practical" ? "Practical" : "")
+                                </h1> *@
+                                </span>
+                            </td>
+                            <td>
+                                <span class="fw-bold @(res.ScorePercentage >= 70 ? "text-success" : "text-danger")">
+                                    @res.ScorePercentage%
+                                </span>
+                            </td>
+                            <td class="text-muted small">@res.CompletedAt.ToString("g")</td>
+                            <td>
+                                @if (res.ScorePercentage >= 70)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
+                                        <i class="bi bi-check-circle-fill ms-1"></i> ناجح
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2">
+                                        <i class="bi bi-x-circle-fill ms-1"></i> راسب
+                                    </span>
+                                }
+                            </td>
+                            @* --- خانة تحميل الشهادة --- *@
+                            <td>
+                                @if (res.ScorePercentage >= 80)
+                                {
+                                    <a asp-action="DownloadCertificate" asp-route-resultId="@res.Id" class="btn btn-sm btn-outline-primary rounded-pill shadow-sm">
+                                        <i class="bi bi-download me-1"></i> تحميل
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">غير مؤهل</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

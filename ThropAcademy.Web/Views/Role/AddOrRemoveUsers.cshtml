@@ -1,0 +1,84 @@
+﻿@model List<UserInRoleViewModel>
+@{
+    ViewData["Title"] = "إدارة المستخدمين في الصلاحية";
+    var RoleId = ViewBag.RoleId;
+    // ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties
+}
+
+
+@* ⚠️ ملاحظة: يمكنك دمج الروابط التالية في _Layout.cshtml *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<div class="manage-users-page d-flex justify-content-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+
+                <h1 class="page-title mb-4 text-center"><i class="fas fa-users-cog me-2"></i> @ViewData["Title"]</h1>
+
+                <div class="card shadow-lg manage-card">
+
+                    <div class="card-header text-white text-center card-header-gradient">
+                        <h4 class="mb-0 fw-bold">الصلاحية: @ViewBag.RoleName</h4>
+                    </div>
+
+                    <div class="card-body p-4 user-list-container">
+                        <form asp-action="AddOrRemoveUsers" asp-route-roleId="@RoleId" method="post">
+
+                            @if (Model == null || !Model.Any())
+                            {
+                                <div class="alert alert-info text-center"><i class="fas fa-info-circle me-2"></i> لا يوجد مستخدمون حالياً لإضافتهم أو إزالتهم.</div>
+                            }
+                            else
+                            {
+                                <ul class="list-unstyled">
+                                    @for (var i = 0; i < Model.Count; i++)
+                                    {
+                                        <li class="user-item d-flex align-items-center mb-3 p-2">
+                                            <i class="fas fa-user-circle me-3 user-icon"></i>
+
+                                            <div class="form-check form-switch user-check-switch w-100 d-flex justify-content-between align-items-center">
+
+                                                <label class="form-check-label fw-semibold user-label" for="user_@Model[i].UserId">
+                                                    @Model[i].UserName
+                                                </label>
+
+                                                <input asp-for="@Model[i].IsSelected"
+                                                       class="form-check-input user-checkbox"
+                                                       type="checkbox"
+                                                       id="user_@Model[i].UserId"
+                                                       style="transform: scale(1.4); margin-left: 20px;" />
+                                            </div>
+
+                                            <input type="hidden" asp-for="@Model[i].UserId" />
+                                            <input type="hidden" asp-for="@Model[i].UserName" />
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                            <div class="d-flex justify-content-center gap-3 mt-5">
+                                <button type="submit" class="btn btn-action-main">
+                                    <i class="fas fa-sync-alt me-2"></i> تحديث الصلاحيات
+                                </button>
+
+                                <a asp-action="Update" asp-controller="Role" asp-route-id="@RoleId" class="btn btn-action-secondary">
+                                    <i class="fas fa-times-circle me-2"></i> إلغاء والعودة
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/Role/AddOrRemoveUsers.css" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

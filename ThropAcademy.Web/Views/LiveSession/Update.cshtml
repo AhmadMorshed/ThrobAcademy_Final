@@ -1,0 +1,168 @@
+﻿@model Throb.Data.Entities.LiveSession
+@{
+    ViewData["Title"] = "تعديل بيانات جلسة Zoom";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* حافظت على جميع المتغيرات الخاصة بك دون تغيير */
+    :root {
+        --purple-main: #6B46C1;
+        --pink-accent: #D53F8C;
+        --orange-action: #F5A623;
+        --light-bg: #f8f9fa;
+        --dark-text: #212529;
+        --border-color: #e9ecef;
+    }
+
+    .edit-session-page {
+        background: linear-gradient(135deg, var(--light-bg) 0%, #d8d8d8 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        color: var(--dark-text);
+        padding: 30px 0;
+        direction: rtl; /* لضمان الاتجاه العربي الصحيح */
+    }
+
+    .session-card {
+        background-color: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .page-title {
+        color: var(--pink-accent);
+        font-weight: 800;
+        font-size: 2rem;
+        border-bottom: 3px solid var(--purple-main);
+        padding-bottom: 10px;
+    }
+
+    h3 {
+        color: var(--purple-main);
+        font-weight: 700;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        height: 48px;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: var(--pink-accent);
+            box-shadow: 0 0 0 0.2rem rgba(213, 63, 140, 0.25);
+        }
+
+    .btn-warning {
+        background-color: var(--orange-action);
+        border-color: var(--orange-action);
+        color: white;
+        font-weight: 700;
+        transition: transform 0.3s ease;
+    }
+
+        .btn-warning:hover {
+            background-color: #e09313;
+            border-color: #e09313;
+            transform: translateY(-2px);
+        }
+
+    .btn-secondary {
+        background-color: var(--dark-text);
+        border-color: var(--dark-text);
+        color: var(--light-bg);
+    }
+</style>
+
+<div class="edit-session-page container py-5">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-7">
+            <div class="session-card shadow-lg">
+                <h1 class="page-title text-center mb-4">
+                    <i class="fas fa-edit me-2"></i> @ViewData["Title"]
+                </h1>
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-controller="LiveSession" asp-action="Update" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <h3><i class="fas fa-cog me-2"></i> بيانات الاجتماع</h3>
+                    <hr />
+
+                    @* الحقول المخفية (مهمة جداً لضمان عدم ضياع بيانات Zoom) *@
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ZoomMeetingId" />
+                    <input type="hidden" asp-for="StartUrl" />
+                    <input type="hidden" asp-for="JoinUrl" />
+                    <input type="hidden" asp-for="Password" />
+
+                    @* 1. حقل العنوان *@
+                    <div class="form-group mb-3 text-end">
+                        <label asp-for="Title" class="form-label fw-bold">عنوان الجلسة</label>
+                        <input asp-for="Title" class="form-control" placeholder="مثلاً: مقدمة في لغة C#" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    @* 2. حقل الكورس المربوط *@
+                    <div class="form-group mb-3 text-end">
+                        <label asp-for="CourseId" class="form-label fw-bold">ربط الجلسة بالكورس</label>
+                        <select asp-for="CourseId" class="form-select form-control">
+                            <option value="">-- اختر الكورس المستهدف --</option>
+                            @if (ViewBag.Courses != null)
+                            {
+                                foreach (var course in (IEnumerable<Throb.Data.Entities.Course>)ViewBag.Courses)
+                                {
+                                    <option value="@course.Id">@course.Name</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CourseId" class="text-danger small"></span>
+                    </div>
+
+                    @* 3. حقل التاريخ والوقت *@
+                    <div class="form-group mb-3 text-end">
+                        <label asp-for="Date" class="form-label fw-bold">تاريخ ووقت البدء</label>
+                        <input asp-for="Date" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger small"></span>
+                    </div>
+
+                    @* 4. حقل المدة *@
+                    <div class="form-group mb-4 text-end">
+                        <label asp-for="DurationMinutes" class="form-label fw-bold">المدة المتوقعة (بالدقائق)</label>
+                        <input asp-for="DurationMinutes" type="number" class="form-control" min="15" max="300" />
+                        <span asp-validation-for="DurationMinutes" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-between pt-3">
+                        <button type="submit" class="btn btn-warning btn-lg px-4 shadow-sm">
+                            <i class="fas fa-save me-2"></i> حفظ التغييرات الآن
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4">
+                            <i class="fas fa-times me-2"></i> إلغاء
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

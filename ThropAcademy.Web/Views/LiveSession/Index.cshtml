@@ -1,0 +1,215 @@
+﻿@model ThropAcademy.Web.Models.LiveSessionViewModel
+@{
+    ViewData["Title"] = "الجلسات المباشرة والدورات";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    :root {
+        --purple-main: #6B46C1;
+        --purple-dark: #4A3292;
+        --pink-accent: #D53F8C;
+        --orange-action: #F5A623;
+        --light-bg: #f8f9fa;
+        --zoom-green: #2ecc71;
+        --ended-red: #e74c3c;
+    }
+
+    body {
+        background-color: var(--light-bg);
+        font-family: 'Cairo', sans-serif;
+        direction: rtl;
+    }
+
+    .page-title {
+        color: var(--purple-main);
+        font-weight: 800;
+        font-size: 2.5rem;
+    }
+
+    .live-session-item {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid var(--purple-main);
+        transition: transform 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .live-session-item:hover {
+            transform: translateY(-5px);
+        }
+
+    .btn-join-live {
+        background: linear-gradient(90deg, var(--zoom-green), #1e7e34);
+        color: white;
+        font-weight: 700;
+        border-radius: 50px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        margin-bottom: 10px;
+        border: none;
+    }
+
+        .btn-join-live:hover {
+            color: white;
+            opacity: 0.9;
+        }
+
+    .btn-purple-start {
+        background: linear-gradient(90deg, var(--purple-main), var(--purple-dark));
+        color: white;
+        border: none;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px;
+        transition: 0.3s;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+
+        .btn-purple-start:hover {
+            background: var(--purple-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-sync-zoom {
+        background-color: #ffc107;
+        color: #000;
+        font-weight: 700;
+        border: none;
+        width: 100%;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        padding: 8px;
+        transition: 0.3s;
+    }
+
+        .btn-sync-zoom:hover {
+            background-color: #e0a800;
+        }
+
+    .admin-zone {
+        background-color: #fcfaff;
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="container py-5">
+    <h1 class="page-title text-center mb-5"><i class="fas fa-satellite-dish me-2"></i> @ViewData["Title"]</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">@TempData["SuccessMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">@TempData["ErrorMessage"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    }
+
+    <div class="d-flex justify-content-end mb-4">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="LiveSession" asp-action="Create" class="btn btn-primary btn-lg rounded-pill shadow">
+                <i class="fas fa-plus-circle me-2"></i> إنشاء اجتماع Zoom جديد
+            </a>
+        }
+    </div>
+
+    <h2 class="text-danger fw-bold mb-4" style="border-bottom: 2px solid var(--pink-accent); display:inline-block;"> الجلسات الحالية (LIVE) </h2>
+
+    <div class="row g-4 mt-2">
+        @if (Model.LiveSessions != null && Model.LiveSessions.Any())
+        {
+            @foreach (var session in Model.LiveSessions)
+            {
+                var endTime = session.Date.AddMinutes(session.DurationMinutes);
+                var isEnded = DateTime.Now > endTime;
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="live-session-item">
+                        <h3 class="fw-bold text-dark mb-2">@session.Title</h3>
+
+                        @if (isEnded)
+                        {
+                            <p class="text-danger fw-bold small"><i class="fas fa-ban me-1"></i> انتهت الجلسة</p>
+                        }
+                        else
+                        {
+                            <p class="text-success fw-bold small"><i class="fas fa-circle-notch fa-spin me-1"></i> جارية / قادمة</p>
+                        }
+
+                        <div class="mb-3 small text-muted">
+                            <div class="mb-1"><i class="fas fa-calendar-alt me-2"></i>التاريخ: @session.Date.ToString("yyyy/MM/dd HH:mm")</div>
+                            <div class="mb-1"><i class="fas fa-clock me-2"></i>المدة: @session.DurationMinutes دقيقة</div>
+                            <div><i class="fas fa-book me-2"></i>الكورس: @(session.Course?.Name ?? "غير محدد")</div>
+                        </div>
+
+                        <div class="mt-auto">
+                            @if (!isEnded)
+                            {
+                                <a href="@session.JoinUrl" target="_blank" class="btn btn-join-live shadow-sm">انضم الآن (للطالب)</a>
+                            }
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="admin-zone border-top pt-3">
+
+                                    @* 🟢 التعديل: يختفي زر "ابدأ كمدرب" تلقائياً عند انتهاء الجلسة *@
+                                    @if (!isEnded && !string.IsNullOrEmpty(session.StartUrl))
+                                    {
+                                        <a href="@session.StartUrl" target="_blank" class="btn btn-purple-start shadow-sm mb-2 w-100">
+                                            <i class="fas fa-video me-2"></i> ابدأ الجلسة كمدرب (Host)
+                                        </a>
+                                    }
+
+                                    <form asp-action="RecordAttendance" method="post">
+                                        <input type="hidden" name="sessionId" value="@session.Id" />
+                                        <button type="submit" class="btn btn-sync-zoom shadow-sm w-100 mb-2">
+                                            <i class="fas fa-sync-alt me-1"></i> تحديث الحضور من Zoom
+                                        </button>
+                                    </form>
+
+                                    <div class="d-flex gap-1 justify-content-between">
+                                        <a asp-action="ViewAttendance" asp-route-id="@session.Id" class="btn btn-success btn-sm flex-grow-1">
+                                            <i class="fas fa-file-alt me-1"></i> التقرير
+                                        </a>
+
+                                        <a asp-action="Update" asp-route-id="@session.Id" class="btn btn-outline-info btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        <form asp-action="Delete" asp-route-id="@session.Id" method="post" onsubmit="return confirm('هل أنت متأكد من حذف هذه الجلسة؟');">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">لا توجد جلسات مجدولة حالياً.</div>
+            </div>
+        }
+    </div>
+</div>

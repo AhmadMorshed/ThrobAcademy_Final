@@ -1,0 +1,63 @@
+﻿@model ThropAcademy.Web.Models.UploadDocumentViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Linq
+@{
+    // 🔴 استخدام اسم النموذج الجديد
+    ViewData["Title"] = "رفع مستند أو ملف محاضرة";
+}
+
+
+@* ⚠️ ملاحظة: يمكنك إضافة رابط Font Awesome إلى _Layout.cshtml إذا لم يكن موجودًا بالفعل. *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+
+<div class="upload-page d-flex align-items-center justify-content-center">
+    <div class="upload-card shadow-lg p-5 rounded-4">
+
+        <div class="text-center mb-4">
+            <i class="fas fa-file-upload upload-icon mb-3"></i>
+            <h2 class="fw-bold text-gradient upload-title">رفع مستند محاضرة (PDF/Word)</h2>
+            <p class="text-muted small">يرجى ملء الحقول لاضافة المستند الخاص بك</p>
+        </div>
+
+        <form asp-action="UploadDocument" asp-controller="DriveSession" method="post" enctype="multipart/form-data">
+
+            <div class="form-group mb-4">
+                <label asp-for="Title" class="form-label fw-semibold">عنوان المستند</label>
+                <input asp-for="Title" class="form-control form-control-modern rounded-pill" placeholder="أدخل عنوان المستند" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="DocumentFile" class="form-label fw-semibold">ملف المستند</label>
+                <input asp-for="DocumentFile" type="file" class="form-control form-control-modern form-control-file"
+                       accept=".pdf,.docx,.pptx,.doc" />
+                <span asp-validation-for="DocumentFile" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-5">
+                <label asp-for="CourseId" class="form-label fw-semibold">اختر الدورة المتعلقة</label>
+                <select asp-for="CourseId"
+                        asp-items="@(new SelectList(Model.Courses ?? Enumerable.Empty<Throb.Data.Entities.Course>(), "Id", "Name"))"
+                        class="form-control form-control-modern form-control-select">
+                    <option value=""> اختر الدورة</option>
+                </select>
+                <span asp-validation-for="CourseId" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-gradient btn-submit w-100 py-2 rounded-pill">
+                <i class="fas fa-cloud-upload-alt me-2"></i> رفع الملف وبدء المعالجة
+            </button>
+        </form>
+
+    </div>
+</div>
+
+@* 🟢 ربط ملف CSS الخارجي (يفترض أنه نفس تنسيق رفع الفيديو) *@
+<link rel="stylesheet" href="~/css/DriveSession/UploadVideo.css" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

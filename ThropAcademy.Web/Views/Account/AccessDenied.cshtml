@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #1e1e2f, #252547);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .access-denied-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        color: white;
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .access-denied-icon {
+        font-size: 80px;
+        color: #ff4d4d;
+        animation: pulse 1.5s infinite;
+    }
+
+    .access-denied-title {
+        font-size: 50px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #ffcc00;
+    }
+
+    .access-denied-text {
+        font-size: 20px;
+        color: #ccc;
+        max-width: 500px;
+        margin-top: 10px;
+    }
+
+    .access-denied-subtext {
+        font-size: 16px;
+        color: #aaa;
+        margin-top: 5px;
+    }
+
+    .btn-home {
+        margin-top: 30px;
+        padding: 12px 30px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 25px;
+        font-size: 18px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-home:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+     fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    pulse {
+        0%
+
+    {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+    }</style>
+
+<div class="access-denied-container">
+    <i class="fas fa-exclamation-triangle access-denied-icon"></i>
+    <h1 class="access-denied-title">Access Denied</h1>
+    <p class="access-denied-text">
+        Sorry, you do not have permission to view this page.
+    </p>
+    <p class="access-denied-subtext">
+        If you believe this is a mistake, please contact the administrator.
+    </p>
+    <a href="@Url.Action("Index", "Home")" class="btn-home">
+        Go to Home
+    </a>
+</div>

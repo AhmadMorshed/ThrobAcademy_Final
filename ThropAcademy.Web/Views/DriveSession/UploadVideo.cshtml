@@ -1,0 +1,61 @@
+﻿@model UploadVideoViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Linq
+@{
+    ViewData["Title"] = "رفع محاضرة جديدة";
+    // ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties
+}
+
+
+@* ⚠️ ملاحظة: يمكنك إضافة رابط Font Awesome إلى _Layout.cshtml إذا لم يكن موجودًا بالفعل. *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+
+<div class="upload-page d-flex align-items-center justify-content-center">
+    <div class="upload-card shadow-lg p-5 rounded-4">
+
+        <div class="text-center mb-4">
+            <i class="fas fa-upload upload-icon mb-3"></i>
+            <h2 class="fw-bold text-gradient upload-title">رفع محاضرة جديدة</h2>
+            <p class="text-muted small">يرجى ملء الحقول لاضافة الفيديو الخاص بك</p>
+        </div>
+
+        <form asp-action="UploadVideo" method="post" enctype="multipart/form-data">
+
+            <div class="form-group mb-4">
+                <label asp-for="Title" class="form-label fw-semibold">عنوان المحاضرة</label>
+                <input asp-for="Title" class="form-control form-control-modern rounded-pill" placeholder="أدخل عنوان الفيديو" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="VideoFile" class="form-label fw-semibold">ملف الفيديو</label>
+                <input asp-for="VideoFile" type="file" class="form-control form-control-modern form-control-file" accept="video/*" />
+                <span asp-validation-for="VideoFile" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-5">
+                <label asp-for="CourseIds" class="form-label fw-semibold">اختر الدورات المتعلقة</label>
+                <select asp-for="CourseIds"
+                        asp-items="@(new MultiSelectList(Model.Courses ?? Enumerable.Empty<Throb.Data.Entities.Course>(), "Id", "Name"))"
+                        multiple class="form-control form-control-modern form-control-select">
+                </select>
+                <span asp-validation-for="CourseIds" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-gradient btn-submit w-100 py-2 rounded-pill">
+                <i class="fas fa-cloud-upload-alt me-2"></i> رفع وبدء المعالجة
+            </button>
+        </form>
+
+    </div>
+</div>
+
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/DriveSession/UploadVideo.css" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

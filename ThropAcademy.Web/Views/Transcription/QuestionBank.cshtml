@@ -1,0 +1,115 @@
+﻿@model List<Throb.Data.Entities.Question>
+@{
+    Layout = null;
+    var courseId = ViewBag.CourseId;
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throb Academy - بنك الأسئلة الذكي</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/Transcription/QuestionBank.css" asp-append-version="true" />
+</head>
+<body class="bg-throb-light">
+
+    <div class="main-wrapper">
+        <header class="glass-nav mb-4">
+            <div class="container d-flex justify-content-between align-items-center py-3">
+                <div class="logo-area">
+                    <span class="pulse-icon-small"><i class="fa-solid fa-brain"></i></span>
+                    <h4 class="ms-2 mb-0 fw-black text-purple">بنك الأسئلة <span class="text-pink">الذكي</span></h4>
+                </div>
+                <div class="course-info-badge">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>@ViewBag.CourseName</span>
+                </div>
+                <a href="@Url.Action("CreateExam", "Transcription", new { courseId = courseId })" class="btn btn-create-magic">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد امتحان
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="control-panel shadow-sm mb-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="search-box-premium">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="smartSearch" placeholder="ابحث في محتوى الأسئلة...">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="filter-group-premium" id="filterGroup">
+                            <button class="filter-btn active" data-filter="all">الكل</button>
+                            <button class="filter-btn" data-filter="mcq">اختياري</button>
+                            <button class="filter-btn" data-filter="truefalse">صح/خطأ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4" id="questionsContainer">
+                @foreach (var question in Model)
+                {
+                    <div class="col-xl-6 question-wrapper" data-type="@question.QuestionType" data-content="@question.QuestionText.ToLower() @question.CorrectAnswer.ToLower()">
+                        <div class="q-card-premium">
+                            <div class="q-card-header">
+                                <span class="q-type-label @question.QuestionType">
+                                    @(question.QuestionType == "mcq" ? "اختيار متعدد" : "صح أو خطأ")
+                                </span>
+                                <div class="q-meta-info">
+                                    <span class="difficulty-tag">@question.Difficulty</span>
+                                    <div class="card-btns">
+                                        <button class="btn-card-icon edit"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="btn-card-icon delete"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="q-text-body">@question.QuestionText</h5>
+
+                            <div class="options-container-premium">
+                                @if (question.Options != null)
+                                {
+                                    foreach (var opt in question.Options)
+                                    {
+                                        bool isCorrect = (opt.OptionText == question.CorrectAnswer);
+                                        <div class="opt-item-premium @(isCorrect ? "is-correct" : "")">
+                                            <div class="opt-check"></div>
+                                            <span class="opt-text">@opt.OptionText</span>
+                                            @if (isCorrect)
+                                            {
+                                                <i class="fa-solid fa-check-circle ms-auto text-success"></i>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="q-card-footer">
+                                <div class="correct-ans-preview">
+                                    <span class="label">الإجابة المعتمدة:</span>
+                                    <span class="val">@question.CorrectAnswer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div id="noResults" class="empty-state" style="display:none;">
+                <i class="fa-solid fa-face-frown fa-4x mb-3 text-muted"></i>
+                <h3>لم نجد أي نتائج..</h3>
+                <p class="text-muted">جرب البحث بكلمات مختلفة</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/Transcription/QuestionBank.js"></script>
+</body>
+</html>

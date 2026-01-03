@@ -1,0 +1,114 @@
+﻿/* wwwroot/css/student-register-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif;
+    color: var(--dark-text);
+}
+
+.register-page {
+    min-height: 100vh;
+    /* خلفية متدرجة ثابتة وجذابة */
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--purple-main) 100%);
+}
+
+.register-card {
+    background-color: white;
+    border-radius: 18px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid #eee;
+    z-index: 10;
+    position: relative;
+}
+
+.page-title {
+    color: var(--purple-main);
+    font-weight: 800;
+    font-size: 2.2rem;
+    border-bottom: 3px solid var(--pink-accent);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.section-title {
+    color: var(--pink-accent);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* حقول الإدخال */
+.form-control-modern {
+    border: 1px solid #ddd;
+    height: 50px;
+    padding: 0 1.5rem;
+    border-radius: 50px !important;
+    background-color: var(--light-bg);
+    transition: all 0.3s ease;
+}
+
+    .form-control-modern:focus {
+        border-color: var(--purple-main);
+        box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.2);
+        background-color: white;
+    }
+
+.form-label {
+    color: var(--dark-text);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* عرض الكورس المختار */
+.course-info-alert {
+    background-color: rgba(107, 70, 193, 0.1);
+    color: var(--purple-main);
+    border: 1px solid var(--purple-main);
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.price-tag {
+    color: var(--orange-action);
+}
+
+/* زر الإجراء (Register Button) */
+.btn-action-main {
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+    .btn-action-main:hover {
+        background: linear-gradient(90deg, var(--pink-accent), var(--purple-main));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+/* رسائل التنبيه */
+.custom-alert {
+    background-color: rgba(72, 187, 120, 0.1);
+    color: #1b5e20;
+    border: 1px solid #66bb6a;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 1rem;
+}

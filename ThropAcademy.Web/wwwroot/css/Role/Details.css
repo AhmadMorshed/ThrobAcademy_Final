@@ -1,0 +1,111 @@
+﻿/* wwwroot/css/role-details-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif;
+    color: var(--dark-text);
+}
+
+.role-details-page {
+    min-height: 100vh;
+    padding: 3rem 0;
+}
+
+.page-title {
+    color: var(--purple-main);
+    font-weight: 800;
+    font-size: 2.2rem;
+    border-bottom: 3px solid var(--pink-accent);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* بطاقة التفاصيل */
+.detail-card {
+    max-width: 600px;
+    border-radius: 15px;
+    border: 1px solid var(--purple-main);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+    .detail-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+
+.header-gradient {
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent));
+    color: white;
+    padding: 1rem 0;
+}
+
+/* قائمة التفاصيل */
+.detail-list {
+    font-size: 1rem;
+    padding-right: 15px;
+}
+
+    .detail-list dt {
+        font-weight: 700;
+        color: var(--purple-main);
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .detail-list dd {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        color: var(--dark-text);
+    }
+
+.detail-divider {
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    opacity: 0.5;
+}
+
+.role-name-value {
+    color: var(--pink-accent);
+    font-size: 1.1rem;
+}
+
+/* أزرار الإجراء */
+.btn-action-main {
+    background: linear-gradient(90deg, var(--orange-action), var(--pink-accent));
+    color: white;
+    font-weight: 700;
+    padding: 10px 25px;
+    border-radius: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+    .btn-action-main:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+
+.btn-action-secondary {
+    background-color: var(--purple-main);
+    color: white;
+    font-weight: 700;
+    padding: 10px 25px;
+    border-radius: 50px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+    .btn-action-secondary:hover {
+        transform: translateY(-3px);
+        background-color: #553c9a; /* بنفسجي أغمق قليلاً */
+        color: white;
+    }

@@ -1,0 +1,309 @@
+﻿/* wwwroot/css/drive-session-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1; /* اللون البنفسجي الأساسي */
+    --pink-accent: #D53F8C; /* اللون الوردي المساعد */
+    --orange-action: #F5A623; /* اللون البرتقالي للإجراءات */
+    --light-bg: #f8f9fa;
+    --card-shadow: rgba(107, 70, 193, 0.15);
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif;
+}
+
+/* شاشة التحميل */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--light-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+    .loading-screen.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+.loading-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-book {
+    color: var(--purple-main);
+    font-size: 3.5rem;
+    z-index: 2;
+}
+
+.loading-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 6px solid rgba(213, 63, 140, 0.3);
+    border-top: 6px solid var(--purple-main);
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    z-index: 1;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* شريط العنوان وتنسيقات أخرى */
+.header-section {
+    background: linear-gradient(135deg, var(--purple-main) 0%, var(--pink-accent) 100%);
+    color: white;
+    padding: 10px 0;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+    .header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: inherit;
+    }
+
+.animated-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    animation: fadeInDown 0.8s forwards;
+    animation-delay: 0.2s;
+}
+
+.animated-description {
+    font-size: 1.4rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInUp 0.8s forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header-buttons {
+    margin-top: 30px;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+    animation-delay: 0.8s;
+}
+
+.btn-header-action {
+    background: linear-gradient(90deg, var(--orange-action), #ff9800);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+    .btn-header-action:hover {
+        background: var(--purple-main);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+.btn-header-action-alt {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-header-action-alt:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-3px);
+    }
+
+/* بطاقات الكورسات */
+.course-card {
+    border: 1px solid rgba(107, 70, 193, 0.3);
+    border-radius: 18px;
+    box-shadow: 0 5px 25px var(--card-shadow);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+}
+
+    .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        border-color: var(--pink-accent);
+    }
+
+.course-icon-wrapper {
+    background: rgba(107, 70, 193, 0.1);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto;
+    transition: background 0.3s ease;
+}
+
+.course-card:hover .course-icon-wrapper {
+    background: var(--pink-accent);
+}
+
+.course-icon {
+    color: var(--purple-main);
+    transition: color 0.4s ease, transform 0.4s ease;
+}
+
+.course-card:hover .course-icon {
+    color: white;
+    transform: rotateY(360deg) scale(1.1);
+}
+
+.course-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--purple-main);
+    margin-bottom: 5px;
+}
+
+.course-description {
+    font-size: 1rem;
+    color: #6c757d;
+    min-height: 40px;
+}
+
+/* أزرار الإجراء داخل البطاقات */
+.btn-details, .btn-action {
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-details {
+    background-color: var(--purple-main);
+    border-color: var(--purple-main);
+    color: white;
+}
+
+    .btn-details:hover {
+        background-color: var(--pink-accent);
+        border-color: var(--pink-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+.btn-action {
+    background: linear-gradient(90deg, var(--orange-action), #ff9800);
+    border: none;
+    color: white;
+}
+
+    .btn-action:hover {
+        background: linear-gradient(90deg, #ff9800, var(--orange-action));
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+/* تنسيق خاص لرسالة عدم وجود كورسات */
+.alert-info {
+    background-color: var(--purple-main);
+    color: white;
+    border-color: var(--purple-main);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+}
+
+    .alert-info a {
+        color: var(--orange-action);
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+        .alert-info a:hover {
+            color: white;
+        }
+
+/* زر التمرير للأسفل */
+.scroll-down-btn {
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}

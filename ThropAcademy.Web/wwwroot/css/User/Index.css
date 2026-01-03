@@ -1,0 +1,166 @@
+﻿/* wwwroot/css/user-management-style.css */
+
+/* المتغيرات الأساسية */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+.page-title {
+    color: var(--purple-main);
+    font-weight: 800;
+    font-size: 2.5rem;
+    border-bottom: 3px solid var(--pink-accent);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+/* شريط البحث */
+.search-form-container {
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+.search-input {
+    border-radius: 50px 0 0 50px !important;
+    border-right: none;
+    height: 45px;
+    font-size: 1rem;
+    padding-left: 20px;
+}
+
+.btn-search-icon {
+    background-color: var(--orange-action);
+    color: white;
+    border-radius: 0 50px 50px 0 !important;
+    border: none;
+    transition: background-color 0.3s;
+    height: 45px;
+}
+
+    .btn-search-icon:hover {
+        background-color: var(--purple-main);
+    }
+
+/* تصميم الجدول الإداري */
+.user-management-table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-table {
+    margin-bottom: 0;
+}
+
+    .user-table thead {
+        background-color: var(--purple-main);
+        color: white;
+        font-size: 0.95rem;
+    }
+
+    .user-table th {
+        padding: 12px;
+        vertical-align: middle;
+        border-color: rgba(255, 255, 255, 0.2);
+        font-weight: 700;
+    }
+
+    .user-table tbody tr:hover {
+        background-color: rgba(107, 70, 193, 0.05) !important;
+    }
+
+    .user-table tbody td {
+        vertical-align: middle;
+        font-size: 0.9rem;
+    }
+
+    .user-table .col-id {
+        width: 15%;
+        color: var(--pink-accent);
+        font-weight: 600;
+    }
+
+/* حالة المستخدم (نشط/غير نشط) */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+    .status-badge.active {
+        background-color: #48bb78; /* أخضر */
+        color: white;
+    }
+
+    .status-badge.inactive {
+        background-color: #e53e3e; /* أحمر */
+        color: white;
+    }
+
+/* أزرار الإجراءات في الجدول */
+.action-button {
+    width: 10%;
+    text-align: center;
+}
+
+    .action-button a, .action-button button {
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .action-button a:hover, .action-button button:hover {
+            transform: scale(1.05);
+        }
+
+/* ألوان الأزرار */
+.btn-details {
+    background-color: var(--orange-action);
+    color: white;
+}
+
+.btn-update {
+    background-color: var(--purple-main);
+    color: white;
+}
+
+.btn-delete {
+    background-color: var(--pink-accent);
+    color: white;
+}
+
+/* رسالة عدم وجود مستخدمين */
+.alert-empty-users {
+    background-color: var(--purple-main);
+    color: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+}
+
+    .alert-empty-users h3 {
+        color: var(--orange-action);
+        font-weight: 700;
+    }

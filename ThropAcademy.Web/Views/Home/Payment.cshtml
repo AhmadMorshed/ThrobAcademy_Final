@@ -1,0 +1,121 @@
+﻿@model Throb.Data.Entities.Student
+@{
+    ViewData["Title"] = "إتمام عملية الدفع";
+    // قيمة ClientSecret التي تم تمريرها من الكنترولر
+    var clientSecret = ViewBag.ClientSecret;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+
+<div class="payment-page d-flex align-items-center justify-content-center py-5">
+    <div class="payment-card shadow-lg p-5 rounded-4">
+
+        <div class="text-center mb-4">
+            <h1 class="page-title fw-bold mb-3"><i class="fas fa-lock me-2"></i> معلومات الدفع الآمنة</h1>
+            <p class="text-muted small security-message">مدعوم من Stripe (بيئة اختبار أكاديمية)</p>
+        </div>
+
+        <div class="alert course-info-alert text-center mb-4">
+            <h5 class="fw-bold mb-0">الكورس: @ViewBag.CourseName</h5>
+            <p class="mb-0 small">السعر الإجمالي: <span class="fw-bold price-tag">@ViewBag.CoursePrice.ToString("C")</span></p>
+        </div>
+
+        <form id="payment-form">
+
+            <input type="hidden" name="studentId" value="@Model.Id" />
+
+            <div id="payment-element" class="mb-4">
+            </div>
+
+            <div id="payment-message" class="text-danger mb-3 text-center small"></div>
+
+            <div class="form-group text-center">
+                <button id="submit" class="btn btn-action-main btn-lg w-100">
+                    <span id="button-text"><i class="fas fa-shield-alt me-2"></i> دفع (@ViewBag.CoursePrice.ToString("C"))</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/Home/Payment.css" />
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+
+
+    
+    <script>
+        const stripe = Stripe("pk_test_51QA5Q7HruNG7D4CW7RU8ewV94lZZ6OOU9Qy0d60MlGkegnOHUv6PsFajjfWlDgQV9rRXbTcn85HsHjDTmkgTONjq00LFXdp0Kd");
+        const clientSecret = "@clientSecret";
+        const studentId = @Model.Id;
+
+        const form = document.getElementById('payment-form');
+        const paymentMessage = document.getElementById('payment-message');
+        const buttonText = document.getElementById('button-text');
+        
+        let elements; 
+        
+        if (clientSecret && clientSecret !== "") {
+             elements = stripe.elements({ clientSecret });
+             const paymentElement = elements.create('payment');
+             paymentElement.mount('#payment-element');
+        } else {
+             paymentMessage.textContent = "خطأ: لم يتم تحميل معلومات الدفع من الخادم.";
+             buttonText.innerHTML = 'خطأ في التهيئة';
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!clientSecret || clientSecret === "") return; 
+            
+            paymentMessage.textContent = ''; 
+            buttonText.innerText = 'جاري المعالجة...';
+
+            // ⚠️ نستخدم الآن URL وهمي أو فارغ لأننا لن نعتمد على توجيه Stripe
+            const returnUrl = `${window.location.origin}/Home/PaymentConfirmation`; // المسار الرئيسي فقط
+
+            // محاولة تأكيد الدفع مع Stripe
+            const { paymentIntent, error } = await stripe.confirmPayment({
+                elements, 
+                confirmParams: {
+                    // نمرر هنا مسار التوجيه
+                    return_url: returnUrl,
+                },
+                redirect: 'if_required', // لتجنب التعليق، نطلب التوجيه فقط إذا كان ضرورياً
+            });
+
+            // 1. معالجة الأخطاء
+            if (error) {
+                if (error.type === "card_error" || error.type === "validation_error") {
+                    paymentMessage.textContent = error.message;
+                } else {
+                    paymentMessage.textContent = "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً.";
+                }
+                buttonText.innerHTML = '<i class="fas fa-shield-alt me-2"></i> إتمام الدفع';
+                return; // إيقاف التنفيذ عند وجود خطأ
+            }
+
+            // 2. التحقق من حالة الدفع بعد confirmPayment مباشرة
+            if (paymentIntent.status === "succeeded") {
+                // ✅ المعاملة نجحت! نقوم بالتوجيه يدوياً الآن
+                paymentMessage.textContent = "تم الدفع بنجاح. جاري تأكيد العملية...";
+                
+                // نقوم بالتوجيه يدوياً إلى دالة التحقق، وهي ستعرض رسالة النجاح
+                window.location.href = `/Home/PaymentConfirmation?studentId=${studentId}&payment_intent=${paymentIntent.id}`;
+
+            } else if (paymentIntent.status === "requires_action") {
+                 // في بيئة الاختبار لن يحدث هذا عادة، لكنه لحالات 3D Secure
+                 paymentMessage.textContent = "يتطلب الإجراء تحققاً إضافياً. جاري التوجيه للتحقق...";
+            } 
+            else {
+                // في حالة فشل غير واضح أو انتظار
+                paymentMessage.textContent = `حالة الدفع غير مؤكدة: ${paymentIntent.status}. يرجى محاولة الدفع مرة أخرى.`;
+                buttonText.innerHTML = '<i class="fas fa-shield-alt me-2"></i> إتمام الدفع';
+            }
+        });
+    </script>
+}
+}

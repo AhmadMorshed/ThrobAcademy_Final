@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<DebugType>full</DebugType>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="ProtectedVideos\08132ed7-277d-4ba0-b539-2e81d13731aa_8762656-uhd_3840_2160_25fps.mp4" />
+		<Content Include="ProtectedVideos\4b92563b-9642-4a0f-b5db-60fa491c3136_EE.mp4" />
+		<Content Include="ProtectedVideos\7fb86e3d-68c3-48dc-bdda-4f0cba89799d_EE.mp4" />
+		<Content Include="ProtectedVideos\9bb41f3e-c86a-4ad1-b245-cc29c1942a70_EE.mp4" />
+		<Content Include="ProtectedVideos\d83ddea2-4e90-4230-ae9f-47a41cc24c92_EE.mp4" />
+		<Content Include="ProtectedVideos\daebcad7-b299-4a96-bfd3-93474987d7a8_8762656-uhd_3840_2160_25fps.mp4" />
+	</ItemGroup>
+
+<ItemGroup>
+    <PackageReference Include="Betalgo.OpenAI" Version="8.7.2" />
+    <PackageReference Include="Deepgram" Version="6.0.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3783" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0"> <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Neuroglia.Serialization.NewtonsoftJson" Version="4.21.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenAI" Version="2.1.0" />
+    <PackageReference Include="Stripe.net" Version="49.1.0" />
+    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.50.0" />
+    <PackageReference Include="Whisper.net" Version="1.8.1" />
+</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="ProtectedDocuments\" />
+		<Folder Include="PythonScripts\" />
+		<Folder Include="wwwroot\Videos\" />
+		<Folder Include="wwwroot\Uploads\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Throb.Service\Throb.Service.csproj" />
+	</ItemGroup>
+
+</Project>

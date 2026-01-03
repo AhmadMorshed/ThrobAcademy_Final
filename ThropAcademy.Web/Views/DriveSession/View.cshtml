@@ -1,0 +1,158 @@
+﻿@model ThropAcademy.Web.Models.CourseContentViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Linq
+@{
+    // 🔴 تغيير نوع النموذج إلى CourseContentViewModel
+    ViewData["Title"] = "محتوى الدورة التعليمية"; 
+    int currentCourseId = Model.CourseId; // جلب ID من النموذج مباشرة
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<div class="container py-5">
+
+    <h2 class="mb-4 text-primary fw-bold">
+        <i class="fas fa-cubes me-2"></i> @ViewData["Title"]
+    </h2>
+
+    <hr />
+
+    @* 🛠️ كتلة الأزرار: العودة، رفع المستندات، رفع الفيديو *@
+    @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
+    {
+        <div class="mb-5 d-flex justify-content-between align-items-center">
+
+            <a asp-action="Index" asp-controller="DriveSession" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-right me-2"></i> العودة للكورسات
+            </a>
+
+            <div class="btn-group" role="group">
+
+                <a asp-action="UploadDocument"
+                   asp-controller="DriveSession"
+                   asp-route-courseId="@Model.CourseId"
+                   class="btn btn-info shadow-sm text-white me-2">
+                    <i class="fas fa-file-upload me-2"></i> رفع مستند جديد
+                </a>
+
+                <a asp-action="UploadVideo"
+                   asp-controller="DriveSession"
+                   asp-route-courseId="@Model.CourseId"
+                   class="btn btn-success btn-lg shadow-sm">
+                    <i class="fas fa-cloud-upload-alt me-2"></i> رفع فيديو جديد
+                </a>
+            </div>
+
+        </div>
+    }
+
+    <h3 class="mb-3 mt-5 fw-bold text-primary"><i class="fas fa-film me-2"></i> الفيديوهات</h3>
+    <hr />
+
+    <div class="video-grid">
+        @if (Model.Videos != null && Model.Videos.Any())
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach (var video in Model.Videos) 
+                {
+                    <div class="col">
+                        <div class="video-card h-100 shadow-lg rounded-3 overflow-hidden">
+
+                            <div class="video-wrapper">
+                                <video controls
+                                        preload="metadata"
+                                        class="w-100 video-player"
+                                        poster="https://via.placeholder.com/320x180/7e57c2/FFFFFF?text=Video+@video.Title"
+                                        oncontextmenu="return false;">
+
+                                    <source src="@Url.Action("StreamVideo", "DriveSession", new { sessionId = video.Id })"
+                                            type="@video.Content_Type">
+
+                                    <p>متصفحك لا يدعم تشغيل الفيديو.</p>
+                                </video>
+                            </div>
+
+                            <div class="p-3">
+                                <h5 class="video-title fw-bold text-truncate">@video.Title</h5>
+                                <p class="video-date text-muted small mb-2">
+                                    <i class="fas fa-calendar-alt me-1"></i> تاريخ الرفع: @video.UploadDate.ToString("dd/MM/yyyy")
+                                </p>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
+                                {
+                                    <div class="text-end mt-2">
+                                        <a asp-action="Delete"
+                                           asp-route-id="@video.Id"
+                                           asp-route-courseId="@Model.CourseId" 
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('هل أنت متأكد من حذف هذا الفيديو؟ سيتم حذفه نهائياً من القرص الصلب.')">
+                                            <i class="fas fa-trash"></i> حذف
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center mt-5" role="alert">
+                <i class="fas fa-info-circle me-2"></i> لا توجد فيديوهات مرفوعة لهذا الكورس حاليًا.
+            </div>
+        }
+    </div>
+
+    @* ######################## قسم عرض المستندات ######################## *@
+    <h3 class="mb-3 mt-5 fw-bold text-success"><i class="fas fa-file-pdf me-2"></i> المستندات والموارد التعليمية</h3>
+    <hr />
+
+    <div class="documents-list mt-4">
+        @if (Model.Documents != null && Model.Documents.Any()) 
+        {
+            <ul class="list-group">
+                @foreach (var doc in Model.Documents)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center rounded-3 shadow-sm mb-2">
+                        <div>
+                            <i class="fas fa-file-alt me-2 text-info"></i>
+                            <span class="fw-semibold">@doc.Title</span>
+                            <span class="text-muted small ms-3">(@doc.FileName)</span>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a asp-action="DownloadResource" 
+                               asp-controller="DriveSession" 
+                               asp-route-resourceId="@doc.Id" 
+                               class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-download"></i> تنزيل
+                            </a>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
+                            {
+                                <a asp-action="DeleteResource" 
+                                   asp-route-id="@doc.Id"
+                                   asp-route-courseId="@Model.CourseId"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('هل أنت متأكد من حذف هذا المستند؟')">
+                                    <i class="fas fa-trash"></i> حذف
+                                </a>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center mt-3" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> لا توجد مستندات أو موارد مرفوعة لهذا الكورس.
+            </div>
+        }
+    </div>
+
+</div>
+
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/DriveSession/View.css" />

@@ -1,0 +1,164 @@
+﻿@model Throb.Data.Entities.ExamRequestModel
+@{
+    ViewData["Title"] = "معاينة الاختبار - Throb Academy";
+    var hasQuestions = Model?.Questions != null && Model.Questions.Any();
+}
+
+<link rel="stylesheet" href="~/css/Transcription/ExamPreview.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="page-bg-light">
+    <div class="container py-5">
+
+        @* القسم الخاص بالتصدير والمعاينة *@
+        <div id="pdf-export-container">
+
+            @* هيدر PDF (يظهر عند الطباعة فقط) *@
+            <div class="pdf-only-header d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                    <div>
+                        <h2 style="color: #6366f1; font-weight: 900; margin:0;">THROB ACADEMY</h2>
+                        <small class="text-muted">نظام تقييم الاختبارات الذكي</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">نوع الاختبار: @Model.ExamType</div>
+                        <div class="small">التاريخ: @DateTime.Now.ToString("yyyy-MM-dd")</div>
+                    </div>
+                </div>
+            </div>
+
+            @* هيدر المعاينة على المتصفح *@
+            <div class="exam-hero-section animate-fade-in no-print-bg">
+                <div class="hero-content-wrapper text-center">
+                    <div class="hero-icon-box">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    @* عرض العنوان بناءً على النوع *@
+                    <h1 class="exam-main-title">
+                        @(Model.ExamType == "Final" ? "Final" :
+                                                Model.ExamType == "Quiz" ? "Quiz" : Model.ExamType == "Practical" ? "Practical" : "")
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="exam-subtitle">يرجى مراجعة الأسئلة والإجابة بدقة قبل تقديم المحاولة.</p>
+
+                    @if (hasQuestions)
+                    {
+                        <div class="exam-info-pill">
+                            <span><i class="bi bi-question-circle-fill me-1"></i> الأسئلة: @Model.Questions.Count</span>
+                            <span class="mx-2 separator">|</span>
+                            <span><i class="bi bi-clock-history me-1"></i> الوقت: @Model.DurationMinutes دقيقة</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @* نموذج تقديم الامتحان *@
+            <form asp-action="SubmitExam" asp-controller="Transcription" method="post" id="examForm" class="mt-4">
+                @Html.AntiForgeryToken()
+
+                @* الحقول المخفية: الربط الديناميكي مع قاعدة البيانات *@
+                <input type="hidden" asp-for="CourseId" />
+                <input type="hidden" asp-for="ExamType" /> @* هذا السطر يمنع ظهور NULL في SQL *@
+                <input type="hidden" asp-for="DurationMinutes" />
+
+                @if (hasQuestions)
+                {
+                    for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        var q = Model.Questions[i];
+                        <div class="q-preview-card q-card-solid mb-4 shadow-sm animate-slide-up" style="animation-delay: @(i * 0.1)s">
+                            <div class="card-side-accent"></div>
+                            <div class="p-4">
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <span class="q-number-circle">@(i + 1)</span>
+                                    <h5 class="q-text-display mb-0">@q.QuestionText</h5>
+                                </div>
+
+                                <div class="options-selection-area">
+                                    @if (q.QuestionType?.ToLower() == "mcq")
+                                    {
+                                        <div class="row g-3">
+                                            @foreach (var opt in q.Options)
+                                            {
+                                                var radioId = $"opt_{q.QuestionId}_{opt.OptionId}";
+                                                <div class="col-md-6">
+                                                    <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="@radioId" value="@opt.OptionText" required>
+                                                    <label class="choice-interactive-item" for="@radioId">
+                                                        <span class="dot-indicator"></span>
+                                                        @opt.OptionText
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else if (q.QuestionType?.ToLower() == "truefalse")
+                                    {
+                                        <div class="tf-interactive-group">
+                                            <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="true_@q.QuestionId" value="True" required>
+                                            <label class="tf-btn-modern true-btn" for="true_@q.QuestionId">
+                                                <i class="bi bi-check-circle-fill me-2"></i> صحيحة
+                                            </label>
+
+                                            <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="false_@q.QuestionId" value="False" required>
+                                            <label class="tf-btn-modern false-btn" for="false_@q.QuestionId">
+                                                <i class="bi bi-x-circle-fill me-2"></i> خاطئة
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </form>
+        </div>
+
+        @* أزرار التحكم *@
+        <div class="footer-actions-fixed mt-5">
+            <div class="d-flex justify-content-center gap-3">
+                <button onclick="window.print()" class="btn-action-secondary" style="background-color: cadetblue;border-radius: 50px;padding: 10px;border: 1px sol black;">
+                    <i class="bi bi-printer" style="font-size: 25px;color: darkblue;font-weight: bold;padding: 10px;border: 1px solid;border-radius: 60px;"></i>
+                </button>
+
+                <button type="submit" form="examForm" class="btn-submit-exam-premium">
+                    <span class="btn-text">إرسال الإجابات والإنهاء</span>
+                    <span class="btn-icon"><i class="bi bi-send-check-fill"></i></span>
+                </button>
+            </div>
+            <p class="text-muted text-center mt-3 small"><i class="bi bi-shield-lock-fill"></i> يتم حفظ النتائج فوراً في سجلاتك الأكاديمية</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        async function generateProfessionalPDF() {
+            const element = document.getElementById('pdf-export-container');
+            const pdfHeader = document.querySelector('.pdf-only-header');
+
+            pdfHeader.classList.remove('d-none');
+
+            const opt = {
+                margin: [10, 5, 10, 5],
+                filename: 'Throb_Academy_@Model.ExamType' + '_@Model.CourseId' + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: 'avoid-all' }
+            };
+
+            try {
+                await html2pdf().set(opt).from(element).save();
+            } finally {
+                pdfHeader.classList.add('d-none');
+            }
+        }
+    </script>
+}

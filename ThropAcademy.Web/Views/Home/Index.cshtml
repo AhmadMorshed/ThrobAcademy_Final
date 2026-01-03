@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Throb.Data.Entities.Course>
+
+@{
+    ViewData["Title"] = "Courses and Instructors";
+    // ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties
+}
+
+
+@* ⚠️ ملاحظة: يمكن دمج Font-Awesome في ملف _Layout.cshtml لتحميله مرة واحدة لكل الصفحات. *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<div id="loading-screen" class="loading-screen">
+    <div class="loading-container">
+        <i class="fas fa-book-open loading-book"></i>
+        <div class="loading-ring"></div>
+    </div>
+</div>
+
+@if (TempData["RegistrationSuccess"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["RegistrationSuccess"]
+    </div>
+}
+
+<div class="text-center course-header">
+    <h1 class="display-4 animated-title">Available Courses</h1>
+    <p class="lead animated-description">Explore the courses offered by our skilled instructors.</p>
+    <div class="header-buttons">
+        <a href="@Url.Action("Login", "Account")" class="btn btn-header-action">Log In</a>
+
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg rounded-lg course-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center mb-3">
+                            <i class="fas fa-book-open fa-3x course-icon"></i>
+                        </div>
+
+                        <h5 class="card-title text-center font-weight-bold text-purple">@course.Name</h5>
+
+                        <p class="card-text text-muted text-center mb-3">@course.Description</p>
+
+                        <div class="instructor-section d-flex align-items-baseline flex-wrap">
+                            <h6 class="instructor-label me-2 mb-2">Instructors:</h6>
+                            <ul class="list-unstyled d-flex flex-wrap mb-0 instructor-list-inline">
+                                @foreach (var instructorCourse in course.InstructorCourses)
+                                {
+                                    <li class="instructor-item-inline">@instructorCourse.Instructor.Name</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <h6 class="course-price">Price: @course.CoursePrice.ToString("C")</h6>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="@Url.Action("Details", "Course", new { id = course.Id })" class="btn btn-details btn-sm">View Details</a>
+
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("JoinCourse", "Home", new { courseId = course.Id }) })" class="btn btn-action btn-sm">
+                                    <i class="fas fa-sign-in-alt"></i> Login & Join Course
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Register", "Home", new { courseId = course.Id })" class="btn btn-action btn-sm">
+                                    <i class="fas fa-user-plus"></i> Join Course
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@* 🟢 ربط ملف CSS الخارجي *@
+<link rel="stylesheet" href="~/css/Home/Index.css" />
+
+@section Scripts {
+    @* 🟢 ربط ملف JavaScript الخارجي *@
+    <script src="~/js/Home/Index.js"></script>
+}

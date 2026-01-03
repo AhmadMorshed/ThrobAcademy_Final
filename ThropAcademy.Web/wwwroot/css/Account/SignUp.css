@@ -1,0 +1,230 @@
+﻿/* wwwroot/css/signup-style.css */
+
+/* 1. تعريف المتغيرات الأساسية كـ CSS Custom Properties */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --dark-text: #2d3748;
+}
+
+/* 1. التصميم العام للخلفية */
+.signup-page {
+    min-height: 100vh;
+    /* استخدام متغيرات CSS في الخلفية */
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--purple-main) 100%);
+    font-family: 'Cairo', 'Segoe UI', sans-serif;
+    color: var(--dark-text);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 2. عناصر الخلفية المتحركة (Animation) */
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatAndFade 20s infinite ease-in-out alternate;
+}
+
+.shape-1 {
+    width: 150px;
+    height: 150px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+    animation-duration: 25s;
+}
+
+.shape-2 {
+    width: 100px;
+    height: 100px;
+    top: 40%;
+    right: 10%;
+    background: rgba(255, 255, 255, 0.08);
+    animation-delay: 3s;
+    animation-duration: 20s;
+}
+
+.shape-3 {
+    width: 200px;
+    height: 200px;
+    bottom: 5%;
+    left: 20%;
+    animation-delay: 8s;
+    animation-duration: 30s;
+}
+
+.shape-4 {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    right: 30%;
+    background: rgba(255, 255, 255, 0.12);
+    animation-delay: 12s;
+    animation-duration: 18s;
+}
+
+.shape-5 {
+    width: 120px;
+    height: 120px;
+    bottom: 30%;
+    left: 40%;
+    animation-delay: 6s;
+    animation-duration: 22s;
+}
+
+@keyframes floatAndFade {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translate(50px, -50px) scale(1.1);
+        opacity: 0.6;
+    }
+
+    75% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(-50px, 50px) scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* 3. تصميم البطاقة (Sign Up Card) */
+.signup-card {
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: 100%;
+    border-radius: 25px !important;
+    border: 1px solid;
+    border-image: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%) 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 60px rgba(255, 255, 255, 0.1) inset;
+    z-index: 10;
+    position: relative;
+    overflow: visible;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+    .signup-card:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 80px rgba(255, 255, 255, 0.2) inset;
+    }
+
+/* 4. رمز الكتاب في الأعلى */
+.book-icon-wrapper {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    /* استخدام متغيرات CSS في التدرج اللوني */
+    background: linear-gradient(135deg, var(--purple-main), var(--pink-accent) );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    border: 4px solid white;
+    transition: transform 0.3s ease;
+}
+
+    .book-icon-wrapper:hover {
+        transform: translateX(-50%) rotate(-5deg) scale(1.05);
+    }
+
+.book-icon {
+    color: white;
+    font-size: 2.2rem;
+}
+
+.signup-title {
+    /* استخدام متغيرات CSS في التدرج اللوني للنص */
+    background: linear-gradient(90deg, var(--pink-accent), var(--purple-main) );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    margin-top: 30px;
+}
+
+/* 5. الإدخالات والأزرار */
+.form-label {
+    color: var(--dark-text);
+    font-size: 0.95rem;
+}
+
+.form-control-modern {
+    border: 1px solid #e0e0e0;
+    height: 50px;
+    padding: 0 1.5rem;
+    border-radius: 50px !important;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+    .form-control-modern:focus {
+        /* استخدام متغيرات CSS */
+        border-color: var(--purple-main);
+        box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.2);
+        background-color: white;
+    }
+
+.btn-gradient {
+    /* استخدام متغيرات CSS في التدرج اللوني */
+    background: linear-gradient(90deg, var(--pink-accent), var(--orange-action) );
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 12px 25px;
+    border-radius: 50px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.btn-submit:hover {
+    /* استخدام متغيرات CSS في التدرج اللوني */
+    background: linear-gradient(90deg, var(--purple-main), var(--pink-accent) );
+    transform: scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+}
+
+.btn-gradient > * {
+    position: relative;
+    z-index: 1;
+}
+
+.signup-link a {
+    color: var(--pink-accent);
+    font-weight: 600;
+}
+
+    .signup-link a:hover {
+        color: var(--purple-main);
+    }

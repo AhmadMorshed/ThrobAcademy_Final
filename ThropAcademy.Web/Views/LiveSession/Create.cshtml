@@ -1,0 +1,169 @@
+﻿@model Throb.Data.Entities.LiveSession
+@{
+    ViewData["Title"] = "إنشاء جلسة بث حي جديدة (Zoom)";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* 🎨 المتغيرات التي طلبها المستخدم */
+    :root {
+        --purple-main: #6B46C1;
+        --pink-accent: #D53F8C;
+        --orange-action: #F5A623;
+        --light-bg: #f8f9fa;
+        --dark-text: #212529;
+        --zoom-green: #28a745; /* لون جديد للأكشن */
+    }
+
+    .create-session-page {
+        /* استخدام تدرج ألوان احترافي مع الألوان المحددة */
+        background: linear-gradient(135deg, var(--purple-main) 0%, var(--pink-accent) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        color: var(--dark-text);
+    }
+
+    .session-card {
+        background-color: var(--light-bg);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .page-title {
+        color: var(--purple-main);
+        font-weight: 800;
+        font-size: 2rem;
+        border-bottom: 3px solid var(--pink-accent);
+        padding-bottom: 10px;
+    }
+
+    /* تنسيق الحقول الحديثة (Modern Fields) */
+    .form-control-modern {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        height: 48px;
+        transition: border-color 0.3s;
+    }
+
+        .form-control-modern:focus {
+            border-color: var(--purple-main);
+            box-shadow: 0 0 0 0.2rem rgba(107, 70, 193, 0.25);
+        }
+
+    h3 {
+        color: var(--dark-text);
+        font-weight: 700;
+    }
+
+    /* زر الأكشن الرئيسي */
+    .btn-action-main {
+        background: linear-gradient(90deg, var(--zoom-green), var(--orange-action));
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 12px 0;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-action-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .security-note {
+        font-size: 0.9rem;
+        color: var(--dark-text);
+        margin-top: 15px;
+        padding: 10px;
+        border-left: 3px solid var(--success-green);
+        background-color: #f6fff6;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="create-session-page container py-5">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-7">
+            <div class="session-card shadow-lg">
+                <h1 class="page-title text-center mb-4">
+                    <i class="fas fa-video me-2"></i> @ViewData["Title"]
+                </h1>
+
+                @* عرض رسائل النجاح أو الخطأ من TempData *@
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                }
+
+                <form asp-controller="LiveSession" asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <h3><i class="fas fa-info-circle me-2"></i> الإعدادات الأساسية</h3>
+                    <hr />
+
+                    @* 1. حقل العنوان (Topic) *@
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="form-label">عنوان الجلسة</label>
+                        <input asp-for="Title" class="form-control form-control-modern" placeholder="أدخل عنوان الجلسة (الدرس)" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    @* 2. حقل الكورس المربوط *@
+                    <div class="form-group mb-3">
+                        <label asp-for="CourseId" class="form-label">ربط الجلسة بالكورس</label>
+                        <select asp-for="CourseId" class="form-control form-control-modern">
+                            <option value="">-- اختر الكورس --</option>
+                            @if (ViewBag.Courses != null)
+                            {
+                                foreach (var course in ViewBag.Courses)
+                                {
+                                    <option value="@course.Id">@course.Name</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CourseId" class="text-danger"></span>
+                    </div>
+
+                    @* 3. حقل التاريخ والوقت (StartTime) *@
+                    <div class="form-group mb-3">
+                        <label asp-for="Date" class="form-label">تاريخ ووقت البدء (بالتوقيت المحلي)</label>
+                        <input asp-for="Date" type="datetime-local" class="form-control form-control-modern" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+
+                    @* 4. حقل المدة (Duration) *@
+                    <div class="form-group mb-4">
+                        <label asp-for="DurationMinutes" class="form-label">مدة الجلسة بالدقائق (1-180 دقيقة)</label>
+                        <input asp-for="DurationMinutes" type="number" class="form-control form-control-modern" min="1" max="180" value="60" />
+                        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+                    </div>
+
+                    <div class="security-note">
+                        <i class="fas fa-lock me-1"></i> يتم إنشاء هذه الجلسة بخصائص أمان عالية: التسجيل معطل للطلاب.
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-action-main w-100">
+                            <i class="fas fa-magic me-2"></i> إنشاء اجتماع Zoom
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

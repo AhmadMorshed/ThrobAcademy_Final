@@ -1,0 +1,288 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --accent: #f43f5e;
+    --bg-soft: #f8fafc;
+    --card-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+body {
+    background: var(--bg-soft);
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    color: #1e293b;
+}
+
+.main-exam-card {
+    background: #ffffff;
+    max-width: 900px;
+    width: 100%;
+    border-radius: 45px;
+    padding: 60px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+.hero-badge {
+    background: #eef2ff;
+    color: var(--primary);
+    padding: 8px 24px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.time-auto-badge {
+    color: var(--primary);
+    font-weight: 800;
+    background: #f0f0ff;
+    padding: 2px 10px;
+    border-radius: 8px;
+}
+
+/* AI Panel */
+.ai-panel {
+    background: #f1f5f9;
+    border-radius: 24px;
+    padding: 20px;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-ai-apply {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 15px;
+    font-weight: 700;
+    transition: 0.3s;
+    margin-top:10px;
+}
+
+    .btn-ai-apply:hover {
+        background: var(--primary);
+        transform: translateY(-2px);
+    }
+
+/* Difficulty Grid */
+.difficulty-premium-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.diff-card-modern {
+    background: white;
+    border: 2px solid #f1f5f9;
+    border-radius: 24px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+    .diff-card-modern:hover {
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+
+.diff-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.easy .dot {
+    background: #10b981;
+}
+
+.medium .dot {
+    background: #f59e0b;
+}
+
+.hard .dot {
+    background: #ef4444;
+}
+
+.modern-num-input {
+    width: 100%;
+    border: none;
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-align: center;
+    outline: none;
+}
+
+.unit {
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+/* Type Selector */
+.type-pill-modern {
+    padding: 18px 30px;
+    border-radius: 20px;
+    border: 2px solid #f1f5f9;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+    margin-left:5px;
+}
+
+input[type="radio"]:checked + .type-pill-modern {
+    background: var(--primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+}
+
+/* Question Cards */
+.q-card-premium {
+    background: white;
+    border: 1px solid #f1f5f9;
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+    .q-card-premium:hover {
+        border-color: var(--primary);
+    }
+
+    .q-card-premium.is-selected {
+        background: #f5f3ff;
+        border-color: var(--primary);
+        border-right: 6px solid var(--primary);
+    }
+
+.btn-primary-premium {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    border: none;
+    padding: 22px 80px;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    transition: 0.4s;
+    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.3);
+}
+
+/* Floating Card */
+.floating-stat-card {
+    position: fixed;
+    left: 40px;
+    bottom: 40px;
+    background: #1e293b;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-val {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+}
+filter-group-premium {
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 14px;
+    display: inline-flex;
+    gap: 5px;
+}
+
+.f-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    transition: 0.3s;
+}
+
+    .f-btn.active {
+        background: var(--primary);
+        color: var(--dark-nebula);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+/* --- تحديث تصميم بطاقة السؤال والبادجات --- */
+
+/* حاوية التمييز العلوي (التي تحتوي على النوع والمستوى) */
+.q-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+/* التنسيق العام للبادج (Badge) */
+.badge-item {
+    padding: 4px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+    /* 1. تمييز نوع السؤال (MCQ / TrueFalse) بجعله داكناً وواضحاً */
+    .badge-item.type {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* 2. تمييز مستوى الصعوبة (Medium) بألوان متفاعلة */
+    .badge-item.diff.medium {
+        background: #fef3c7; /* لون أصفر هادئ للمتوسط */
+        color: #d97706;
+        border: 1px solid #fde68a;
+    }
+
+    .badge-item.diff.easy {
+        background: #dcfce7; /* أخضر للسهل */
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+
+    .badge-item.diff.hard {
+        background: #fee2e2; /* أحمر للصعب */
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+/* تحسين شكل النصوص داخل البطاقة */
+.q-text-main {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* تحسين الهيكل الداخلي للبطاقة لضمان التباعد */
+.q-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

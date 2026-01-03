@@ -1,0 +1,114 @@
+﻿/* wwwroot/css/DriveSession/View.css */
+
+/* ========================================= */
+/* 1. المتغيرات الأساسية والتنسيق العام */
+/* ========================================= */
+:root {
+    --purple-main: #6B46C1;
+    --pink-accent: #D53F8C;
+    --orange-action: #F5A623;
+    --light-bg: #f8ff;
+    --dark-text: #212529;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Cairo', sans-serif; /* تأكد من تحميل خط Cairo في _Layout.cshtml */
+    color: var(--dark-text);
+}
+
+.video-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ========================================= */
+/* 2. تنسيق بطاقة الفيديو (Video Card) */
+/* ========================================= */
+.video-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    border: 1px solid #eee;
+    height: auto;
+    padding: 0; /* تأكيد عدم وجود حشو يؤثر على الـ video-wrapper */
+}
+
+    .video-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        border-color: var(--purple-main);
+    }
+
+/* ========================================= */
+/* 3. ✅ التحكم في أبعاد الفيديو (Aspect Ratio 16:9) */
+/* (يضمن أن جميع الفيديوهات لها نفس الشكل المستطيل) */
+/* ========================================= */
+.video-wrapper {
+    /* تمكين Positioning للتحكم في الأبعاد */
+    position: relative;
+    width: 100%;
+    /* فرض نسبة أبعاد 16:9: (9 / 16) * 100% = 56.25% */
+    padding-top: 56.25%;
+    background-color: #000;
+}
+
+    /* جعل عنصر الفيديو (video) يملأ الحاوية تماماً */
+    .video-wrapper .video-player {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* لضمان تغطية كاملة ضمن الحجم المحدد */
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+/* ========================================= */
+/* 4. تنسيق معلومات الفيديو والأزرار */
+/* ========================================= */
+.p-3 {
+    /* تنسيق المحتوى النصي داخل البطاقة */
+    padding: 15px !important;
+}
+
+.video-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--purple-main);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.video-card:hover .video-title {
+    color: var(--pink-accent);
+}
+
+.video-date {
+    font-size: 0.9rem;
+    color: #606060;
+    margin: 5px 0 0;
+    font-weight: 500;
+}
+
+/* زر رفع فيديو جديد (يجب أن يكون له تصنيف موحد) */
+.btn-success.btn-lg {
+    /* يمكنك استخدام هذا التصنيف إذا لم تستخدم btn-upload-action */
+    font-weight: 700;
+    padding: 10px 20px;
+}
+
+/* رسالة التنبيه */
+.alert-info {
+    background-color: rgba(107, 70, 193, 0.1);
+    color: var(--purple-main);
+    border: 1px dashed var(--purple-main);
+    border-radius: 12px;
+    font-weight: 600;
+}

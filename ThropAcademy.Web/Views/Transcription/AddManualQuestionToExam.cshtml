@@ -1,0 +1,61 @@
+﻿@model Throb.Data.Entities.Question
+@{
+    ViewData["Title"] = "إضافة سؤال يدوي - Throb Academy";
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    @* ⚠️ ملاحظة: يمكن دمج الروابط التالية في _Layout.cshtml *@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h2 class="text-center mb-4">إضافة سؤال يدوي</h2>
+            <form method="post" asp-action="AddManualQuestion" asp-controller="Transcription">
+                <input type="hidden" asp-for="QuestionId" />
+                <input type="hidden" name="examId" value="@ViewBag.ExamId" />
+                <div class="form-group">
+                    <label class="form-label">نص السؤال</label>
+                    <input asp-for="QuestionText" class="form-control" required />
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">النوع</label>
+                    <select asp-for="QuestionType" class="form-control" required>
+                        <option value="mcq">اختيار من متعدد</option>
+                        <option value="truefalse">صح أو خطأ</option>
+                    </select>
+                    <span asp-validation-for="QuestionType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الإجابة الصحيحة</label>
+                    <input asp-for="CorrectAnswer" class="form-control" required />
+                    <span asp-validation-for="CorrectAnswer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الصعوبة</label>
+                    <select asp-for="Difficulty" class="form-control" required>
+                        <option value="Easy">سهلة</option>
+                        <option value="Medium">متوسطة</option>
+                        <option value="Hard">صعبة</option>
+                    </select>
+                    <span asp-validation-for="Difficulty" class="text-danger"></span>
+                </div>
+                <button type="submit" class="submit-btn">إضافة السؤال</button>
+            </form>
+        </div>
+    </div>
+
+    @* ⚠️ ملاحظة: يجب نقل هذا السكريبت إلى _Layout.cshtml إذا لم يكن موجوداً *@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdlZxGxvAagm" crossorigin="anonymous"></script>
+</body>
+</html>
+    @* 🟢 ربط ملف CSS الخارجي *@
+    <link rel="stylesheet" href="~/css/Transcription/AddManualQuestion.css" asp-append-version="true" />

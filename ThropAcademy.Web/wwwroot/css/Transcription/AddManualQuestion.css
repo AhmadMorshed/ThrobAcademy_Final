@@ -1,0 +1,61 @@
+/* wwwroot/css/manual-question-style.css */
+
+:root {
+    --primary-color: #1e3a8a; /* ??????/???? ???? */
+    --secondary-color: #3b82f6; /* ???? ???? */
+    --accent-color: #10b981; /* ???? */
+    --background-color: #f9fafb;
+    --card-bg: #ffffff;
+    --text-color: #1f2937;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.form-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-control {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+}
+
+.submit-btn {
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    /* ????? ??? ????????? */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+}
+
+    .submit-btn:hover {
+        background: var(--primary-color);
+        transform: translateY(-2px);
+    }
