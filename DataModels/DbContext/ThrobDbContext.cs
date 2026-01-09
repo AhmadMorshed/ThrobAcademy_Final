@@ -54,16 +54,7 @@ namespace Throb.Data.DbContext
                 .WithOne(c => c.LiveSession)
                 .HasForeignKey<LiveSession>(ls => ls.CourseId);
 
-            // تكوين ExamRequestModel
-            modelBuilder.Entity<ExamRequestModel>(entity =>
-            {
-                entity.HasKey(e => e.ExamRequestId); // تحديد ExamRequestId كمفتاح أساسي
-                entity.Property(e => e.ExamRequestId).ValueGeneratedOnAdd(); // جعل المفتاح مفصولاً تلقائيًا
-                entity.HasMany(er => er.Questions)
-                      .WithMany(q => q.ExamRequests)
-                      .UsingEntity(j => j.ToTable("ExamRequestQuestions"));
-            });
-
+                
             // تكوين Question
             modelBuilder.Entity<Question>()
                 .HasMany(q => q.Options)
@@ -75,6 +66,38 @@ namespace Throb.Data.DbContext
                           .HasMany(ds => ds.Courses)
                           .WithMany(c => c.DriveSessions)
                           .UsingEntity(j => j.ToTable("DriveSessionCourses"));
+            // 1. تكوين ExamRequestModel بشكل بسيط (بدون أي علاقات Many-to-Many مباشرة)
+            modelBuilder.Entity<ExamRequestModel>(entity =>
+            {
+                entity.HasKey(e => e.ExamRequestId);
+                entity.Property(e => e.ExamRequestId).ValueGeneratedOnAdd();
+            });
+
+            // 2. التكوين الصحيح والوحيد للجدول الوسيط اليدوي
+            modelBuilder.Entity<ExamRequestQuestion>(entity =>
+            {
+                entity.ToTable("ExamRequestQuestions");
+
+                entity.HasKey(eq => new { eq.ExamRequestId, eq.QuestionId });
+
+                entity.HasOne(eq => eq.ExamRequest)
+                      .WithMany(e => e.ExamRequestQuestions) // تأكد من وجود هذه الخاصية في ExamRequestModel
+                      .HasForeignKey(eq => eq.ExamRequestId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(eq => eq.Question)
+                      .WithMany(q => q.ExamRequestQuestions) // تأكد من وجود هذه الخاصية في Question
+                      .HasForeignKey(eq => eq.QuestionId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+
+            modelBuilder.Entity<Course>()
+    .Property(c => c.CoursePrice)
+    .HasColumnType("decimal(18,2)");
+
+
+
 
         }
 
@@ -94,5 +117,6 @@ namespace Throb.Data.DbContext
         public DbSet<AttendanceLog> AttendanceLogs { get; set; }
         public DbSet<LectureResource> LectureResources { get; set; }
         public DbSet<UserExamResult> UserExamResults { get; set; }
+        public DbSet<ExamRequestQuestion> ExamRequestQuestions { get; set; }
     }
 }

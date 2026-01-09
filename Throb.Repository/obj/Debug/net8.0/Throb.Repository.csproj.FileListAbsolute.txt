@@ -1,0 +1,32 @@
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\bin\Debug\net8.0\Throb.Repository.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\bin\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\bin\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Re.C6E00260.Up2Date
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\refint\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Repository\obj\Debug\net8.0\ref\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\bin\Debug\net8.0\Throb.Repository.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\bin\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\bin\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Re.C6E00260.Up2Date
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\refint\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Repository\obj\Debug\net8.0\ref\Throb.Repository.dll

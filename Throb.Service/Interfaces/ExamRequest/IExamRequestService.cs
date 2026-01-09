@@ -12,5 +12,7 @@ namespace Throb.Service.Interfaces
         Task UpdateExamRequestAsync(ExamRequestModel model);
         Task DeleteExamRequestAsync(int id);
         Task AddManualQuestionAsync(int examId, Question question);
+        Task<int> GetExamRequestsCountAsync();
+        Task AddAsync(ExamRequestModel model);
     }
 }

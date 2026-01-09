@@ -1,9 +1,12 @@
-﻿using Throb.Data.Entities;
+﻿using Google;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Throb.Data.DbContext;
+using Throb.Data.Entities;
 using Throb.Repository.Interfaces;
 using Throb.Service.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace Throb.Service.Services
 {
@@ -11,11 +14,13 @@ namespace Throb.Service.Services
     {
         private readonly IExamRequestRepository _repository;
         private readonly IQuestionService _questionService;
+        private readonly ThrobDbContext _context;
 
-        public ExamRequestService(IExamRequestRepository repository, IQuestionService questionService)
+        public ExamRequestService(IExamRequestRepository repository, IQuestionService questionService, ThrobDbContext context)
         {
             _repository = repository;
             _questionService = questionService;
+            _context = context;
         }
 
         public async Task<ExamRequestModel> CreateExamRequestAsync(ExamRequestModel model)
@@ -87,6 +92,57 @@ namespace Throb.Service.Services
             var medium = questions.Where(q => q.Difficulty == "Medium").OrderBy(q => Guid.NewGuid()).Take(mediumCount).ToList();
             var hard = questions.Where(q => q.Difficulty == "Hard").OrderBy(q => Guid.NewGuid()).Take(hardCount).ToList();
             return easy.Concat(medium).Concat(hard).ToList();
+        }
+
+        public async Task<int> GetExamRequestsCountAsync()
+        {
+            return await _context.ExamRequestModels.CountAsync();
+        }
+
+        public async Task AddAsync(ExamRequestModel model)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // 1. إعداد الكائن الأساسي للتأكد من عدم وجود قيم فارغة
+                var newExam = new ExamRequestModel
+                {
+                    CourseId = model.CourseId,
+                    ExamType = model.ExamType,
+                    DurationMinutes = model.DurationMinutes,
+                    NumberOfQuestions = model.Questions?.Count ?? 0,
+                  
+                };
+
+                await _context.ExamRequestModels.AddAsync(newExam);
+                await _context.SaveChangesAsync(); // حفظ للحصول على RequestId
+
+                // 2. ربط الأسئلة بالامتحان في الجدول الوسيط
+                if (model.Questions != null && model.Questions.Any())
+                {
+                    foreach (var q in model.Questions)
+                    {
+                        // افترضنا أن اسم الجدول الوسيط هو ExamRequestQuestions
+                        // تأكد من مطابقة أسماء الحقول لديك
+                        var examQuestion = new
+                        {
+                            ExamRequestId = newExam.ExamRequestId,
+                            QuestionId = q.QuestionId
+                        };
+
+                        // إضافة الربط (تعديل حسب اسم الـ DbSet الخاص بالربط عندك)
+                        await _context.Database.ExecuteSqlInterpolatedAsync(
+                            $"INSERT INTO ExamRequestQuestions (ExamRequestId, QuestionId) VALUES ({newExam.ExamRequestId}, {q.QuestionId})");
+                    }
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw; // لإظهار الخطأ الحقيقي في الـ Debugger
+            }
         }
     }
 }

@@ -1,0 +1,36 @@
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Service.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Service.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Se.21A01B4F.Up2Date
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\refint\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\Throb.Service.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\Throb.Service\obj\Debug\net8.0\ref\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Service.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Service.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Repository.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Repository.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Se.21A01B4F.Up2Date
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\refint\Throb.Service.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\Throb.Service.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\Throb.Service\obj\Debug\net8.0\ref\Throb.Service.dll

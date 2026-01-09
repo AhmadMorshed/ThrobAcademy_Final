@@ -1,164 +1,244 @@
 ﻿@model Throb.Data.Entities.ExamRequestModel
 @{
     ViewData["Title"] = "معاينة الاختبار - Throb Academy";
-    var hasQuestions = Model?.Questions != null && Model.Questions.Any();
+
+    var questions = Model?.Questions?.ToList() ?? new List<Throb.Data.Entities.Question>();
+
+    // خطة بديلة لجلب الأسئلة
+    if (!questions.Any() && Model?.ExamRequestQuestions != null)
+    {
+        questions = Model.ExamRequestQuestions
+                         .Where(x => x.Question != null)
+                         .Select(x => x.Question)
+                         .ToList();
+    }
+
+    var hasQuestions = questions.Any();
 }
 
-<link rel="stylesheet" href="~/css/Transcription/ExamPreview.css" asp-append-version="true" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<div class="page-bg-light">
-    <div class="container py-5">
+<style>
+    :root {
+        --primary-color: #4338CA;
+        --secondary-color: #6366F1;
+        --bg-light: #F8FAFC;
+    }
 
-        @* القسم الخاص بالتصدير والمعاينة *@
-        <div id="pdf-export-container">
+    body {
+        background-color: var(--bg-light);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-            @* هيدر PDF (يظهر عند الطباعة فقط) *@
-            <div class="pdf-only-header d-none">
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                    <div>
-                        <h2 style="color: #6366f1; font-weight: 900; margin:0;">THROB ACADEMY</h2>
-                        <small class="text-muted">نظام تقييم الاختبارات الذكي</small>
-                    </div>
-                    <div class="text-end">
-                        <div class="fw-bold">نوع الاختبار: @Model.ExamType</div>
-                        <div class="small">التاريخ: @DateTime.Now.ToString("yyyy-MM-dd")</div>
-                    </div>
+    /* تحسين شكل البطاقات */
+    .q-card {
+        border: none;
+        border-radius: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-right: 5px solid transparent;
+    }
+
+        .q-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+            border-right: 5px solid var(--primary-color);
+        }
+
+    /* تصميم الخيارات الاحترافي */
+    .option-container {
+        cursor: pointer;
+        border: 2px solid #E2E8F0;
+        border-radius: 12px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease;
+        margin-bottom: 10px;
+    }
+
+    .btn-check:checked + .option-container {
+        background-color: #EEF2FF;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .option-container:hover {
+        background-color: #F1F5F9;
+        border-color: var(--secondary-color);
+    }
+
+    /* شريط التقدم */
+    .sticky-progress {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+        border-bottom: 1px solid #E2E8F0;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 10px;
+    }
+
+    .q-badge {
+        background: var(--primary-color);
+        color: white;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="page-content" dir="rtl">
+    @if (hasQuestions)
+    {
+        <div class="sticky-progress mb-4 shadow-sm">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-muted small">تقدمك في الاختبار</span>
+                    <span id="progress-text" class="fw-bold text-primary small">0%</span>
+                </div>
+                <div class="progress">
+                    <div id="exam-progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
                 </div>
             </div>
+        </div>
+    }
 
-            @* هيدر المعاينة على المتصفح *@
-            <div class="exam-hero-section animate-fade-in no-print-bg">
-                <div class="hero-content-wrapper text-center">
-                    <div class="hero-icon-box">
-                        <i class="bi bi-mortarboard-fill"></i>
-                    </div>
-                    @* عرض العنوان بناءً على النوع *@
-                    <h1 class="exam-main-title">
-                        @(Model.ExamType == "Final" ? "Final" :
-                                                Model.ExamType == "Quiz" ? "Quiz" : Model.ExamType == "Practical" ? "Practical" : "")
-                    </h1>
-                    <div class="title-underline"></div>
-                    <p class="exam-subtitle">يرجى مراجعة الأسئلة والإجابة بدقة قبل تقديم المحاولة.</p>
-
-                    @if (hasQuestions)
-                    {
-                        <div class="exam-info-pill">
-                            <span><i class="bi bi-question-circle-fill me-1"></i> الأسئلة: @Model.Questions.Count</span>
-                            <span class="mx-2 separator">|</span>
-                            <span><i class="bi bi-clock-history me-1"></i> الوقت: @Model.DurationMinutes دقيقة</span>
-                        </div>
-                    }
-                </div>
+    <div class="container pb-5">
+        <div class="text-center mb-5 py-4 bg-white shadow-sm rounded-4 position-relative overflow-hidden">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%); opacity: 0.03;"></div>
+            <h2 class="fw-bold text-dark mb-2">@Model.ExamType</h2>
+            <p class="text-muted">مرحباً بك في نظام التقييم الذكي - يرجى الإجابة على جميع الأسئلة بدقة</p>
+            <div class="d-flex justify-content-center gap-4 mt-3">
+                <div class="small"><i class="bi bi-clock text-primary me-1"></i> @Model.DurationMinutes دقيقة</div>
+                <div class="small"><i class="bi bi-list-check text-primary me-1"></i> @questions.Count سؤال</div>
             </div>
+        </div>
 
-            @* نموذج تقديم الامتحان *@
-            <form asp-action="SubmitExam" asp-controller="Transcription" method="post" id="examForm" class="mt-4">
+        @if (!hasQuestions)
+        {
+            <div class="alert alert-info text-center p-5 rounded-4 shadow-sm">
+                <i class="bi bi-search fs-1 d-block mb-3"></i>
+                <h4>لا توجد أسئلة متوفرة حالياً</h4>
+                <p>يرجى التواصل مع الإدارة أو المحاضر المسؤول.</p>
+            </div>
+        }
+        else
+        {
+            <form asp-action="SubmitExam" asp-controller="Transcription" method="post" id="examForm">
                 @Html.AntiForgeryToken()
 
-                @* الحقول المخفية: الربط الديناميكي مع قاعدة البيانات *@
-                <input type="hidden" asp-for="CourseId" />
-                <input type="hidden" asp-for="ExamType" /> @* هذا السطر يمنع ظهور NULL في SQL *@
-                <input type="hidden" asp-for="DurationMinutes" />
+                @* الربط مع ExamSubmissionViewModel *@
+                <input type="hidden" name="ExamRequestId" value="@Model.ExamRequestId" />
+                <input type="hidden" name="CourseId" value="@Model.CourseId" />
 
-                @if (hasQuestions)
+                @for (int i = 0; i < questions.Count; i++)
                 {
-                    for (int i = 0; i < Model.Questions.Count; i++)
-                    {
-                        var q = Model.Questions[i];
-                        <div class="q-preview-card q-card-solid mb-4 shadow-sm animate-slide-up" style="animation-delay: @(i * 0.1)s">
-                            <div class="card-side-accent"></div>
-                            <div class="p-4">
-                                <div class="d-flex align-items-center gap-3 mb-4">
-                                    <span class="q-number-circle">@(i + 1)</span>
-                                    <h5 class="q-text-display mb-0">@q.QuestionText</h5>
-                                </div>
+                    var q = questions[i];
+                    <div class="card q-card mb-4 shadow-sm animate-slide-up" style="animation-delay: @(i * 0.1)s">
+                        <div class="card-body p-4">
+                            @* الربط مع QuestionAnswerModel داخل القائمة *@
+                            <input type="hidden" name="Answers[@i].QuestionId" value="@q.QuestionId" />
 
-                                <div class="options-selection-area">
-                                    @if (q.QuestionType?.ToLower() == "mcq")
-                                    {
-                                        <div class="row g-3">
-                                            @foreach (var opt in q.Options)
-                                            {
-                                                var radioId = $"opt_{q.QuestionId}_{opt.OptionId}";
-                                                <div class="col-md-6">
-                                                    <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="@radioId" value="@opt.OptionText" required>
-                                                    <label class="choice-interactive-item" for="@radioId">
-                                                        <span class="dot-indicator"></span>
-                                                        @opt.OptionText
-                                                    </label>
-                                                </div>
-                                            }
-                                        </div>
-                                    }
-                                    else if (q.QuestionType?.ToLower() == "truefalse")
-                                    {
-                                        <div class="tf-interactive-group">
-                                            <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="true_@q.QuestionId" value="True" required>
-                                            <label class="tf-btn-modern true-btn" for="true_@q.QuestionId">
-                                                <i class="bi bi-check-circle-fill me-2"></i> صحيحة
-                                            </label>
+                            <div class="d-flex align-items-start gap-3 mb-4">
+                                <div class="q-badge">@(i + 1)</div>
+                                <h5 class="fw-bold text-dark mt-1" style="line-height: 1.6;">@q.QuestionText</h5>
+                            </div>
 
-                                            <input type="radio" class="btn-check" name="Answers[@q.QuestionId]" id="false_@q.QuestionId" value="False" required>
-                                            <label class="tf-btn-modern false-btn" for="false_@q.QuestionId">
-                                                <i class="bi bi-x-circle-fill me-2"></i> خاطئة
+                            <div class="options-wrapper">
+                                @if (q.QuestionType?.ToLower() == "mcq" && q.Options != null)
+                                {
+                                    <div class="row g-3">
+                                        @foreach (var opt in q.Options)
+                                        {
+                                            var radioId = $"opt_{q.QuestionId}_{opt.OptionId}";
+                                            <div class="col-md-6">
+                                                <input type="radio" class="btn-check" name="Answers[@i].SelectedOption"
+                                                       id="@radioId" value="@opt.OptionText" required onchange="updateProgress()">
+                                                <label class="option-container w-100" for="@radioId">
+                                                    <i class="bi bi-circle me-3 opacity-50"></i>
+                                                    <span>@opt.OptionText</span>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else if (q.QuestionType?.ToLower() == "truefalse")
+                                {
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <input type="radio" class="btn-check" name="Answers[@i].SelectedOption"
+                                                   id="true_@i" value="True" required onchange="updateProgress()">
+                                            <label class="option-container w-100" for="true_@i">
+                                                <i class="bi bi-check-circle me-3 opacity-50"></i> صحيحة
                                             </label>
                                         </div>
-                                    }
-                                </div>
+                                        <div class="col-md-6">
+                                            <input type="radio" class="btn-check" name="Answers[@i].SelectedOption"
+                                                   id="false_@i" value="False" required onchange="updateProgress()">
+                                            <label class="option-container w-100" for="false_@i">
+                                                <i class="bi bi-x-circle me-3 opacity-50"></i> خاطئة
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
-                    }
+                    </div>
                 }
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white p-4 rounded-4 shadow-sm mt-5">
+                    <button type="button" onclick="window.print()" class="btn btn-light px-4 rounded-3 border">
+                        <i class="bi bi-printer me-2"></i> طباعة نسخة ورقية
+                    </button>
+
+                    <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill fw-bold shadow-lg"
+                            style="background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%); min-width: 250px; border: none;">
+                        إنهاء وتسليم الإجابات <i class="bi bi-arrow-left-short ms-2"></i>
+                    </button>
+                </div>
             </form>
-        </div>
-
-        @* أزرار التحكم *@
-        <div class="footer-actions-fixed mt-5">
-            <div class="d-flex justify-content-center gap-3">
-                <button onclick="window.print()" class="btn-action-secondary" style="background-color: cadetblue;border-radius: 50px;padding: 10px;border: 1px sol black;">
-                    <i class="bi bi-printer" style="font-size: 25px;color: darkblue;font-weight: bold;padding: 10px;border: 1px solid;border-radius: 60px;"></i>
-                </button>
-
-                <button type="submit" form="examForm" class="btn-submit-exam-premium">
-                    <span class="btn-text">إرسال الإجابات والإنهاء</span>
-                    <span class="btn-icon"><i class="bi bi-send-check-fill"></i></span>
-                </button>
-            </div>
-            <p class="text-muted text-center mt-3 small"><i class="bi bi-shield-lock-fill"></i> يتم حفظ النتائج فوراً في سجلاتك الأكاديمية</p>
-        </div>
+        }
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <script>
-        async function generateProfessionalPDF() {
-            const element = document.getElementById('pdf-export-container');
-            const pdfHeader = document.querySelector('.pdf-only-header');
+        // وظيفة تحديث شريط التقدم تلقائياً
+        function updateProgress() {
+            const totalQuestions = @questions.Count;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
 
-            pdfHeader.classList.remove('d-none');
+            const progressBar = document.getElementById('exam-progress');
+            const progressText = document.getElementById('progress-text');
 
-            const opt = {
-                margin: [10, 5, 10, 5],
-                filename: 'Throb_Academy_@Model.ExamType' + '_@Model.CourseId' + '.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    letterRendering: true
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: 'avoid-all' }
-            };
-
-            try {
-                await html2pdf().set(opt).from(element).save();
-            } finally {
-                pdfHeader.classList.add('d-none');
+            if(progressBar) {
+                progressBar.style.width = percentage + '%';
+                progressText.innerText = percentage + '%';
             }
         }
+
+        // منع إغلاق الصفحة بالخطأ أثناء الحل
+        window.onbeforeunload = function() {
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            if(answered > 0) {
+                return "هل أنت متأكد من مغادرة الاختبار؟ لن يتم حفظ إجاباتك.";
+            }
+        };
+
+        // إزالة التحذير عند الإرسال الفعلي
+        document.getElementById('examForm')?.addEventListener('submit', () => {
+            window.onbeforeunload = null;
+        });
     </script>
 }

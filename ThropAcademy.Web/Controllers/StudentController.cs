@@ -29,15 +29,15 @@ public class StudentController : Controller
 
     public IActionResult Index(string searchInp)
     {
-        // جلب جميع الطلاب مع الكورسات التي سجلوا فيها
+        
         var students = _studentRepository.GetAll()
 
             .Include(s => s.StudentCourses)
 
-            .ThenInclude(sc => sc.Course)  // تضمين الكورسات التي سجل فيها الطلاب
+            .ThenInclude(sc => sc.Course)  
             .ToList();
 
-        // إذا تم إدخال نص في البحث، تطبيق الفلترة
+        
         if (!string.IsNullOrEmpty(searchInp))
         {
             students = students.Where(s => s.Name.Contains(searchInp, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -54,7 +54,7 @@ public class StudentController : Controller
         return View();
     }
 
-    // معالجة إضافة طالب جديد
+   
     [HttpPost]
     public IActionResult Create(Student student, int[] selectedCourses)
     {
@@ -63,9 +63,8 @@ public class StudentController : Controller
             if (ModelState.IsValid)
             {
                 student.CreateAt = DateTime.Now;
-                _studentRepository.Add(student); // إضافة الطالب إلى قاعدة البيانات
-
-                // إضافة الكورسات التي تم اختيارها للطالب
+                _studentRepository.Add(student);
+                
                 if (selectedCourses != null && selectedCourses.Any())
                 {
                     foreach (var courseId in selectedCourses)
@@ -75,14 +74,14 @@ public class StudentController : Controller
                             StudentId = student.Id,
                             CourseId = courseId
                         };
-                        _studentCourseRepository.Add(studentCourse); // إضافة العلاقة بين الطالب والكورس
+                        _studentCourseRepository.Add(studentCourse); 
                     }
                 }
 
-                return RedirectToAction(nameof(Index)); // إعادة التوجيه إلى صفحة عرض الطلاب
+                return RedirectToAction(nameof(Index)); 
             }
 
-            // في حالة فشل التحقق من النموذج، نعيد تحميل الكورسات في الـ View
+           
             var courses = _courseRepository.GetAll();
             ViewBag.Courses = new SelectList(courses, "Id", "Name");
             return View(student);

@@ -1,0 +1,381 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\transcription\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\transcription\\admindashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\transcription\\examresult.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\transcription\\examresult.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\transcription\\createexam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\transcription\\createexam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\controllers\\transcriptioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:controllers\\transcriptioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\entities\\examrequestmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\entities\\userexamresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\transcription\\exampreview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\transcription\\exampreview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\models\\examsubmissionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:models\\examsubmissionviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\entities\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\controllers\\examcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:controllers\\examcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\exam\\availableexams.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\exam\\availableexams.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80327FE2-A5E1-4F30-ABC6-546DD9676F8B}|..\\Throb.Repository\\Throb.Repository.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\throb.repository\\repositories\\examrequestrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\dbcontext\\throbdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\entities\\examrequestquestion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD851688-FF1C-48B9-B0E4-F8F8F38D8E42}|..\\Throb.Service\\Throb.Service.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\throb.service\\services\\examrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD851688-FF1C-48B9-B0E4-F8F8F38D8E42}|..\\Throb.Service\\Throb.Service.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\throb.service\\interfaces\\examrequest\\iexamrequestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\shared\\components\\examnotificationbadge\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\shared\\components\\examnotificationbadge\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\thropacademy.web\\viewcomponents\\examnotificationbadgeviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF038231-541D-4B8C-8E6F-77216F82127B}|ThropAcademy.Web.csproj|solutionrelative:viewcomponents\\examnotificationbadgeviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD851688-FF1C-48B9-B0E4-F8F8F38D8E42}|..\\Throb.Service\\Throb.Service.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\throb.service\\interfaces\\question\\iquestionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\migrations\\20260108150057_addcoursenavigationtoresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\migrations\\20260108121641_addexamrequestidtoresults.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1497E0DC-1004-40FF-BF59-BDD6B2A03630}|..\\DataModels\\Throb.Data.csproj|c:\\users\\ahmad nakawa\\desktop\\throb - branch01\\datamodels\\migrations\\20260108113208_updateexammodelsandjunctiontable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdminDashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\AdminDashboard.cshtml",
+              "RelativeDocumentMoniker": "Views\\Transcription\\AdminDashboard.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\AdminDashboard.cshtml",
+              "RelativeToolTip": "Views\\Transcription\\AdminDashboard.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADEAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T15:26:08.551Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "20260108150057_AddCourseNavigationToResult.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108150057_AddCourseNavigationToResult.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Migrations\\20260108150057_AddCourseNavigationToResult.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108150057_AddCourseNavigationToResult.cs",
+              "RelativeToolTip": "..\\DataModels\\Migrations\\20260108150057_AddCourseNavigationToResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T15:00:58.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ExamResult.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\ExamResult.cshtml",
+              "RelativeDocumentMoniker": "Views\\Transcription\\ExamResult.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\ExamResult.cshtml",
+              "RelativeToolTip": "Views\\Transcription\\ExamResult.cshtml",
+              "ViewState": "AgIAAAkBAAAAAAAAAAAAABUBAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T12:39:06.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ExamSubmissionViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Models\\ExamSubmissionViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ExamSubmissionViewModel.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Models\\ExamSubmissionViewModel.cs",
+              "RelativeToolTip": "Models\\ExamSubmissionViewModel.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAA5wAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T12:43:15.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "20260108121641_AddExamRequestIdToResults.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108121641_AddExamRequestIdToResults.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Migrations\\20260108121641_AddExamRequestIdToResults.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108121641_AddExamRequestIdToResults.cs",
+              "RelativeToolTip": "..\\DataModels\\Migrations\\20260108121641_AddExamRequestIdToResults.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T12:16:42.105Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserExamResult.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\UserExamResult.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Entities\\UserExamResult.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\UserExamResult.cs",
+              "RelativeToolTip": "..\\DataModels\\Entities\\UserExamResult.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAwwBIAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T12:10:52.408Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ExamRequestRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Repositories\\ExamRequestRepository.cs",
+              "RelativeDocumentMoniker": "..\\Throb.Repository\\Repositories\\ExamRequestRepository.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Repositories\\ExamRequestRepository.cs",
+              "RelativeToolTip": "..\\Throb.Repository\\Repositories\\ExamRequestRepository.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAwEIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T11:41:38.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "20260108113208_UpdateExamModelsAndJunctionTable.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108113208_UpdateExamModelsAndJunctionTable.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Migrations\\20260108113208_UpdateExamModelsAndJunctionTable.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Migrations\\20260108113208_UpdateExamModelsAndJunctionTable.cs",
+              "RelativeToolTip": "..\\DataModels\\Migrations\\20260108113208_UpdateExamModelsAndJunctionTable.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAYwA0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T11:32:09.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Question.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\Question.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Entities\\Question.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\Question.cs",
+              "RelativeToolTip": "..\\DataModels\\Entities\\Question.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwBcAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T11:23:37.953Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ExamRequestModel.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\ExamRequestModel.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Entities\\ExamRequestModel.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\ExamRequestModel.cs",
+              "RelativeToolTip": "..\\DataModels\\Entities\\ExamRequestModel.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAA2wC4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T10:57:17.418Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ThrobDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\DbContext\\ThrobDbContext.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\DbContext\\ThrobDbContext.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\DbContext\\ThrobDbContext.cs",
+              "RelativeToolTip": "..\\DataModels\\DbContext\\ThrobDbContext.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAswGAAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T10:55:52.139Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ExamRequestQuestion.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\ExamRequestQuestion.cs",
+              "RelativeDocumentMoniker": "..\\DataModels\\Entities\\ExamRequestQuestion.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Entities\\ExamRequestQuestion.cs",
+              "RelativeToolTip": "..\\DataModels\\Entities\\ExamRequestQuestion.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwBEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T10:55:38.897Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CreateExam.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\CreateExam.cshtml",
+              "RelativeDocumentMoniker": "Views\\Transcription\\CreateExam.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\CreateExam.cshtml",
+              "RelativeToolTip": "Views\\Transcription\\CreateExam.cshtml",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAUwLQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T10:38:18.321Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ExamPreview.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\ExamPreview.cshtml",
+              "RelativeDocumentMoniker": "Views\\Transcription\\ExamPreview.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Transcription\\ExamPreview.cshtml",
+              "RelativeToolTip": "Views\\Transcription\\ExamPreview.cshtml",
+              "ViewState": "AgIAANsAAAAAAAAAAAAAAPMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T10:14:04.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TranscriptionController.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Controllers\\TranscriptionController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TranscriptionController.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Controllers\\TranscriptionController.cs",
+              "RelativeToolTip": "Controllers\\TranscriptionController.cs",
+              "ViewState": "AgIAAMQBAAAAAAAAAAAwwNgBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T09:25:16.776Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AvailableExams.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Exam\\AvailableExams.cshtml",
+              "RelativeDocumentMoniker": "Views\\Exam\\AvailableExams.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Exam\\AvailableExams.cshtml",
+              "RelativeToolTip": "Views\\Exam\\AvailableExams.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T09:07:53.146Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ExamController.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Controllers\\ExamController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ExamController.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Controllers\\ExamController.cs",
+              "RelativeToolTip": "Controllers\\ExamController.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAAAIMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T09:07:07.383Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Views\\_ViewImports.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T08:54:23.894Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Default.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Shared\\Components\\ExamNotificationBadge\\Default.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\Components\\ExamNotificationBadge\\Default.cshtml",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\Views\\Shared\\Components\\ExamNotificationBadge\\Default.cshtml",
+              "RelativeToolTip": "Views\\Shared\\Components\\ExamNotificationBadge\\Default.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-08T08:52:03.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ExamRequestService.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Services\\ExamRequestService.cs",
+              "RelativeDocumentMoniker": "..\\Throb.Service\\Services\\ExamRequestService.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Services\\ExamRequestService.cs",
+              "RelativeToolTip": "..\\Throb.Service\\Services\\ExamRequestService.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAAAHEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T08:45:54.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IExamRequestService.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Interfaces\\ExamRequest\\IExamRequestService.cs",
+              "RelativeDocumentMoniker": "..\\Throb.Service\\Interfaces\\ExamRequest\\IExamRequestService.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Interfaces\\ExamRequest\\IExamRequestService.cs",
+              "RelativeToolTip": "..\\Throb.Service\\Interfaces\\ExamRequest\\IExamRequestService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T08:45:38.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "IQuestionService.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Interfaces\\Question\\IQuestionService.cs",
+              "RelativeDocumentMoniker": "..\\Throb.Service\\Interfaces\\Question\\IQuestionService.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Interfaces\\Question\\IQuestionService.cs",
+              "RelativeToolTip": "..\\Throb.Service\\Interfaces\\Question\\IQuestionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T08:44:42.185Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ExamNotificationBadgeViewComponent.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\ViewComponents\\ExamNotificationBadgeViewComponent.cs",
+              "RelativeDocumentMoniker": "ViewComponents\\ExamNotificationBadgeViewComponent.cs",
+              "ToolTip": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\ViewComponents\\ExamNotificationBadgeViewComponent.cs",
+              "RelativeToolTip": "ViewComponents\\ExamNotificationBadgeViewComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-08T08:40:50.638Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

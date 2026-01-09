@@ -1,0 +1,7 @@
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\ThropAcademy.Web\obj\Debug\net9.0\ThropAcademy.Web.sourcelink.json

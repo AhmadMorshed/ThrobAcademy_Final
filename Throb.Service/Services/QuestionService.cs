@@ -91,7 +91,7 @@ namespace Throb.Service.Services
                 ? "{\"questions\": [{\"text\": \"السؤال؟\", \"options\": [\"خيار 1\", \"خيار 2\", \"خيار 3\", \"خيار 4\"], \"answer\": \"النص المطابق للإجابة الصحيحة\"}]}"
                 : "{\"questions\": [{\"text\": \"السؤال؟\", \"answer\": \"True/False\"}]}";
 
-            string prompt = $"Extract 5 {type} questions from this text. Language: Arabic. " +
+            string prompt = $"Extract 10 {type} questions from this text. Language: Arabic. " +
                             $"Return ONLY a JSON object with this structure: {structure} " +
                             $"\n\nText: {transcript}";
 

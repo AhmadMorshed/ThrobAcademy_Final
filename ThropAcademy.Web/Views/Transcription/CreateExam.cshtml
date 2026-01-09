@@ -181,4 +181,10 @@
     </div>
 </div>
 
+<script>
+    // أضف هذا لتعطيل التنبيه عند الضغط على زر الحفظ
+    $('#examForm').on('submit', function() {
+        window.onbeforeunload = null;
+    });
+    </script>
 <script src="~/js/Transcription/CreateExam.js" asp-append-version="true"></script>

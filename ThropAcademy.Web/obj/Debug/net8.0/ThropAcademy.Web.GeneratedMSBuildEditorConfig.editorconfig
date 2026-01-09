@@ -1,0 +1,253 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ThropAcademy.Web
+build_property.RootNamespace = ThropAcademy.Web
+build_property.ProjectDir = C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\ThropAcademy.Web\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\ThropAcademy.Web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Account/SignUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTaWduVXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Course/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Course/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Course/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Course/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXFVwZGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/DriveSession/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVTZXNzaW9uXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/DriveSession/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVTZXNzaW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/DriveSession/UploadDocument.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVTZXNzaW9uXFVwbG9hZERvY3VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/DriveSession/UploadVideo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVTZXNzaW9uXFVwbG9hZFZpZGVvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/DriveSession/View.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVTZXNzaW9uXFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Exam/AvailableExams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhhbVxBdmFpbGFibGVFeGFtcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Home/NotFoundPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxOb3RGb3VuZFBhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Home/Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXltZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Home/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Instructor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zdHJ1Y3RvclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Instructor/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zdHJ1Y3RvclxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Instructor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zdHJ1Y3RvclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Instructor/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5zdHJ1Y3RvclxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/LiveSession/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGl2ZVNlc3Npb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/LiveSession/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGl2ZVNlc3Npb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/LiveSession/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGl2ZVNlc3Npb25cVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/LiveSession/ViewAttendance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGl2ZVNlc3Npb25cVmlld0F0dGVuZGFuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/AddOrRemoveUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxBZGRPclJlbW92ZVVzZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/PartialViews/CreateEditPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxQYXJ0aWFsVmlld3NcQ3JlYXRlRWRpdFBhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/PartialViews/DetailsDeletePartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxQYXJ0aWFsVmlld3NcRGV0YWlsc0RlbGV0ZVBhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Role/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/Components/ExamNotificationBadge/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRXhhbU5vdGlmaWNhdGlvbkJhZGdlXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/LayoutStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dFN0dWRlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/_ActionButtonsPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BY3Rpb25CdXR0b25zUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Student/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Student/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Student/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Student/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/AddManualQuestionToExam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxBZGRNYW51YWxRdWVzdGlvblRvRXhhbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/AdminDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxBZG1pbkRhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/CertificateTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxDZXJ0aWZpY2F0ZVRlbXBsYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/CreateExam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxDcmVhdGVFeGFtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/ExamPreview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxFeGFtUHJldmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/ExamResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxFeGFtUmVzdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/MyResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxNeVJlc3VsdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/QuestionBank.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxRdWVzdGlvbkJhbmsuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/Result.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxSZXN1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Transcription/UploadMedia.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNjcmlwdGlvblxVcGxvYWRNZWRpYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/User/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/User/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Ahmad Nakawa/Desktop/Throb - branch01/ThropAcademy.Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-yx1v5sbs31

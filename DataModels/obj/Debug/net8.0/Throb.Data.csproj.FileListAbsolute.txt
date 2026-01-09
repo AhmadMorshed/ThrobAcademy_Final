@@ -1,0 +1,30 @@
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\bin\Debug\net8.0\Throb.Data.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\bin\Debug\net8.0\Throb.Data.runtimeconfig.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\refint\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\Throb.Data.genruntimeconfig.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb\DataModels\obj\Debug\net8.0\ref\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\bin\Debug\net8.0\Throb.Data.deps.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\bin\Debug\net8.0\Throb.Data.runtimeconfig.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\bin\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\bin\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.csproj.AssemblyReference.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.AssemblyInfoInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.AssemblyInfo.cs
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.csproj.CoreCompileInputs.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.sourcelink.json
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\refint\Throb.Data.dll
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.pdb
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\Throb.Data.genruntimeconfig.cache
+C:\Users\Ahmad Nakawa\Desktop\Throb - branch01\DataModels\obj\Debug\net8.0\ref\Throb.Data.dll

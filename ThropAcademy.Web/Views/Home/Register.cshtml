@@ -44,11 +44,8 @@
                                 <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label asp-for="Password" class="form-label fw-semibold">كلمة المرور</label>
-                                <input asp-for="Password" type="password" class="form-control form-control-modern rounded-pill" placeholder="أدخل كلمة المرور" />
-                                <span asp-validation-for="Password" class="text-danger small"></span>
-                            </div>
+                            <input type="hidden" asp-for="Password" value="DefaultPassword123!" />
+
                         </div>
 
                         <div class="form-section payment-section mb-5">

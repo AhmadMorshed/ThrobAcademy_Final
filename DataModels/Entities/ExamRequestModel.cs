@@ -31,10 +31,17 @@ namespace Throb.Data.Entities
         public int CourseId { get; set; }
         [ForeignKey("CourseId")]
         public virtual Course? Course { get; set; }
-        public List<Question> Questions { get; set; } = new List<Question>(); 
+        [NotMapped] // هذه أهم خطوة لحل تعارض الـ Migration
+        public List<Question> Questions { get; set; } = new List<Question>();
+
         [NotMapped]
         public List<Question> ManualQuestions { get; set; } = new List<Question>();
+
+        // هذه هي العلاقة الحقيقية الوحيدة التي سيراها EF في قاعدة البيانات
+        public virtual ICollection<ExamRequestQuestion> ExamRequestQuestions { get; set; } = new HashSet<ExamRequestQuestion>();
         public string ExamType { get; set; }
         public int DurationMinutes { get; set; }
+        // أضف هذا السطر داخل كلاس ExamRequestModel
+        
     }
 }

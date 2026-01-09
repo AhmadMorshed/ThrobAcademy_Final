@@ -1,0 +1,343 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Throb.Service.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Throb.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Throb.Data.csproj",
+        "projectName": "Throb.Data",
+        "projectPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Throb.Data.csproj",
+        "packagesPath": "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Ahmad Nakawa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Betalgo.OpenAI": {
+              "target": "Package",
+              "version": "[8.7.2, )"
+            },
+            "Deepgram": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.70.0, )"
+            },
+            "Google.Apis.Drive.v3": {
+              "target": "Package",
+              "version": "[1.69.0.3783, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Neuroglia.Serialization.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[4.21.0, )"
+            },
+            "OpenAI": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "UnitsNet.Serialization.JsonNet": {
+              "target": "Package",
+              "version": "[5.50.0, )"
+            },
+            "Whisper.net": {
+              "target": "Package",
+              "version": "[1.8.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Throb.Repository.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Throb.Repository.csproj",
+        "projectName": "Throb.Repository",
+        "projectPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Throb.Repository.csproj",
+        "packagesPath": "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Ahmad Nakawa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Throb.Data.csproj": {
+                "projectPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\DataModels\\Throb.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Betalgo.OpenAI": {
+              "target": "Package",
+              "version": "[8.7.2, )"
+            },
+            "Deepgram": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.70.0, )"
+            },
+            "Google.Apis.Drive.v3": {
+              "target": "Package",
+              "version": "[1.69.0.3783, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Neuroglia.Serialization.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[4.21.0, )"
+            },
+            "OpenAI": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "UnitsNet.Serialization.JsonNet": {
+              "target": "Package",
+              "version": "[5.50.0, )"
+            },
+            "Whisper.net": {
+              "target": "Package",
+              "version": "[1.8.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Throb.Service.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Throb.Service.csproj",
+        "projectName": "Throb.Service",
+        "projectPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\Throb.Service.csproj",
+        "packagesPath": "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Service\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Ahmad Nakawa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Throb.Repository.csproj": {
+                "projectPath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\Throb.Repository\\Throb.Repository.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Betalgo.OpenAI": {
+              "target": "Package",
+              "version": "[8.7.2, )"
+            },
+            "Deepgram": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.70.0, )"
+            },
+            "Google.Apis.Drive.v3": {
+              "target": "Package",
+              "version": "[1.69.0.3783, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Neuroglia.Serialization.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[4.21.0, )"
+            },
+            "OpenAI": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "UnitsNet.Serialization.JsonNet": {
+              "target": "Package",
+              "version": "[5.50.0, )"
+            },
+            "Whisper.net": {
+              "target": "Package",
+              "version": "[1.8.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

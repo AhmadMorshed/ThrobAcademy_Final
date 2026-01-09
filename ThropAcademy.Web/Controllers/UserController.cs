@@ -12,7 +12,7 @@ namespace ThropAcademy.Web.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<UserController> _logger; // يجب أن يكون النوع محددًا
+        private readonly ILogger<UserController> _logger; 
 
         public UserController(UserManager<ApplicationUser> userManager, ILogger<UserController> logger)
         {
@@ -30,7 +30,7 @@ namespace ThropAcademy.Web.Controllers
             }
             else
             {
-                // تحسين: البحث في الاسم والبريد Normalized
+               
                 string normalizedSearch = searchInp.Trim().ToUpper();
                 users = await _userManager.Users
                     .Where(user => user.NormalizedEmail.Contains(normalizedSearch) ||
@@ -55,7 +55,7 @@ namespace ThropAcademy.Web.Controllers
                     UserName = user.UserName,
 
                 };
-                // التعديل الضروري: إرجاع ViewModel لنموذج التحديث
+                
                 return View(viewName, userViewModel);
             }
 
@@ -81,8 +81,7 @@ namespace ThropAcademy.Web.Controllers
                         return NotFound();
 
                     user.UserName = applicationUser.UserName;
-                    // إزالة التعيين اليدوي لـ NormalizedUserName والاعتماد على UpdateAsync
-                    // user.NormalizedUserName = applicationUser.UserName.ToUpper(); 
+                   
 
                     var result = await _userManager.UpdateAsync(user);
 
@@ -117,7 +116,7 @@ namespace ThropAcademy.Web.Controllers
 
                 if (result.Succeeded)
                 {
-                    // إزالة التعليق وتصحيح رسالة السجل
+                    
                     _logger.LogInformation("User Deleted Successfully");
                     return RedirectToAction("Index");
                 }

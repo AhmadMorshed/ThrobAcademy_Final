@@ -65,7 +65,18 @@
                             </li>
 
                         }
-
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                        {
+                            <li class="nav-item position-relative me-3">
+                                <a class="nav-link d-flex align-items-center" asp-controller="Exam" asp-action="AvailableExams" title="الاختبارات المتاحة">
+                                    <div class="icon-wrapper position-relative">
+                                        <i class="bi bi-journal-check fs-4 text-primary"></i>
+                                        @await Component.InvokeAsync("ExamNotificationBadge")
+                                    </div>
+                                    <span class="ms-2 d-none d-lg-inline">Exams</span>
+                                </a>
+                            </li>
+                        }
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
@@ -95,7 +106,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
                         <li class="nav-item me-lg-2 mb-2 mb-lg-0">
                             <a class="btn btn-action-ai" asp-controller="Transcription" asp-action="UploadMedia">
-                                <i class="fas fa-brain"></i> AI Model
+                                <i class="fas fa-brain"></i>Examination
                             </a>
                         </li>
 

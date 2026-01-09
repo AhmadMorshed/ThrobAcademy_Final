@@ -19,7 +19,6 @@ namespace ThropAcademy.Web.Controllers
             _logger = logger;
         }
 
-        // صفحة التسجيل
         public IActionResult SignUp()
         {
             return View();
@@ -36,14 +35,14 @@ namespace ThropAcademy.Web.Controllers
                     Email = input.Email,
                     Firstname = input.FirstName,
                     Lastname = input.LastName,
-                    IsActive = true  // تأكد من أن هذا متوافق مع سياسة الحساب لديك
+                    IsActive = true  
                 };
 
                 var result = await _userManager.CreateAsync(user, input.Password);
 
                 if (result.Succeeded)
                 {
-                    // بعد النجاح، يمكنك تسجيل الدخول مباشرة أو إرسال بريد تأكيد، إلخ.
+                 
                     return RedirectToAction("Login", "Account");
                 }
 
@@ -56,7 +55,7 @@ namespace ThropAcademy.Web.Controllers
             return View();
         }
 
-        // صفحة تسجيل الدخول
+       
         public IActionResult Login()
         {
             return View();
@@ -75,12 +74,12 @@ namespace ThropAcademy.Web.Controllers
 
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("User logged in: {Email}", input.Email);  // سجل الدخول الناجح
+                        _logger.LogInformation("User logged in: {Email}", input.Email);  
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        _logger.LogWarning("Login attempt failed for user: {Email}", input.Email);  // سجل فشل الدخول
+                        _logger.LogWarning("Login attempt failed for user: {Email}", input.Email); 
                     }
                 }
 
@@ -90,14 +89,13 @@ namespace ThropAcademy.Web.Controllers
             return View(input);
         }
 
-        // الخروج من الحساب
         public new async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");  // إعادة توجيه إلى الصفحة الرئيسية
-        }
+            return RedirectToAction("Index", "Home");
 
-        // صفحة الوصول المرفوض
+        }
+      
         public IActionResult AccessDenied()
         {
             return View();

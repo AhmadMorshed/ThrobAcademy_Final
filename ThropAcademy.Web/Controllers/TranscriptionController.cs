@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Neuroglia.Collections;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -19,13 +21,14 @@ using Throb.Data.DbContext;
 using Throb.Data.Entities;
 using Throb.Service.Interfaces;
 using Throb.Service.Interfaces.GeminiAI;
+using Throb.Service.Services;
 using Throb.Services;
 using ThropAcademy.Web.Models;
 
 
 namespace Throb.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     public class TranscriptionController : Controller
     {
         private readonly string _deepgramApiKey;
@@ -57,6 +60,8 @@ namespace Throb.Controllers
         }
 
         #region Helpers
+        [Authorize(Roles = "Admin,Instructor")]
+
         private void SafeDeleteFile(string path)
         {
             try
@@ -66,11 +71,13 @@ namespace Throb.Controllers
                     System.IO.File.Delete(path);
                 }
             }
-            catch { /* تجاهل الخطأ مؤقتاً */ }
+            catch {  }
         }
         #endregion
 
         #region Operations: Upload & Transcription
+        [Authorize(Roles = "Admin,Instructor")]
+
         [HttpGet]
         public async Task<IActionResult> UploadMedia(int? courseId)
         {
@@ -80,6 +87,8 @@ namespace Throb.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
+
         public async Task<IActionResult> UploadMedia(IFormFile mediaFile, int courseId)
         {
             string tempFilePath = "";
@@ -126,6 +135,8 @@ namespace Throb.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
+
         public async Task<IActionResult> GenerateQuestions(string transcript, string type, int courseId)
         {
             try
@@ -149,6 +160,8 @@ namespace Throb.Controllers
 
         #region AI Smart Selection (Gemini)
         [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
+
         public async Task<IActionResult> SmartSelectQuestions(int courseId, string userPrompt)
         {
             if (courseId <= 0 || string.IsNullOrWhiteSpace(userPrompt))
@@ -161,7 +174,7 @@ namespace Throb.Controllers
             {
                 var allQuestions = await _questionService.GetQuestionsByCourseAsync(courseId);
 
-                // 1. تبسيط البيانات لتقليل الـ Tokens (تحسين الأداء والتكلفة)
+               
                 var simplifiedQuestions = allQuestions.Select(q => new
                 {
                     id = q.QuestionId,
@@ -171,28 +184,26 @@ namespace Throb.Controllers
 
                 var questionsJson = JsonSerializer.Serialize(simplifiedQuestions);
 
-                // 2. استدعاء خدمة Gemini
                 var selectedIds = await _geminiService.GetSmartSelectionAsync(userPrompt, questionsJson);
 
-                // 3. التحقق من النتائج (تجنب الهلوسة البرمجية)
+                
                 if (selectedIds == null || !selectedIds.Any())
                 {
                     TempData["ErrorMessage"] = "عذراً، لم أستطع فهم الطلب أو لم أجد أسئلة مناسبة. حاول تبسيط العبارة.";
                     return RedirectToAction("CreateExam", new { courseId = courseId });
                 }
 
-                // 4. تأمين الـ IDs (للتأكد أن Gemini لم يرسل IDs غير موجودة)
+               
                 var finalValidIds = selectedIds.Intersect(allQuestions.Select(q => q.QuestionId)).ToList();
 
-                // 5. التوجيه الأفضل: نعود لصفحة الإنشاء مع تفعيل الـ Selection
-                // نرسل الـ IDs عبر الـ TempData أو الـ ViewBag
+               
                 TempData["SelectedIds"] = JsonSerializer.Serialize(finalValidIds);
 
                 return RedirectToAction("CreateExam", new { courseId = courseId });
             }
             catch (Exception ex)
             {
-                // تسجيل الخطأ (يمكنك استخدام Logger هنا)
+                
                 TempData["ErrorMessage"] = "حدث خطأ تقني أثناء الاتصال بالذكاء الاصطناعي. يرجى المحاولة لاحقاً.";
                 return RedirectToAction("CreateExam", new { courseId = courseId });
             }
@@ -201,10 +212,12 @@ namespace Throb.Controllers
 
         #region Management: Question Bank & Exams
         [HttpGet]
+        [Authorize(Roles = "Admin,Instructor")]
+
         public async Task<IActionResult> QuestionBank(int? courseId)
         {
             int targetId = courseId ?? 0;
-            // تأكد أن الخدمة داخل GetQuestionsByCourseAsync تستخدم .Include(o => o.Options)
+           
             var questions = await _questionService.GetQuestionsByCourseAsync(targetId);
             var course = _courseService.GetById(targetId);
 
@@ -215,9 +228,15 @@ namespace Throb.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> CreateExam(int courseId)
         {
-            var questions = await _questionService.GetQuestionsByCourseAsync(courseId);
+            // جلب الأسئلة مع خياراتها لعرضها في قائمة الاختيار إذا لزم الأمر
+            var questions = await _context.Questions
+                .Include(q => q.Options)
+                .Where(q => q.CourseId == courseId)
+                .ToListAsync();
+
             ViewBag.Questions = questions;
             ViewBag.CourseId = courseId;
 
@@ -229,41 +248,86 @@ namespace Throb.Controllers
             return View(new ExamRequestModel { CourseId = courseId });
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> CreateExam(ExamRequestModel model, List<int> SelectedQuestionIds)
         {
+            if (SelectedQuestionIds == null || !SelectedQuestionIds.Any())
+            {
+                TempData["ErrorMessage"] = "يرجى اختيار سؤال واحد على الأقل.";
+                return RedirectToAction("CreateExam", new { courseId = model.CourseId });
+            }
+
             try
             {
-                // التأكد من اختيار أسئلة
-                if (SelectedQuestionIds == null || !SelectedQuestionIds.Any())
+                // 1. حفظ رأس الاختبار (ExamRequestModel)
+                _context.ExamRequestModels.Add(model);
+                await _context.SaveChangesAsync();
+
+                // 2. حفظ تفاصيل الاختبار (الجدول الوسيط)
+                foreach (var qId in SelectedQuestionIds)
                 {
-                    TempData["ErrorMessage"] = "يرجى اختيار سؤال واحد على الأقل.";
-                    return RedirectToAction("CreateExam", new { courseId = model.CourseId });
+                    var examQuestion = new ExamRequestQuestion
+                    {
+                        ExamRequestId = model.ExamRequestId,
+                        QuestionId = qId
+                    };
+                    _context.ExamRequestQuestions.Add(examQuestion);
                 }
+                await _context.SaveChangesAsync();
 
-                // جلب الأسئلة المختارة فقط
-                var allQuestions = await _questionService.GetQuestionsByCourseAsync(model.CourseId);
-                var selectedQuestions = allQuestions
+                // 3. جلب الأسئلة مع خياراتها (Include) لغرض العرض في صفحة المعاينة
+                // هذا السطر هو المسؤول عن حل مشكلة اختفاء خيارات الـ MCQ
+                var questionsWithOptions = await _context.Questions
+                    .Include(q => q.Options)
                     .Where(q => SelectedQuestionIds.Contains(q.QuestionId))
-                    .ToList();
+                    .ToListAsync();
 
-                // تعبئة بيانات الموديل للمعاينة
-                model.Questions = selectedQuestions;
-                model.NumberOfQuestions = selectedQuestions.Count;
-
-                // ملاحظة: قيمة model.ExamType ستأتي تلقائياً من الواجهة 
-                // لأننا استخدمنا asp-for="ExamType" في الراديو بوتون
+                // تمرير الأسئلة المحملة بالكامل للموديل قبل إرساله للـ View
+                model.Questions = questionsWithOptions;
 
                 return View("ExamPreview", model);
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "حدث خطأ أثناء إعداد المعاينة: " + ex.Message;
-                return RedirectToAction("CreateExam", new { courseId = model.CourseId });
+                ViewBag.ErrorMessage = "حدث خطأ أثناء حفظ الاختبار: " + ex.Message;
+
+                // إعادة تحميل البيانات للـ View في حالة الخطأ
+                ViewBag.Questions = await _context.Questions.Where(q => q.CourseId == model.CourseId).ToListAsync();
+                ViewBag.CourseId = model.CourseId;
+
+                return View(model);
+            }
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
+        public async Task<IActionResult> ConfirmAndSaveExam(ExamRequestModel model, List<int> SelectedQuestionIds)
+        {
+            try
+            {
+                // 1. إعادة ربط الأسئلة المختارة بالموديل قبل الحفظ
+                if (SelectedQuestionIds != null && SelectedQuestionIds.Any())
+                {
+                    model.Questions = await _context.Questions
+                        .Where(q => SelectedQuestionIds.Contains(q.QuestionId))
+                        .ToListAsync();
+                }
+
+                // 2. استدعاء خدمة الحفظ الفعلي في قاعدة البيانات
+                await _examRequestService.AddAsync(model);
+
+                TempData["SuccessMessage"] = "تم حفظ الاختبار ونشره بنجاح!";
+                return RedirectToAction("AvailableExams", "Exam");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("خطأ أثناء الحفظ النهائي: " + ex.Message);
             }
         }
         #endregion
 
         #region Technical Logic (FFmpeg & API)
+
         private async Task<string> ProcessMediaViaApiAsync(string videoPath)
         {
             string audioPath = Path.Combine(Path.GetDirectoryName(videoPath)!, Guid.NewGuid() + ".mp3");
@@ -329,59 +393,91 @@ namespace Throb.Controllers
         #endregion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitExam(ExamRequestModel model, Dictionary<int, string> Answers)
+        public async Task<IActionResult> SubmitExam(ExamSubmissionViewModel submission)
         {
-            // 1. حساب النتيجة
-            int score = 0;
-            int totalQuestions = Answers?.Count ?? 0;
-
-            if (Answers != null)
+            if (submission == null || submission.Answers == null)
             {
-                foreach (var entry in Answers)
+                return BadRequest("بيانات الإرسال غير مكتملة.");
+            }
+
+            try
+            {
+                // 1. جلب بيانات طلب الاختبار للحصول على نوع الاختبار (ExamType)
+                // هذا يحل مشكلة الخطأ "Cannot insert NULL into ExamType"
+                var examRequest = await _context.ExamRequestModels
+                    .FirstOrDefaultAsync(e => e.ExamRequestId == submission.ExamRequestId);
+
+                if (examRequest == null) return NotFound("طلب الاختبار غير موجود.");
+
+                // 2. جلب الأسئلة الأصلية من قاعدة البيانات لمقارنة الإجابات
+                var questionIds = submission.Answers.Select(a => a.QuestionId).ToList();
+                var questions = await _context.Questions
+                    .Where(q => questionIds.Contains(q.QuestionId))
+                    .ToListAsync();
+
+                // 3. حساب عدد الإجابات الصحيحة
+                int correctCount = 0;
+                foreach (var answer in submission.Answers)
                 {
-                    var question = await _questionService.GetQuestionByIdAsync(entry.Key);
-                    if (question != null)
+                    var originalQuestion = questions.FirstOrDefault(q => q.QuestionId == answer.QuestionId);
+                    if (originalQuestion != null)
                     {
-                        if (entry.Value?.Trim().Equals(question.CorrectAnswer?.Trim(), StringComparison.OrdinalIgnoreCase) == true)
+                        // مقارنة نص الخيار المختار مع الإجابة الصحيحة المخزنة
+                        if (originalQuestion.CorrectAnswer.Trim().ToLower() == answer.SelectedOption?.Trim().ToLower())
                         {
-                            score++;
+                            correctCount++;
                         }
                     }
                 }
+
+                // 4. حساب النسبة المئوية
+                double scorePercentage = questions.Any() ? (double)correctCount / questions.Count * 100 : 0;
+
+                // 5. إنشاء سجل النتيجة وحفظه في جدول UserExamResults
+                var result = new UserExamResult
+                {
+                    ExamRequestId = submission.ExamRequestId,
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier), // معرف المستخدم المسجل حالياً
+                    CourseId = submission.CourseId,
+                    ExamType = examRequest.ExamType ?? "Quiz", // ضمان عدم إرسال NULL لقاعدة البيانات
+                    TotalQuestions = questions.Count,
+                    CorrectAnswers = correctCount,
+                    ScorePercentage = scorePercentage,
+                    CompletedAt = DateTime.Now
+                };
+
+                _context.UserExamResults.Add(result);
+                await _context.SaveChangesAsync();
+
+                // التوجه لصفحة النجاح وعرض النتيجة
+                return RedirectToAction("ExamResult", new { id = result.Id });
             }
-
-            // 2. حساب النسبة المئوية
-            double percentage = totalQuestions > 0 ? Math.Round(((double)score / totalQuestions) * 100, 1) : 0;
-
-            // 3. الحفظ في قاعدة البيانات
-            var resultRecord = new UserExamResult
+            catch (Exception ex)
             {
-                UserId = User.Identity?.Name ?? "Guest",
-                CourseId = model.CourseId,
-                ExamType = model.ExamType, // يأتي من الموديل الآن
-                TotalQuestions = totalQuestions,
-                CorrectAnswers = score,
-                ScorePercentage = percentage,
-                CompletedAt = DateTime.Now
-            };
-
-            _context.UserExamResults.Add(resultRecord);
-            await _context.SaveChangesAsync();
-
-            // 4. تجهيز البيانات للعرض
-            ViewBag.Score = score;
-            ViewBag.Total = totalQuestions;
-            ViewBag.Percentage = percentage;
-
-            return View("ExamResult", model);
+                // إظهار الخطأ الحقيقي (InnerException) إذا وجد لسهولة التصحيح
+                var message = ex.InnerException?.Message ?? ex.Message;
+                return StatusCode(500, $"حدث خطأ أثناء حفظ النتائج: {message}");
+            }
         }
-        // دالة المقارنة الذكية
+        [HttpGet]
+        public async Task<IActionResult> ExamResult(int id)
+        {
+            var result = await _context.UserExamResults
+                .Include(r => r.Course) // سيعمل الآن إذا أضفت الخاصية للموديل
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (result == null) return NotFound();
+
+            // هنا نرسل 'result' وهو من نوع UserExamResult
+            return View(result);
+        }
+
         private bool IsMatching(string text1, string text2)
         {
             return NormalizeText(text1) == NormalizeText(text2);
         }
 
-        // تنظيف النص من كل العوائق التي تسبب نتيجة 0%
+       
         private string NormalizeText(string text)
         {
             if (string.IsNullOrEmpty(text)) return "";
@@ -415,8 +511,7 @@ namespace Throb.Controllers
             {
                 var rawResponse = await _cohereService.GenerateExamQuestions(prompt);
 
-                // هذا السطر هو مفتاح الحل: استخراج المصفوفة فقط باستخدام Regex
-                // حتى لو أرسل الـ AI كلاماً مثل "Here are the IDs: [1,2]" سيتم أخذ ما داخل الأقواس فقط
+               
                 var match = System.Text.RegularExpressions.Regex.Match(rawResponse, @"\[[\d,\s]+\]");
 
                 if (match.Success)
@@ -427,7 +522,7 @@ namespace Throb.Controllers
                 }
                 else
                 {
-                    // إذا لم يجد مصفوفة، قد يكون الرد نصي بحت، نحاول البحث عن أرقام منفردة
+                    
                     ViewBag.ErrorMessage = "الذكاء الاصطناعي لم يرسل مصفوفة صحيحة. الرد كان: " + rawResponse;
                 }
 
@@ -441,12 +536,14 @@ namespace Throb.Controllers
         
 
     }
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> MyResults()
         {
-            // جلب اسم المستخدم الحالي
+       
             var currentUser = User.Identity.Name;
 
-            // استعلام لجلب النتائج مرتبة من الأحدث إلى الأقدم
+            
             var results = await _context.UserExamResults
                 .Where(r => r.UserId == currentUser)
                 .OrderByDescending(r => r.CompletedAt)
@@ -454,19 +551,20 @@ namespace Throb.Controllers
 
             return View(results);
         }
+        [Authorize(Roles = "Admin,Instructor")]
+
         public async Task<IActionResult> AdminDashboard()
         {
             var allResults = await _context.UserExamResults
                 .OrderByDescending(r => r.CompletedAt)
                 .ToListAsync();
 
-            // جلب كل الدورات ووضعها في قاموس (Dictionary) ليسهل الوصول لاسم الدورة عبر الـ ID
+     
             var courseNames = await _context.Courses
-                .ToDictionaryAsync(c => c.Id, c => c.Name); // تأكد هنا أيضاً من استخدام Name أو Title حسب الموديل
-
+                .ToDictionaryAsync(c => c.Id, c => c.Name); 
             ViewBag.CourseNames = courseNames;
 
-            // حساب الإحصائيات
+            
             ViewBag.TotalExams = allResults.Count;
             ViewBag.PassRate = allResults.Any()
                 ? Math.Round((double)allResults.Count(r => r.ScorePercentage >= 70) / allResults.Count * 100, 1)
@@ -476,6 +574,8 @@ namespace Throb.Controllers
 
             return View(allResults);
         }
+        [Authorize(Roles = "Admin,Instructor,Student")]
+
         public async Task<IActionResult> DownloadCertificate(int resultId)
         {
             var result = await _context.UserExamResults.FindAsync(resultId);

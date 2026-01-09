@@ -29,8 +29,8 @@ namespace Throb.Data.Entities
         public int CourseId { get; set; }
 
         public List<QuestionOption> Options { get; set; }
-        public List<ExamRequestModel> ExamRequests { get; set; } = new List<ExamRequestModel>();
-
+        //public List<ExamRequestModel> ExamRequests { get; set; } = new List<ExamRequestModel>();
+        public virtual ICollection<ExamRequestQuestion> ExamRequestQuestions { get; set; } = new HashSet<ExamRequestQuestion>();
         public bool IsManual { get; set; } = false;
     }
 }

@@ -16,7 +16,7 @@ namespace ThropAcademy.Web.Controllers
         private readonly ILogger<RoleController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        // Constructor to initialize RoleManager and Logger
+   
         public RoleController(RoleManager<IdentityRole> roleManager, ILogger<RoleController> logger, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
@@ -24,20 +24,20 @@ namespace ThropAcademy.Web.Controllers
             _userManager = userManager;
         }
 
-        // Get all roles and pass them to the View
+        
         public async Task<IActionResult> Index()
         {
             var roles = await _roleManager.Roles.ToListAsync();
-            return View(roles); // Pass the roles to the View
+            return View(roles); 
         }
 
-        // Display create role page
+        
         public IActionResult Create()
         {
-            return View(new IdentityRole()); // Passing an empty IdentityRole to the view
+            return View(new IdentityRole());
         }
 
-        // Handle create role post request
+        
         [HttpPost]
         public async Task<IActionResult> Create(IdentityRole role)
         {
@@ -53,56 +53,56 @@ namespace ThropAcademy.Web.Controllers
                     _logger.LogError(item.Description);
                 }
             }
-            return View(role); // If something goes wrong, return the same view with the role model
+            return View(role); 
         }
 
-        // Details Action - Display details for a specific role
+       
         public async Task<IActionResult> Details(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
-                return NotFound(); // If role is not found
+                return NotFound(); 
             }
-            return View(role); // Pass the role to the Details view
+            return View(role); 
         }
 
-        // Update Action - Display Update form for a specific role
+        
         [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
-                return NotFound(); // If role is not found
+                return NotFound(); 
             }
 
-            // Create a ViewModel to display editable data
+            
             var roleModel = new RoleUpdateViewModel
             {
                 Id = role.Id,
                 Name = role.Name
             };
 
-            return View(roleModel); // Pass the ViewModel to the Update view
+            return View(roleModel); 
         }
 
-        // Handle role update via Post request
+        
         [HttpPost]
         public async Task<IActionResult> Update(RoleUpdateViewModel roleModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(roleModel); // If model is invalid, return the same view
+                return View(roleModel); 
             }
 
             var role = await _roleManager.FindByIdAsync(roleModel.Id);
             if (role == null)
             {
-                return NotFound(); // If role is not found
+                return NotFound();
             }
 
-            role.Name = roleModel.Name; // Update role name
+            role.Name = roleModel.Name;
             var result = await _roleManager.UpdateAsync(role);
 
             if (result.Succeeded)
@@ -111,16 +111,16 @@ namespace ThropAcademy.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Log errors if update failed
+            
             foreach (var item in result.Errors)
             {
                 _logger.LogError(item.Description);
             }
 
-            return View(roleModel); // Return the same view with the model if update fails
+            return View(roleModel); 
         }
 
-        // Delete Action - Handle deletion of role
+        
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -129,7 +129,7 @@ namespace ThropAcademy.Web.Controllers
                 var role = await _roleManager.FindByIdAsync(id);
                 if (role == null)
                 {
-                    return NotFound(); // If role is not found
+                    return NotFound(); 
                 }
 
                 var result = await _roleManager.DeleteAsync(role);
@@ -140,7 +140,7 @@ namespace ThropAcademy.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                // Log errors if deletion failed
+                
                 foreach (var item in result.Errors)
                 {
                     _logger.LogError(item.Description);
@@ -162,7 +162,7 @@ namespace ThropAcademy.Web.Controllers
                 return NotFound();
 
             ViewBag.RoleId = roleId;
-            var users = await _userManager.Users.ToListAsync(); // يفضل استخدام ToListAsync
+            var users = await _userManager.Users.ToListAsync(); 
 
             var usersInRole = new List<UserInRoleViewModel>();
 

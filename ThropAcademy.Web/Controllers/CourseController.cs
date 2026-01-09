@@ -7,7 +7,6 @@ using UnitsNet;
 
 namespace ThropAcademy.Web.Controllers
 {
-    [Authorize(Roles ="Admin")]
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
@@ -19,7 +18,8 @@ namespace ThropAcademy.Web.Controllers
             _studentCourseRepository = studentCourseRepository;
         }
 
-       
+    [Authorize(Roles ="Admin")]
+
         public IActionResult Index()
         {
 
@@ -32,7 +32,7 @@ namespace ThropAcademy.Web.Controllers
                         })
                         .ToList();
 
-            // إرسال بيانات الكورسات وعدد الطلاب لكل كورس إلى الـ View
+           
             var courseList = courses.Select(c => new Course
             {
                 Id = c.Course.Id,
@@ -47,11 +47,13 @@ namespace ThropAcademy.Web.Controllers
 
             return View(courseList);
         }
+        [Authorize(Roles = "Admin")]
 
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public IActionResult Create(Course course)
@@ -61,25 +63,26 @@ namespace ThropAcademy.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _courseService.Add(course); // إضافة الدورة
-                    return RedirectToAction(nameof(Index)); // إعادة التوجيه إلى صفحة قائمة الدورات
+                    _courseService.Add(course); 
+                    return RedirectToAction(nameof(Index)); 
                 }
-                return View(course); // عرض النموذج في حالة وجود خطأ في المدخلات
+                return View(course); 
             }
             catch (InvalidOperationException ex)
             {
-                // في حال وجود دورة بنفس الاسم، يتم إضافة الخطأ إلى ModelState
+               
                 ModelState.AddModelError("CourseError", ex.Message);
-                return View(course); // إعادة تحميل النموذج مع الرسالة
+                return View(course); 
             }
             catch (Exception ex)
             {
-                // في حال وجود خطأ آخر
+                
                 ModelState.AddModelError("CourseError", ex.Message);
-                return View(course); // إعادة تحميل النموذج مع الرسالة
+                return View(course); 
             }
         }
-        
+        [Authorize(Roles = "Admin,Instructor,Student")]
+
         public IActionResult Details(int? id, string viewName = "Details")
         {
             var course = _courseService.GetById(id);
@@ -89,12 +92,14 @@ namespace ThropAcademy.Web.Controllers
 
             return View(viewName, course);
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpGet]
         public IActionResult Update(int? id)
         {
             return Details(id, "Update");
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public IActionResult Update(int? id, Course course)
@@ -106,6 +111,7 @@ namespace ThropAcademy.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         public IActionResult Delete(int id)
         {

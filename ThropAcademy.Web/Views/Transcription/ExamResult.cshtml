@@ -1,79 +1,108 @@
-﻿@model Throb.Data.Entities.ExamRequestModel
+﻿@model Throb.Data.Entities.UserExamResult
 @{
-    ViewData["Title"] = "نتيجة الاختبار - Throb Academy";
+    ViewData["Title"] = "نتيجتك - Throb Academy";
 
-    // جلب البيانات من ViewBag التي أرسلها الكنترولر
-    // قمنا باستخدام (double) للسكور لضمان دقة العملية الحسابية للنسبة المئوية
-    double score = Convert.ToDouble(ViewBag.Score ?? 0);
-    int totalQuestions = Convert.ToInt32(ViewBag.Total ?? 0);
-    double percentage = Convert.ToDouble(ViewBag.Percentage ?? 0);
-
-    // تحديد حالة النجاح (70% فأعلى)
+    // الاعتماد على الموديل مباشرة مع توفير قيم احتياطية
+    double percentage = Model?.ScorePercentage ?? 0;
+    int correctAnswers = Model?.CorrectAnswers ?? 0;
+    int totalQuestions = Model?.TotalQuestions ?? 0;
     bool isPassed = percentage >= 70;
+
+    // تحديد اللون الأساسي بناءً على النتيجة
+    string themeColor = isPassed ? "#10b981" : "#ef4444";
+    string secondaryColor = isPassed ? "#059669" : "#dc2626";
 }
 
-<div class="result-horizontal-wrapper">
-    <div class="result-main-card animate-fade-in shadow-lg">
-        <div class="row g-0">
-            @* الجزء الجانبي: يتغير لونه بناءً على حالة النجاح *@
-            <div class="col-lg-5 text-center p-5 side-panel @(isPassed ? "pass-bg" : "fail-bg")">
-                <div class="status-badge mb-3">@(isPassed ? "تم الاجتياز بنجاح" : "محاولة غير موفقة")</div>
+<div class="result-container" dir="rtl">
+    <div class="result-glass-card animate-scale-in">
 
-                <div class="percentage-box">
-                    @* نمرر النسبة المئوية لمتغيرات CSS ليقوم الـ JS والـ CSS برسمها *@
-                    <div class="circular-progress-modern"
-                         style="--p:@((int)percentage); --c:@(isPassed ? "#10b981" : "#ef4444");">
-                        <div class="inner-content">
-                            <span class="percent-number">@percentage%</span>
-                            <span class="label">معدل الإنجاز</span>
+        @* الهيدر العلوي: شعار وحالة الاختبار *@
+        <div class="result-header p-4 d-flex justify-content-between align-items-center">
+            <div class="brand-info text-end">
+                <h5 class="fw-bold mb-0 text-primary">THROB <span class="text-dark">ACADEMY</span></h5>
+                <small class="text-muted">التقرير الذكي لنتائج الاختبارات</small>
+            </div>
+            <div class="exam-type-badge shadow-sm">@Model?.ExamType</div>
+        </div>
+
+        <div class="row g-0 border-top">
+            @* القسم الأيمن (بسبب RTL): العداد والنتيجة الرئيسية *@
+            <div class="col-lg-5 side-visual p-5 text-center border-start">
+                <div class="main-visual-wrapper">
+                    @* العداد الدائري المتطور *@
+                    <div class="modern-progress" style="--p:@((int)percentage); --c:@themeColor;">
+                        <div class="progress-inner">
+                            <span class="percentage-text">@percentage<small>%</small></span>
+                            <span class="status-text">@(isPassed ? "ناجح" : "راسب")</span>
                         </div>
+                    </div>
+
+                    @* أيقونة الحالة العائمة *@
+                    <div class="floating-badge @(isPassed ? "badge-success" : "badge-danger")">
+                        <i class="bi @(isPassed ? "bi-check-all" : "bi-x-lg")"></i>
                     </div>
                 </div>
 
-                <div class="status-icon-box mt-4">
-                    <i class="bi @(isPassed ? "bi-award-fill" : "bi-exclamation-octagon-fill")"></i>
-                </div>
+                <h3 class="mt-4 fw-bold" style="color: @secondaryColor">
+                    @(isPassed ? "مبروك! لقد أنجزتها" : "فرصة سعيدة في المرة القادمة")
+                </h3>
             </div>
 
-            @* الجزء الأيمن: تحليل البيانات *@
-            <div class="col-lg-7 p-5 d-flex flex-column justify-content-center">
-                <div class="result-content text-end">
-                    @* أضفنا text-end لتناسب اللغة العربية *@
-                    <h2 class="fw-black mb-1">تحليل الأداء الذكي</h2>
-                    <p class="text-muted mb-4 small">أكاديمية Throb - نظام التقييم التلقائي</p>
+            @* القسم الأيسر: تحليل الأرقام *@
+            <div class="col-lg-7 data-panel p-5">
+                <div class="section-title mb-4 text-end">
+                    <h4 class="fw-bold mb-1">تحليل الأداء</h4>
+                    <div class="title-line ms-auto"></div>
+                </div>
 
-                    <div class="stats-grid mb-4">
-                        <div class="stat-card">
+                <div class="stats-modern-grid">
+                    <div class="stat-item shadow-sm">
+                        <div class="stat-icon bg-success-light"><i class="bi bi-patch-check"></i></div>
+                        <div class="stat-info text-end">
                             <span class="stat-label">الإجابات الصحيحة</span>
-                            <span class="stat-value text-success">@score</span>
+                            <span class="stat-value">@correctAnswers</span>
                         </div>
-                        <div class="stat-card">
+                    </div>
+                    <div class="stat-item shadow-sm">
+                        <div class="stat-icon bg-primary-light"><i class="bi bi-question-square"></i></div>
+                        <div class="stat-info text-end">
                             <span class="stat-label">إجمالي الأسئلة</span>
-                            <span class="stat-value text-primary">@totalQuestions</span>
+                            <span class="stat-value">@totalQuestions</span>
                         </div>
                     </div>
-
-                    <div class="feedback-box @(isPassed ? "fb-success" : "fb-danger") mb-5">
-                        <h5 class="fw-bold mb-1">
-                            @(percentage >= 90 ? "أداء استثنائي! ✨" : isPassed ? "عمل رائع! ✅" : "لا تيأس، حاول مجدداً 💡")
-                        </h5>
-                        <p class="mb-0 small opacity-75">
-                            @(isPassed ? "لقد أثبتّ تمكنك من المادة العلمية بنجاح." : "نوصي بمراجعة الدروس التي تعثرت بها قبل المحاولة القادمة.")
-                        </p>
+                    <div class="stat-item shadow-sm">
+                        <div class="stat-icon bg-warning-light"><i class="bi bi-calendar3"></i></div>
+                        <div class="stat-info text-end">
+                            <span class="stat-label">تاريخ الاختبار</span>
+                            <span class="stat-value">@Model?.CompletedAt.ToString("dd/MM/yyyy")</span>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="actions-row d-flex gap-3">
-                        @* <a href="@Url.Action("UploadMedia", "Transcription")" class="btn-action-primary flex-grow-1 text-center">
-                            <i class="bi bi-arrow-repeat me-2"></i> محاولة جديدة
-                        </a> *@
-                        <button onclick="window.print()" class="btn-print-premium">
-                            <span class="icon-wrapper">
-                                <i class="bi bi-printer-fill"></i>
-                            </span>
-                            <span class="btn-text">طباعة </span>
-                            <div class="btn-shine"></div>
-                        </button>
+                @* صندوق الملاحظات التفاعلي *@
+                <div class="feedback-card mt-4 @(isPassed ? "fb-pass" : "fb-fail")">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="fb-icon">
+                            <i class="bi @(isPassed ? "bi-stars" : "bi-lightbulb")"></i>
+                        </div>
+                        <div class="text-end">
+                            <p class="mb-0 fw-medium">
+                                @(isPassed
+                                                                ? "أداء متميز يعكس فهمك العميق للمحتوى. يمكنك الآن الانتقال للمرحلة التالية بنجاح."
+                                                                : "لا تقلق، هذا الاختبار مجرد خطوة للتعلم. نوصي بمراجعة الموضوعات التي واجهت فيها صعوبة.")
+                            </p>
+                        </div>
                     </div>
+                </div>
+
+                @* أزرار التحكم *@
+                <div class="actions-group mt-5 d-flex gap-3">
+                    <button onclick="window.print()" class="btn-premium-print flex-grow-1 shadow-sm">
+                        <i class="bi bi-printer me-2"></i> طباعة النتيجة
+                    </button>
+                    <a href="/" class="btn-premium-home shadow-sm">
+                        <i class="bi bi-house-door"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -82,9 +111,200 @@
 
 @section Styles {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="~/css/Transcription/ExamResult.css" asp-append-version="true" />
-}
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+            --glass-bg: rgba(255, 255, 255, 0.98);
+        }
 
-@section Scripts {
-    <script src="~/js/Transcription/ExamResult.js" asp-append-version="true"></script>
+        .result-container {
+            min-height: 100vh;
+            background: #f1f5f9;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .result-glass-card {
+            background: var(--glass-bg);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 950px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .exam-type-badge {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* العداد الدائري */
+        .modern-progress {
+            --size: 200px;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(closest-side, white 82%, transparent 0 99.9%, white 0), conic-gradient(var(--c) calc(var(--p) * 1%), #f1f5f9 0);
+            position: relative;
+        }
+
+        .percentage-text {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .status-text {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        .stats-modern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s ease;
+        }
+
+            .stat-item:hover {
+                transform: translateY(-3px);
+                border-color: #cbd5e1;
+            }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .feedback-card {
+            padding: 20px;
+            border-radius: 18px;
+            border-right: 5px solid;
+        }
+
+        .fb-pass {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #166534;
+        }
+
+        .fb-fail {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .btn-premium-print {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .btn-premium-print:hover {
+                background: #334155;
+            }
+
+        .btn-premium-home {
+            background: #f1f5f9;
+            color: #475569;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .title-line {
+            height: 3px;
+            width: 35px;
+            background: #4f46e5;
+            border-radius: 2px;
+        }
+
+        keyframes floating {
+            0%, 100%
+
+        {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+
+        }
+
+       keyframes scale-in {
+            from
+
+        {
+            opacity: 0;
+            transform: scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        }
+
+        .animate-scale-in {
+            animation: scale-in 0.5s ease-out;
+        }
+
+        @@media (max-width: 991px) {
+            .side-visual {
+                border-start: none !important;
+                border-bottom: 1px solid #f1f5f9;
+            }
+        }
+    </style>
 }

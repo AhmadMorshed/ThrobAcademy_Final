@@ -33,12 +33,12 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6 form-group mb-3">
+                @* <div class="col-md-6 form-group mb-3">
                     <label asp-for="Password" class="form-label fw-semibold">كلمة المرور</label>
                     <input asp-for="Password" type="password" class="form-control form-control-modern rounded-pill" placeholder="كلمة المرور" />
                     <span asp-validation-for="Password" class="text-danger small"></span>
-                </div>
-
+                </div> *@
+                <input type="hidden" asp-for="Password" value="DefaultPassword123!" />
                 <div class="col-md-6 form-group mb-3">
                     <label class="form-label fw-semibold">اختيار الكورسات</label>
                     <select class="form-control form-control-modern form-control-select" asp-items="ViewBag.Courses" multiple="multiple" name="selectedCourses"></select>

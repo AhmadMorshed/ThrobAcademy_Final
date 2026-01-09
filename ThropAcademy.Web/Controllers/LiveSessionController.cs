@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration; // لـ IConfiguration
+using Microsoft.Extensions.Configuration; 
 using System;
 using System.Linq;
-using System.Threading.Tasks; // لـ async/await
+using System.Threading.Tasks;
 using Throb.Data.Entities;
 using Throb.Service.Interfaces;
 using ThropAcademy.Web.Models;
@@ -25,15 +25,19 @@ namespace ThropAcademy.Web.Controllers
             _config = config;
         }
 
-        // 1. دالة عرض واجهة الإضافة (Create - GET)
+        [Authorize(Roles = "Admin,Instructor")]
+
+        
         [HttpGet]
-        public IActionResult Create() // 🟢 متزامنة (تستخدم GetAll)
+        public IActionResult Create() 
         {
-            ViewBag.Courses = _courseService.GetAll(); // ⬅️ نستخدم المتزامنة
+            ViewBag.Courses = _courseService.GetAll(); 
             return View();
         }
 
-        // 2. دالة معالجة إنشاء الاجتماع (Create - POST)
+       
+        [Authorize(Roles = "Admin,Instructor")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Date,DurationMinutes,CourseId")] LiveSession session)
@@ -49,7 +53,7 @@ namespace ThropAcademy.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Courses = _courseService.GetAll(); // ⬅️ نستخدم المتزامنة
+                ViewBag.Courses = _courseService.GetAll();
                 return View(session);
             }
 
@@ -77,15 +81,15 @@ namespace ThropAcademy.Web.Controllers
                 TempData["ErrorMessage"] = $"حدث خطأ غير متوقع أثناء إنشاء الجلسة. {ex.Message}";
             }
 
-            ViewBag.Courses = _courseService.GetAll(); // ⬅️ نستخدم المتزامنة
+            ViewBag.Courses = _courseService.GetAll(); 
             return View(session);
         }
 
-        // 3. دالة عرض الجلسات (Index)
+       
         public async Task<IActionResult> Index()
         {
             var liveSessions = await _liveSessionService.GetAllAsync();
-            var courses = _courseService.GetAll(); // ⬅️ نستخدم المتزامنة
+            var courses = _courseService.GetAll(); 
 
             var model = new LiveSessionViewModel
             {
@@ -98,20 +102,22 @@ namespace ThropAcademy.Web.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "Admin,Instructor")]
 
-        // 4. دالة عرض نموذج التعديل (Edit - GET)
+        
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            // 1. جلب الجلسة من الخدمة
+            
             var session = await _liveSessionService.GetByIdAsync(id);
             if (session == null) return NotFound();
 
-            // 2. جلب الكورسات (استخدمنا GetAll لأن GetAllAsync غير موجودة لديك)
+            
             ViewBag.Courses = _courseService.GetAll();
 
             return View(session);
         }
+        [Authorize(Roles = "Admin,Instructor")]
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -125,22 +131,19 @@ namespace ThropAcademy.Web.Controllers
 
             try
             {
-                // 1. جلب الكائن الأصلي (الذي يتم تتبعه الآن)
+             
                 var trackedSession = await _liveSessionService.GetByIdAsync(session.Id);
 
                 if (trackedSession == null) return NotFound();
 
-                // 2. تحديث القيم في الكائن "المُتتبع" حصراً
-                // نحن نغير خصائص الكائن الأصلي بالقيم الجديدة من الفورم
+               
                 trackedSession.Title = session.Title;
                 trackedSession.Date = session.Date;
                 trackedSession.DurationMinutes = session.DurationMinutes;
                 trackedSession.CourseId = session.CourseId;
 
-                // ملاحظة: بيانات زووم (ID, Links) موجودة أصلاً في trackedSession 
-                // ولن تضيع طالما لم نغيرها هنا.
 
-                // 3. نرسل الكائن "المُتتبع" للدالة لكي يتم الحفظ
+             
                 await _liveSessionService.UpdateAsync(trackedSession);
 
                 TempData["SuccessMessage"] = $"تم تحديث الجلسة '{trackedSession.Title}' بنجاح.";
@@ -153,7 +156,10 @@ namespace ThropAcademy.Web.Controllers
                 return View(session);
             }
         }
-        // 6. دالة معالجة الحذف (Delete - POST)
+
+       
+        [Authorize(Roles = "Admin,Instructor")]
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -171,7 +177,7 @@ namespace ThropAcademy.Web.Controllers
             }
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")] // يجب أن يكون للمدراء فقط
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> ViewAttendance(int id)
         {
             var session = await _liveSessionService.GetByIdAsync(id);
@@ -189,14 +195,17 @@ namespace ThropAcademy.Web.Controllers
                 SessionTitle = session.Title,
                 SessionDate = session.Date,
                 SessionDuration = session.DurationMinutes,
-                Records = attendanceRecords.ToList() // تحويل إلى قائمة لسهولة التعامل في View
+                Records = attendanceRecords.ToList() 
             };
 
             return View(viewModel);
         }
-        // 7. دالة جلب وحفظ سجل الحضور (RecordAttendance - POST)
+
+        
+        [Authorize(Roles = "Admin,Instructor")]
+
         [HttpPost]
-        [ValidateAntiForgeryToken] // لزيادة الأمان ومنع هجمات CSRF
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> RecordAttendance(int sessionId)
         {
             if (sessionId <= 0)
@@ -207,7 +216,7 @@ namespace ThropAcademy.Web.Controllers
 
             try
             {
-                // 1. التحقق من وجود الجلسة قبل البدء
+                
                 var session = await _liveSessionService.GetByIdAsync(sessionId);
                 if (session == null)
                 {
@@ -221,33 +230,32 @@ namespace ThropAcademy.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                // 2. استدعاء الخدمة لجلب البيانات من Zoom والمطابقة مع الطلاب
-                // ملاحظة: تأكد أن دالة RecordAttendanceAsync داخل الـ Service تقوم بـ SaveChangesAsync
+            
                 var recordsCount = await _liveSessionService.RecordAttendanceAsync(sessionId);
 
                 if (recordsCount > 0)
                 {
                     TempData["SuccessMessage"] = $"نجاح! تم جلب وتحديث سجل حضور ({recordsCount}) طالب/ـاً.";
 
-                    // تحسين: التوجه لصفحة عرض التقرير لرؤية النتائج فوراً
+                    
                     return RedirectToAction(nameof(ViewAttendance), new { id = sessionId });
                 }
                 else
                 {
-                    // رسالة أكثر وضوحاً للمستخدم
+                    
                     TempData["ErrorMessage"] = "لم يتم العثور على سجلات حضور جديدة. الأسباب المحتملة: (1) الاجتماع لم ينتهِ بعد. (2) الطلاب لم يدخلوا بإيميلاتهم المسجلة. (3) التقرير قيد المعالجة في Zoom (انتظر 5 دقائق).";
                     return RedirectToAction(nameof(Index));
                 }
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
-                // التعامل مع أخطاء الاتصال أو الصلاحيات (Scopes)
+                
                 TempData["ErrorMessage"] = $"خطأ في الاتصال بـ Zoom API: تأكد من صلاحية (report:read:admin). التفاصيل: {ex.Message}";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                // التعامل مع أي خطأ غير متوقع
+               
                 TempData["ErrorMessage"] = $"حدث خطأ فني أثناء معالجة التقرير: {ex.Message}";
                 return RedirectToAction(nameof(Index));
             }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Throb.Data.DbContext;
 using Throb.Data.Entities;
 using Throb.Service.Interfaces;
-using Throb.Service.Services; // تأكد أن InputModel موجود هنا
+using Throb.Service.Services; 
 using ThropAcademy.Web.Models;
 
 namespace ThropAcademy.Web.Controllers
@@ -36,26 +36,25 @@ namespace ThropAcademy.Web.Controllers
             _context = context;
         }
 
-        // --- 1. Index (عرض قائمة الكورسات) ---
+     
         public IActionResult Index()
         {
             var courses = _courseService.GetAll();
             return View(courses);
         }
 
-        // --- 2. View (عرض محتوى الكورس - فيديوهات ومستندات) ---
+        
         [HttpGet]
         public async Task<IActionResult> View(int courseId)
         {
-            // 1. جلب الفيديوهات
+            
             var videos = await _driveSessionService.GetByCourseId(courseId);
 
-            // 2. جلب المستندات
             var documents = await _context.LectureResources
                                           .Where(r => r.CourseId == courseId)
                                           .ToListAsync();
 
-            // 3. بناء نموذج العرض الموحد
+           
             var viewModel = new CourseContentViewModel
             {
                 CourseId = courseId,
@@ -66,11 +65,9 @@ namespace ThropAcademy.Web.Controllers
             return View(viewModel);
         }
 
-        // ------------------------------------------------------------------
-        //                          دوال رفع الفيديو
-        // ------------------------------------------------------------------
+  
 
-        // --- 3. UploadVideo (GET) ---
+        
         [HttpGet]
         [Authorize(Roles = "Admin,Instructor")]
         public IActionResult UploadVideo(int courseId)
@@ -84,10 +81,10 @@ namespace ThropAcademy.Web.Controllers
             return View(model);
         }
 
-        // --- 4. UploadVideo (POST) ---
+       
         [HttpPost]
         [Authorize(Roles = "Admin,Instructor")]
-        [RequestSizeLimit(209715200)] // 200 MB limit
+        [RequestSizeLimit(209715200)] 
         public async Task<IActionResult> UploadVideo(UploadVideoInputModel inputModel)
         {
             if (inputModel == null)
@@ -132,11 +129,9 @@ namespace ThropAcademy.Web.Controllers
             }
         }
 
-        // ------------------------------------------------------------------
-        //                          دوال رفع المستندات
-        // ------------------------------------------------------------------
+      
 
-        // --- 5. UploadDocument (GET) ---
+       
         [HttpGet]
         [Authorize(Roles = "Admin,Instructor")]
         public IActionResult UploadDocument(int courseId)
@@ -150,17 +145,17 @@ namespace ThropAcademy.Web.Controllers
             return View(model);
         }
 
-        // --- 6. UploadDocument (POST) ---
+        
         [HttpPost]
         [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> UploadDocument(UploadDocumentViewModel model)
         {
-            // 1. التحقق من صحة البيانات
+            
             if (!ModelState.IsValid)
             {
                 model.Courses = _courseService.GetAll() ?? Enumerable.Empty<Course>();
                 TempData["Error"] = "الرجاء ملء جميع الحقول المطلوبة.";
-                // 🟢 هنا الإصلاح المهم: نعود لصفحة UploadDocument وليس UploadVideo
+               
                 return View("UploadDocument", model);
             }
 
@@ -204,11 +199,8 @@ namespace ThropAcademy.Web.Controllers
             }
         }
 
-        // ------------------------------------------------------------------
-        //                             دوال التنزيل والحذف
-        // ------------------------------------------------------------------
 
-        // --- 7. DownloadResource (تنزيل المستندات) ---
+   
         [Authorize(Roles = "Admin,Instructor,Student")]
         public async Task<IActionResult> DownloadResource(int resourceId)
         {
@@ -218,7 +210,7 @@ namespace ThropAcademy.Web.Controllers
 
             var projectRootPath = Directory.GetCurrentDirectory();
             var fileName = Path.GetFileName(resource.FilePath);
-            var correctFolderName = "ProtectedDocuments"; // المجلد الصحيح
+            var correctFolderName = "ProtectedDocuments"; 
             var fullPath = Path.Combine(projectRootPath, correctFolderName, fileName);
 
             if (!System.IO.File.Exists(fullPath))
@@ -244,7 +236,7 @@ namespace ThropAcademy.Web.Controllers
             }
         }
 
-        // --- 8. DeleteResource (حذف المستندات) ---
+       
         [Authorize(Roles = "Admin,Instructor")]
         [HttpGet]
         public async Task<IActionResult> DeleteResource(int id, int courseId)
@@ -281,10 +273,10 @@ namespace ThropAcademy.Web.Controllers
             }
         }
 
-        // --- 9. Delete (حذف الفيديو) ---
+       
         [Authorize(Roles = "Admin,Instructor")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id, int? courseId) // جعلنا courseId اختيارياً للمرونة
+        public async Task<IActionResult> Delete(int id, int? courseId) 
         {
             try
             {
@@ -293,7 +285,7 @@ namespace ThropAcademy.Web.Controllers
 
                 _driveSessionService.Delete(sessionToDelete);
 
-                // إذا تم تمرير courseId نعود إليه، وإلا نحاول استنتاجه
+                
                 int redirectId = courseId ?? (sessionToDelete.Courses?.FirstOrDefault()?.Id ?? 0);
 
                 if (redirectId > 0)
@@ -308,8 +300,26 @@ namespace ThropAcademy.Web.Controllers
                 return StatusCode(500, "خطأ أثناء الحذف.");
             }
         }
+        [HttpGet("DriveSession/Details/{id}")]
+        public IActionResult Details(int? id, string viewName = "Details")
+        {
 
-        // --- 10. StreamVideo (مشاهدة الفيديو) ---
+            // 1. هل الرقم يصل للأكشن أصلاً؟
+            if (id == null)
+            {
+                return Content("الرقم (ID) لم يصل للأكشن، تحقق من الـ Routing");
+            }
+
+            var course = _courseService.GetById(id);
+
+            // 2. هل الخدمة تجد البيانات؟
+            if (course == null)
+            {
+                return Content($"تم استقبال المعرف {id} بنجاح، ولكن الـ Service لم تجد كورس بهذا الرقم في قاعدة البيانات.");
+            }
+
+            return View(viewName, course);
+        }
         [Authorize(Roles = "Admin,Instructor,Student")]
         public async Task<IActionResult> StreamVideo(int sessionId)
         {
@@ -318,7 +328,7 @@ namespace ThropAcademy.Web.Controllers
 
             var projectRootPath = Directory.GetCurrentDirectory();
             var fileName = Path.GetFileName(session.FilePath);
-            var correctFolderName = "ProtectedVideos"; // المجلد الصحيح للفيديوهات
+            var correctFolderName = "ProtectedVideos"; 
             var fullPath = Path.Combine(projectRootPath, correctFolderName, fileName);
 
             if (!System.IO.File.Exists(fullPath))

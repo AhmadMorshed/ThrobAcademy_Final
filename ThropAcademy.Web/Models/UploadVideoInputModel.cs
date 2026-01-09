@@ -13,7 +13,7 @@ namespace ThropAcademy.Web.Models
         public IFormFile VideoFile { get; set; }
 
         [Required(ErrorMessage = "الرجاء اختيار كورس واحد على الأقل.")]
-        // 🛑 هذا يسبب المشكلة إذا كانت البيانات القادمة List<int>
         public int[] CourseIds { get; set; }
+
     }
 }

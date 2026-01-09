@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Throb.Data.Entities.ExamRequestModel>
+@{
+    var completedExams = ViewBag.CompletedExamIds as List<int> ?? new List<int>();
+}
+
+<div class="container py-5" dir="rtl">
+    <div class="header-box mb-5 text-center">
+        <h2 class="fw-bold display-6" style="color: #2D3192;">الاختبارات المتاحة</h2>
+        <p class="text-muted">اختر الاختبار للبدء في عملية التقييم</p>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show text-end rounded-pill px-4" role="alert">
+            <i class="bi bi-exclamation-triangle ms-2"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        @foreach (var exam in Model)
+        {
+            var isDone = completedExams.Contains(exam.ExamRequestId);
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="border-radius: 25px; background: #fff;">
+                    <div class="card-body p-4 text-center">
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="badge rounded-pill" style="background: #E0E7FF; color: #4338CA;">
+                                <i class="bi bi-clock-history ms-1"></i> @exam.DurationMinutes دقيقة
+                            </span>
+                            <span class="badge rounded-pill" style="background: #DCFCE7; color: #15803D;">
+                                <i class="bi bi-patch-question ms-1"></i> @(exam.ExamRequestQuestions?.Count ?? 0) سؤال
+                            </span>
+                        </div>
+
+                        <h3 class="fw-bold mb-3" style="color: #1E293B;">@exam.ExamType</h3>
+                        <p class="text-muted small mb-4">كورس: @(exam.Course?.Name ?? "عام")</p>
+
+                        @if (isDone)
+                        {
+                            <button class="btn w-100 py-3 disabled" style="border-radius: 15px; background: #F1F5F9; color: #64748B;">
+                                <i class="bi bi-check-circle-fill ms-2"></i> تم التقديم مسبقاً
+                            </button>
+                        }
+                        else
+                        {
+                            <a asp-action="ExamPreview" asp-route-id="@exam.ExamRequestId"
+                               class="btn btn-primary w-100 py-3 fw-bold"
+                               style="border-radius: 15px; background: #2563EB; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);">
+                                ابدأ الاختبار الآن <i class="bi bi-arrow-left me-2"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

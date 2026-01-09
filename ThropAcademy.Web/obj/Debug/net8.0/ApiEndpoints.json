@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "WebhookController",
+    "Method": "HandleEvent",
+    "RelativePath": "zoom/webhooks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
