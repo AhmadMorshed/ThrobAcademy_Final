@@ -4,6 +4,7 @@ using Throb.Data.Entities;
 using Throb.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Throb.Data.DbContext;
 
 [Authorize(Roles = "Admin")]
 
@@ -12,12 +13,14 @@ public class StudentController : Controller
     private readonly IStudentRepository _studentRepository;
     private readonly ICourseRepository _courseRepository;
     private readonly IStudentCourseRepository _studentCourseRepository;
+    private readonly ThrobDbContext _context;
 
-    public StudentController(IStudentRepository studentRepository, ICourseRepository courseRepository, IStudentCourseRepository studentCourseRepository)
+    public StudentController(IStudentRepository studentRepository, ICourseRepository courseRepository, IStudentCourseRepository studentCourseRepository,ThrobDbContext context)
     {
         _studentRepository = studentRepository;
         _courseRepository = courseRepository;
         _studentCourseRepository = studentCourseRepository;
+        _context = context;
     }
 
     public void LoadCourses()
@@ -175,5 +178,32 @@ public class StudentController : Controller
 
         _studentRepository.Delete(student);
         return RedirectToAction(nameof(Index));
+    }
+    [Authorize(Roles = "Instructor")]
+    public async Task<IActionResult> InstructorStudentList(int? courseId)
+    {
+        var currentUserName = User.Identity.Name;
+
+        // الخطوة 1: جلب الكورسات الخاصة بالمدرب
+        var instructorCoursesQuery = _context.InstructorCourses
+            .Where(ic => ic.Instructor.Name == currentUserName);
+
+        // فلترة إضافية إذا اختار المدرب عرض طلاب كورس معين
+        if (courseId.HasValue)
+        {
+            instructorCoursesQuery = instructorCoursesQuery.Where(ic => ic.CourseId == courseId.Value);
+        }
+
+        var allowedCourseIds = await instructorCoursesQuery.Select(ic => ic.CourseId).ToListAsync();
+
+        // الخطوة 2: جلب الطلاب المسجلين في هذه الكورسات
+        var students = await _context.StudentCourses
+            .Include(sc => sc.Student)
+            .Include(sc => sc.Course)
+            .Where(sc => allowedCourseIds.Contains(sc.CourseId))
+            .OrderBy(sc => sc.Course.Name) // ترتيب حسب اسم الكورس
+            .ToListAsync();
+
+        return View(students);
     }
 }

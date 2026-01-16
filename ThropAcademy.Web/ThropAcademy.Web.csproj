@@ -31,7 +31,6 @@
     <PackageReference Include="Neuroglia.Serialization.NewtonsoftJson" Version="4.21.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenAI" Version="2.1.0" />
-    <PackageReference Include="Stripe.net" Version="49.1.0" />
     <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.50.0" />
     <PackageReference Include="Whisper.net" Version="1.8.1" />
 </ItemGroup>

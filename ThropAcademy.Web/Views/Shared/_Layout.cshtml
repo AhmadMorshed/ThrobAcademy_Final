@@ -47,7 +47,7 @@
                              <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Student Tools
+                                    Resources
                                 </a> 
                              <ul class="dropdown-menu" aria-labelledby="studentDropdown"> 
                             <li class="nav-item">
@@ -56,27 +56,69 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="LiveSession" asp-action="Index">Live Sessions</a>
                             </li>
+                              </ul>
+                            </li>
+
+                        }
+                          
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                        {<li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Student Tools
+                                </a> 
+                            <ul class="dropdown-menu" aria-labelledby="studentDropdown">
+                            <li class="nav-item me-2">
+                                <a class="nav-link exam-nav-link d-flex align-items-center" asp-controller="Exam" asp-action="AvailableExams">
+                                    <div class="exam-icon-container position-relative">
+                                        <i class="bi bi-journal-check fs-4"></i>
+                                        @await Component.InvokeAsync("ExamNotificationBadge")
+                                    </div>
+                                    <span class="ms-2 d-none d-lg-inline fw-semibold text-dark">Exams</span>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Transcription" asp-action="MyResults">
                                     <i class="bi bi-person-badge"></i> MyResults
                                 </a>
                             </li>
-                              </ul>
-                            </li>
+                            </ul>
+                                    </li>
+                        }
+                        @* --- قسم أدوات المدرب (Instructor Tools) --- *@
+@if (signInManager.IsSignedIn(User) && User.IsInRole("Instructor"))
+{
+    @* <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-success fw-bold" href="#" id="instructorDropdown" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-workspace me-1"></i> Instructor Tools
+        </a>
+        <ul class="dropdown-menu shadow border-0" aria-labelledby="instructorDropdown">
+            <li><h6 class="dropdown-header">إدارة التدريب</h6></li>
+             *@
+            @* رابط الداشبورد الجديد *@
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Transcription" asp-action="InstructorDashboard">
+                    <i class="bi bi-speedometer2 text-success me-2"></i> Instructor Dashboard
+                </a>
+            </li>
 
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
-                        {
-                            <li class="nav-item position-relative me-3">
-                                <a class="nav-link d-flex align-items-center" asp-controller="Exam" asp-action="AvailableExams" title="الاختبارات المتاحة">
-                                    <div class="icon-wrapper position-relative">
-                                        <i class="bi bi-journal-check fs-4 text-primary"></i>
-                                        @await Component.InvokeAsync("ExamNotificationBadge")
-                                    </div>
-                                    <span class="ms-2 d-none d-lg-inline">Exams</span>
-                                </a>
-                            </li>
-                        }
+            @* يمكنك إضافة روابط أخرى تخص المدرب هنا *@
+    @*         <li>
+                <a class="dropdown-item py-2" asp-controller="Course" asp-action="MyCourses">
+                    <i class="bi bi-book me-2"></i> My Courses
+                </a>
+            </li>
+            
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item py-2" asp-controller="Student" asp-action="InstructorStudentList">
+                    <i class="bi bi-people me-2"></i> My Students
+                </a>
+            </li>
+        </ul>
+    </li> *@
+}
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
@@ -153,4 +195,6 @@
     <script src="~/js/Shared/_Layout.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
 </html>

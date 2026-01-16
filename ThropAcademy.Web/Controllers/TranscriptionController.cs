@@ -77,11 +77,30 @@ namespace Throb.Controllers
 
         #region Operations: Upload & Transcription
         [Authorize(Roles = "Admin,Instructor")]
-
         [HttpGet]
         public async Task<IActionResult> UploadMedia(int? courseId)
         {
-            ViewBag.Courses = await _questionService.GetAllCoursesForSelectionAsync();
+            // 1. الحصول على إيميل أو معرف المدرب الحالي المسجل دخوله
+            var instructorEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            // 2. إذا كان المستخدم "Admin" نأتي بكل الكورسات، أما إذا كان "Instructor" نفلتر النتائج
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.Courses = await _questionService.GetAllCoursesForSelectionAsync();
+            }
+            else
+            {
+                // جلب فقط الكورسات التي يدرسها هذا المدرب من جدول InstructorCourses
+                var assignedCourses = await _context.InstructorCourses
+                    .Where(ic => ic.Instructor.Email == instructorEmail)
+                    .Select(ic => new { ic.Course.Id, ic.Course.Name })
+                    .ToListAsync();
+
+                // تحويلها إلى Format مناسب للـ Dropdown (ViewBag)
+                // ملاحظة: تأكد من أن الـ View يستخدم ViewBag.Courses لعرض القائمة
+                ViewBag.Courses = assignedCourses.Select(c => new Course { Id = c.Id, Name = c.Name }).ToList();
+            }
+
             ViewBag.SelectedCourseId = courseId;
             return View();
         }
@@ -462,13 +481,13 @@ namespace Throb.Controllers
         [HttpGet]
         public async Task<IActionResult> ExamResult(int id)
         {
+            // تم إضافة .Include(r => r.User) لضمان ظهور بيانات صاحب النتيجة
             var result = await _context.UserExamResults
-                .Include(r => r.Course) // سيعمل الآن إذا أضفت الخاصية للموديل
+                .Include(r => r.Course)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (result == null) return NotFound();
-
-            // هنا نرسل 'result' وهو من نوع UserExamResult
             return View(result);
         }
 
@@ -536,57 +555,124 @@ namespace Throb.Controllers
         
 
     }
-        [Authorize(Roles = "Admin")]
-
+        [Authorize(Roles = "Admin,Instructor,Student")]
         public async Task<IActionResult> MyResults()
         {
-       
-            var currentUser = User.Identity.Name;
+            // تم التعديل لجلب النتيجة بناءً على ID المستخدم المسجل (GUID) لضمان التطابق
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            
             var results = await _context.UserExamResults
-                .Where(r => r.UserId == currentUser)
+                .Include(r => r.Course)
+                .Where(r => r.UserId == userId)
                 .OrderByDescending(r => r.CompletedAt)
                 .ToListAsync();
 
             return View(results);
         }
-        [Authorize(Roles = "Admin,Instructor")]
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminDashboard()
         {
+            // التعديل الجوهري: إضافة .Include(r => r.User) لجلب الإيميل
             var allResults = await _context.UserExamResults
+                .Include(r => r.User)
                 .OrderByDescending(r => r.CompletedAt)
                 .ToListAsync();
 
-     
-            var courseNames = await _context.Courses
-                .ToDictionaryAsync(c => c.Id, c => c.Name); 
+            var courseNames = await _context.Courses.ToDictionaryAsync(c => c.Id, c => c.Name);
             ViewBag.CourseNames = courseNames;
-
-            
             ViewBag.TotalExams = allResults.Count;
-            ViewBag.PassRate = allResults.Any()
-                ? Math.Round((double)allResults.Count(r => r.ScorePercentage >= 70) / allResults.Count * 100, 1)
-                : 0;
+            ViewBag.PassRate = allResults.Any() ? Math.Round((double)allResults.Count(r => r.ScorePercentage >= 70) / allResults.Count * 100, 1) : 0;
             ViewBag.AverageScore = allResults.Any() ? Math.Round(allResults.Average(r => r.ScorePercentage), 1) : 0;
             ViewBag.TopScore = allResults.Any() ? allResults.Max(r => r.ScorePercentage) : 0;
 
             return View(allResults);
         }
-        [Authorize(Roles = "Admin,Instructor,Student")]
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> InstructorDashboard()
+        {
+            // 1. الحصول على إيميل المدرب الحالي المسجل دخوله
+            var instructorEmail = User.FindFirstValue(ClaimTypes.Email);
 
+            // 2. جلب أرقام الكورسات التي يدرسها هذا المدرب من جدول InstructorCourses
+            var assignedCourseIds = await _context.InstructorCourses
+                .Where(ic => ic.Instructor.Email == instructorEmail)
+                .Select(ic => ic.CourseId)
+                .ToListAsync();
+
+            // 3. جلب نتائج الطلاب الذين ينتمون لهذه الكورسات فقط
+            var studentResults = await _context.UserExamResults
+                .Include(r => r.User)
+                .Include(r => r.Course)
+                .Where(r => assignedCourseIds.Contains(r.CourseId))
+                .OrderByDescending(r => r.CompletedAt)
+                .ToListAsync();
+
+            // 4. إحصائيات سريعة خاصة بكورسات المدرب فقط
+            ViewBag.TotalExams = studentResults.Count;
+            ViewBag.AverageScore = studentResults.Any() ? Math.Round(studentResults.Average(r => r.ScorePercentage), 1) : 0;
+
+            // جلب أسماء الكورسات التي يدرسها لعرضها في القائمة الجانبية أو الفلتر
+            ViewBag.MyCourses = await _context.Courses
+                .Where(c => assignedCourseIds.Contains(c.Id))
+                .ToListAsync();
+
+            return View(studentResults);
+        }
+        [Authorize(Roles = "Admin,Instructor,Student")]
         public async Task<IActionResult> DownloadCertificate(int resultId)
         {
-            var result = await _context.UserExamResults.FindAsync(resultId);
+            // إصلاح: استخدام Include لجلب بيانات المستخدم لتجنب ظهور System.Security...
+            var result = await _context.UserExamResults
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Id == resultId);
+
             if (result == null) return NotFound();
+
+            // التحقق من الصلاحية: لا يمكن للطالب تحميل شهادة غير خاصة به إلا إذا كان أدمن
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!User.IsInRole("Admin") && result.UserId != currentUserId) return Forbid();
 
             if (result.ScorePercentage < 80) return BadRequest("عذراً، لم تجتز النسبة المطلوبة للشهادة");
 
             var course = await _context.Courses.FindAsync(result.CourseId);
             ViewBag.CourseName = course?.Name ?? "دورة غير معروفة";
 
+            // نرسل الـ Result الذي يحتوي الآن على كائن الـ User كاملاً
             return View("CertificateTemplate", result);
+        }
+
+        // --- الأكشن الجديد الذي كان يسبب خطأ 404 ---
+        [Authorize(Roles = "Admin,Instructor,Student")]
+        public async Task<IActionResult> DownloadMasterCertificate(string userId)
+        {
+            // التعديل الجوهري: إضافة ThenInclude لجلب بيانات الكورس
+            var user = await _context.Users
+                .Include(u => u.UserExamResults)
+                    .ThenInclude(r => r.Course) // ضروري جداً لظهور اسم الكورس في الشهادة
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null || !user.UserExamResults.Any())
+                return NotFound("لا توجد نتائج لهذا المستخدم.");
+
+            // حساب المعدل العام
+            double avgScore = user.UserExamResults.Average(r => r.ScorePercentage);
+
+            // التحقق من استحقاق الشهادة
+            if (avgScore < 75)
+                return BadRequest("المعدل التراكمي أقل من الحد الأدنى للشهادة.");
+
+            // تمرير المعدل للـ View
+            ViewBag.AverageScore = Math.Round(avgScore, 1);
+
+            // استخراج أسماء الكورسات الفريدة التي اجتازها الطالب لعرضها في الشهادة
+            ViewBag.PassedCourses = user.UserExamResults
+                                        .Where(r => r.ScorePercentage >= 75)
+                                        .Select(r => r.Course.Name)
+                                        .Distinct()
+                                        .ToList();
+
+            return View("MasterCertificateTemplate", user);
         }
     }
 }

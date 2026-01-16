@@ -3,7 +3,6 @@ using Throb.Data.Entities; // إذا كانت الدورة في هذا المج�
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-// ⚠️ تأكد من إضافة هذا النموذج إلى DbContext (DbSet<LectureResource>)
 public class LectureResource
 {
     [Key]
@@ -26,9 +25,8 @@ public class LectureResource
 
     public DateTime UploadDate { get; set; } = DateTime.Now;
 
-    // الخصائص الأجنبية
     public int CourseId { get; set; }
 
     [ForeignKey("CourseId")]
-    public Course Course { get; set; } // ⚠️ تأكد من أن Course مُعرّف في Throb.Data.Entities
+    public Course Course { get; set; } 
 }

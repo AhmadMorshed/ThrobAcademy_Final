@@ -20,11 +20,9 @@ namespace Throb.Data.Entities
         [Required]
         public string Difficulty { get; set; }
 
-        // إضافة الخاصية Transcript
         [Required]
         public string Transcript { get; set; }
 
-        // إضافة الخاصية CreatedAt
         public DateTime CreatedAt { get; set; }
         public int CourseId { get; set; }
 

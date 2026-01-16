@@ -1,13 +1,31 @@
 ﻿@model IEnumerable<Throb.Data.Entities.ExamRequestModel>
 @{
+    // جلب معرفات الاختبارات المكتملة وتحويلها لضمان عدم حدوث خطأ في النوع
     var completedExams = ViewBag.CompletedExamIds as List<int> ?? new List<int>();
+
+    // 1. تصفية القائمة لعرض الاختبارات التي تخص كورسات الطالب فقط (تمت في الكنترولر)
+    // وهنا نتأكد من استبعاد الاختبارات التي أتمها الطالب فعلياً
+    var pendingExams = Model.Where(exam => !completedExams.Contains(exam.ExamRequestId)).ToList();
+
+    ViewData["Title"] = "الاختبارات المتاحة";
 }
 
 <div class="container py-5" dir="rtl">
     <div class="header-box mb-5 text-center">
         <h2 class="fw-bold display-6" style="color: #2D3192;">الاختبارات المتاحة</h2>
-        <p class="text-muted">اختر الاختبار للبدء في عملية التقييم</p>
+        <p class="text-muted">بناءً على الكورسات المسجل بها حالياً</p>
     </div>
+
+    @* 2. تنبيه بعدد الاختبارات المتبقية *@
+    @if (pendingExams.Any())
+    {
+        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center rounded-4 mb-4" role="alert">
+            <i class="bi bi-bell-fill fs-4 ms-3 text-warning"></i>
+            <div>
+                <strong>تنبيه:</strong> لديك <b>@pendingExams.Count</b> اختبارات بانتظارك في الكورسات المشترك بها.
+            </div>
+        </div>
+    }
 
     @if (TempData["ErrorMessage"] != null)
     {
@@ -18,41 +36,56 @@
     }
 
     <div class="row g-4">
-        @foreach (var exam in Model)
+        @if (!pendingExams.Any())
         {
-            var isDone = completedExams.Contains(exam.ExamRequestId);
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm" style="border-radius: 25px; background: #fff;">
-                    <div class="card-body p-4 text-center">
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="badge rounded-pill" style="background: #E0E7FF; color: #4338CA;">
-                                <i class="bi bi-clock-history ms-1"></i> @exam.DurationMinutes دقيقة
-                            </span>
-                            <span class="badge rounded-pill" style="background: #DCFCE7; color: #15803D;">
-                                <i class="bi bi-patch-question ms-1"></i> @(exam.ExamRequestQuestions?.Count ?? 0) سؤال
-                            </span>
-                        </div>
+            <div class="col-12 text-center py-5">
+                <div class="mb-3">
+                    <i class="bi bi-check2-circle display-1 text-success"></i>
+                </div>
+                <h4 class="mt-3 text-dark fw-bold">لا توجد اختبارات جديدة حالياً</h4>
+                <p class="text-muted">لقد أتممت جميع التقييمات المطلوبة لكورساتك الحالية.</p>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary rounded-pill px-4">العودة للرئيسية</a>
+            </div>
+        }
+        else
+        {
+            @foreach (var exam in pendingExams)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm transition-hover" style="border-radius: 25px; background: #fff; transition: transform 0.3s;">
+                        <div class="card-body p-4 text-center">
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="badge rounded-pill" style="background: #E0E7FF; color: #4338CA;">
+                                    <i class="bi bi-clock-history ms-1"></i> @exam.DurationMinutes دقيقة
+                                </span>
+                                <span class="badge rounded-pill" style="background: #DCFCE7; color: #15803D;">
+                                    <i class="bi bi-patch-question ms-1"></i> @(exam.ExamRequestQuestions?.Count ?? 0) سؤال
+                                </span>
+                            </div>
 
-                        <h3 class="fw-bold mb-3" style="color: #1E293B;">@exam.ExamType</h3>
-                        <p class="text-muted small mb-4">كورس: @(exam.Course?.Name ?? "عام")</p>
+                            <h3 class="fw-bold mb-3" style="color: #1E293B;">@exam.ExamType</h3>
 
-                        @if (isDone)
-                        {
-                            <button class="btn w-100 py-3 disabled" style="border-radius: 15px; background: #F1F5F9; color: #64748B;">
-                                <i class="bi bi-check-circle-fill ms-2"></i> تم التقديم مسبقاً
-                            </button>
-                        }
-                        else
-                        {
+                            @* عرض اسم الكورس بشكل بارز لأنه هو معيار الفلترة الجديد *@
+                            <div class="mb-4">
+                                <span class="text-muted small d-block">كورس:</span>
+                                <span class="badge bg-light text-dark border">@(exam.Course?.Name ?? "عام")</span>
+                            </div>
+
                             <a asp-action="ExamPreview" asp-route-id="@exam.ExamRequestId"
                                class="btn btn-primary w-100 py-3 fw-bold"
                                style="border-radius: 15px; background: #2563EB; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);">
                                 ابدأ الاختبار الآن <i class="bi bi-arrow-left me-2"></i>
                             </a>
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>
+
+<style>
+    .transition-hover:hover {
+        transform: translateY(-10px);
+    }
+</style>

@@ -36,14 +36,52 @@ namespace ThropAcademy.Web.Controllers
             _context = context;
         }
 
-     
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            var courses = _courseService.GetAll();
-            return View(courses);
+            // 1. الحصول على اسم المستخدم الحالي (المدرب أو الطالب أو الأدمن)
+            var currentUserName = User.Identity.Name;
+
+            // 2. إذا كان المستخدم "Instructor" (مدرب)
+            if (User.IsInRole("Instructor"))
+            {
+                // جلب معرفات الكورسات التي يدرسها هذا المدرب فقط
+                var instructorCourseIds = await _context.InstructorCourses
+                    .Include(ic => ic.Instructor)
+                    .Where(ic => ic.Instructor.Name == currentUserName)
+                    .Select(ic => ic.CourseId)
+                    .ToListAsync();
+
+                // جلب تفاصيل هذه الكورسات فقط لعرضها في الصفحة
+                var instructorCourses = await _context.Courses
+                    .Where(c => instructorCourseIds.Contains(c.Id))
+                    .ToListAsync();
+
+                return View(instructorCourses);
+            }
+
+            // 3. إذا كان المستخدم "Student" (طالب) - اختياري إذا أردت فلترة الطالب أيضاً
+            if (User.IsInRole("Student"))
+            {
+                var studentCourseIds = await _context.StudentCourses
+                    .Include(sc => sc.Student)
+                    .Where(sc => sc.Student.Name == currentUserName)
+                    .Select(sc => sc.CourseId)
+                    .ToListAsync();
+
+                var studentCourses = await _context.Courses
+                    .Where(c => studentCourseIds.Contains(c.Id))
+                    .ToListAsync();
+
+                return View(studentCourses);
+            }
+
+            // 4. إذا كان "Admin"، يرى كل الكورسات كالمعتاد
+            var allCourses = _courseService.GetAll();
+            return View(allCourses);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> View(int courseId)
         {

@@ -310,6 +310,10 @@
               "target": "Package",
               "version": "[2.1.0, )"
             },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[50.1.0, )"
+            },
             "UnitsNet.Serialization.JsonNet": {
               "target": "Package",
               "version": "[5.50.0, )"
@@ -434,10 +438,6 @@
             "OpenAI": {
               "target": "Package",
               "version": "[2.1.0, )"
-            },
-            "Stripe.net": {
-              "target": "Package",
-              "version": "[49.1.0, )"
             },
             "UnitsNet.Serialization.JsonNet": {
               "target": "Package",

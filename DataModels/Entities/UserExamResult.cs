@@ -11,6 +11,7 @@ namespace Throb.Data.Entities
     {
         public int Id { get; set; }
         public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; } // أو IdentityUser
         public int CourseId { get; set; }
         public int ExamRequestId { get; set; }
         // الخاصية الجديدة لتخزين نوع الامتحان (Quiz or Final)

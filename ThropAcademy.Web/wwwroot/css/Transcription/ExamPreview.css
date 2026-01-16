@@ -1,182 +1,197 @@
-﻿/* --- الخلفية العامة --- */
-.page-bg-light {
-    background-color: #f8fafc;
-    min-height: 100vh;
+﻿:root {
+    --primary-gradient: linear-gradient(135deg, #4338CA 0%, #6366F1 100%);
+    --bg-body: #F8FAFC;
+    --indigo-soft: #EEF2FF;
+    --text-dark: #1E293B;
+    --success: #10B981;
 }
 
-/* --- هيدر الامتحان الإبداعي --- */
-.exam-hero-section {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    padding: 60px 20px;
-    border-radius: 30px;
+body {
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    font-family: 'Cairo', sans-serif;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* الشاشة الافتتاحية */
+.start-exam-wrapper {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #EEF2FF 0%, #E2E8F0 100%);
+    z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 3rem;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+}
+
+.icon-pulse i {
+    font-size: 5rem;
+    animation: pulseIcon 2s infinite;
+}
+
+@keyframes pulseIcon {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.exam-brief {
+    display: flex; justify-content: center; gap: 2rem;
+}
+
+.brief-item {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+
+.brief-item i { font-size: 1.5rem; color: #6366F1; }
+
+/* Navbar */
+.exam-navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 1rem 0;
+}
+
+.timer-display {
+    background: #1E293B;
     color: white;
-    margin-bottom: 40px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    padding: 0.6rem 1.5rem;
+    border-radius: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 800;
+    display: flex; align-items: center;
 }
 
-.hero-icon-box {
-    font-size: 3rem;
-    color: #6366f1;
-    margin-bottom: 15px;
+.timer-warning { background: #F59E0B !important; }
+.timer-danger { background: #EF4444 !important; animation: shake 0.5s infinite; }
+
+/* Question Cards */
+.q-card {
+    border-radius: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.exam-main-title {
-    font-weight: 900;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+.q-card.is-answered {
+    border-right: 5px solid var(--success);
 }
 
-.title-underline {
-    width: 80px;
-    height: 5px;
-    background: #6366f1;
-    margin: 15px auto;
-    border-radius: 10px;
+.q-index-pill {
+    background: var(--primary-gradient);
+    color: white;
+    min-width: 45px; height: 45px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2rem;
 }
 
-.exam-info-pill {
-    background: rgba(255, 255, 255, 0.1);
-    display: inline-block;
-    padding: 8px 25px;
-    border-radius: 50px;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    font-weight: 600;
+/* Premium Options */
+.premium-option {
+    display: flex; align-items: center;
+    padding: 1.25rem;
+    border: 2px solid #F1F5F9;
+    border-radius: 1rem;
+    background: #F8FAFC;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- بطاقات الأسئلة (ثابتة اللون للـ PDF) --- */
-.q-card-solid {
-    background-color: #ffffff !important;
-    opacity: 1 !important;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    transition: transform 0.3s ease;
-    position: relative;
-    overflow: hidden;
+.premium-option:hover {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
 }
 
-    .q-card-solid:hover {
-        transform: translateY(-5px);
-    }
-
-.card-side-accent {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 6px;
-    background: #6366f1;
+.btn-check:checked + .premium-option {
+    background: #EEF2FF;
+    border-color: #4338CA;
+    box-shadow: 0 10px 15px -3px rgba(67, 56, 202, 0.1);
 }
 
-.q-number-circle {
-    width: 45px;
-    height: 45px;
-    background: #f1f5f9;
-    color: #1e293b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.radio-indicator {
+    width: 20px; height: 20px;
+    border: 2px solid #CBD5E1;
     border-radius: 50%;
-    font-weight: 800;
-    border: 2px solid #e2e8f0;
+    margin-left: 1rem;
+    position: relative;
 }
 
-.q-text-display {
-    color: #1e293b;
-    font-weight: 700;
-    line-height: 1.6;
+.btn-check:checked + .premium-option .radio-indicator {
+    border-color: #4338CA;
 }
 
-/* --- الخيارات --- */
-.choice-interactive-item {
-    display: flex;
-    align-items: center;
-    padding: 18px 25px;
-    background: #f8fafc;
-    border: 2px solid #f1f5f9;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-weight: 600;
-    color: #475569;
+.btn-check:checked + .premium-option .radio-indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px; height: 10px;
+    background: #4338CA;
+    border-radius: 50%;
 }
 
-.btn-check:checked + .choice-interactive-item {
-    background: #f5f3ff;
-    border-color: #6366f1;
-    color: #6366f1;
+/* Sidebar Navigator */
+.question-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 10px;
 }
 
-.tf-interactive-group {
-    display: flex;
-    gap: 20px;
-}
-
-.tf-btn-modern {
-    flex: 1;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    font-weight: 800;
-    cursor: pointer;
-    border: 2px solid #f1f5f9;
-    transition: 0.3s;
+.q-nav-item {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
     background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.2s;
 }
 
-.btn-check:checked + .true-btn {
-    background: #ecfdf5;
-    border-color: #10b981;
-    color: #10b981;
-}
-
-.btn-check:checked + .false-btn {
-    background: #fef2f2;
-    border-color: #ef4444;
-    color: #ef4444;
-}
-
-/* --- الأزرار Premium --- */
-.btn-submit-exam-premium {
-    background: #6366f1;
+.q-nav-item:hover { background: #EEF2FF; color: #4338CA; }
+.q-nav-item.answered {
+    background: var(--success);
     color: white;
+    border-color: var(--success);
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 100px;
+}
+
+.btn-primary-gradient {
+    background: var(--primary-gradient);
     border: none;
-    padding: 15px 50px;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: 800;
-    transition: 0.4s;
-    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    color: white;
+    transition: opacity 0.3s;
 }
 
-    .btn-submit-exam-premium:hover {
-        background: #4f46e5;
-        transform: scale(1.05);
-    }
+.btn-primary-gradient:hover { opacity: 0.9; color: white; }
 
-.btn-save-pdf {
-    background: white;
-    color: #ef4444;
-    border: 2px solid #ef4444;
-    padding: 12px 35px;
-    border-radius: 50px;
-    font-weight: 700;
-    transition: 0.3s;
-}
+/* Progress Bar */
+.progress-thin { height: 6px; border-radius: 10px; background: #E2E8F0; width: 150px; }
+.bg-primary-gradient { background: var(--primary-gradient); }
 
-    .btn-save-pdf:hover {
-        background: #fef2f2;
-        transform: translateY(-3px);
-    }
-
-/* تنسيق PDF Header */
-.pdf-only-header {
-    background: white;
-    padding: 20px;
-}
-
-/* لمنع انقسام الأسئلة في الـ PDF */
-.q-card-solid {
-    page-break-inside: avoid;
-    break-inside: avoid;
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    50% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
 }

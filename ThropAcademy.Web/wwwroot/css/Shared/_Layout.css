@@ -260,4 +260,74 @@ body {
     .navbar-brand {
         font-size: 1.5rem;
     }
+
+    /* تنسيق الرابط الأساسي */
+    .exam-nav-link {
+        padding: 8px 15px !important;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .exam-nav-link:hover {
+            background-color: #f0f3ff; /* لون خلفية خفيف عند التمرير */
+        }
+
+    /* حاوية الأيقونة */
+    .exam-icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        color: #4338ca; /* لون الأيقونة */
+        transition: all 0.3s ease;
+    }
+
+    .exam-nav-link:hover .exam-icon-container {
+        background: #4338ca;
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    /* تنسيق الإشعار (البادج) */
+    .custom-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ef4444; /* لون أحمر زاهي */
+        color: white;
+        font-size: 0.65rem;
+        font-weight: bold;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+        animation: pulse-red 2s infinite; /* تأثير النبض */
+    }
+
+    /* تأثير النبض للإشعار */
+    @keyframes pulse-red {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        }
+    }
+
 }

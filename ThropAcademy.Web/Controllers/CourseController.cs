@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Throb.Data.DbContext;
 using Throb.Data.Entities;
 using Throb.Repository.Interfaces;
 using Throb.Service.Interfaces;
@@ -11,11 +13,13 @@ namespace ThropAcademy.Web.Controllers
     {
         private readonly ICourseService _courseService;
         private readonly IStudentCourseRepository _studentCourseRepository;
+        private readonly ThrobDbContext _context;
 
-        public CourseController(ICourseService courseService,IStudentCourseRepository studentCourseRepository)
+        public CourseController(ICourseService courseService,IStudentCourseRepository studentCourseRepository,ThrobDbContext context)
         {
             _courseService = courseService;
             _studentCourseRepository = studentCourseRepository;
+            _context = context;
         }
 
     [Authorize(Roles ="Admin")]
@@ -123,6 +127,20 @@ namespace ThropAcademy.Web.Controllers
             _courseService.Delete(course);
 
             return RedirectToAction(nameof(Index));
+        }
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> MyCourses()
+        {
+            var currentUserName = User.Identity.Name;
+
+            // جلب الكورسات المربوطة بهذا المدرب فقط
+            var myCourses = await _context.InstructorCourses
+                .Include(ic => ic.Course) // تضمين بيانات الكورس
+                .Where(ic => ic.Instructor.Name == currentUserName) // شرط اسم المدرب
+                .Select(ic => ic.Course) // اختيار الكورس فقط
+                .ToListAsync();
+
+            return View(myCourses);
         }
 
     }

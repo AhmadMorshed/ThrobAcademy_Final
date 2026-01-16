@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Throb.Data.Entities.StudentCourse>
+
+@{
+    ViewData["Title"] = "قائمة الطلاب";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 text-primary"><i class="fas fa-user-graduate me-2"></i> الطلاب المسجلين في دوراتي</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">لا يوجد طلاب مسجلين في دوراتك حالياً.</div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>اسم الطالب</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الكورس المسجل به</th>
+                        <th>تاريخ التسجيل</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Student.Name</td>
+                            <td>@item.Student.Email</td>
+                            <td><span class="badge bg-primary">@item.Course.Name</span></td>
+                            @* <td>@item..ToString("yyyy-MM-dd")</td> *@
+                            <td>
+                                <a href="mailto:@item.Student.Email" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-envelope"></i> مراسلة
+                                </a>
+                                <button class="btn btn-sm btn-outline-success" disabled>
+                                    <i class="fas fa-star"></i> التقييم
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

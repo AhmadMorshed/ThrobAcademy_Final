@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    // استلام الكورسات المفلترة من الـ Controller
     var courses = ViewBag.Courses as IEnumerable<Throb.Data.Entities.Course>;
 }
 <!DOCTYPE html>
@@ -27,15 +28,14 @@
         <button class="theme-toggle" id="themeToggle">🌙</button>
     </header>
 
-    @* ... الأكواد العلوية تبقى كما هي ... *@
-
     <main class="container py-5">
+        @* قسم تصفح بنوك الأسئلة - سيعرض فقط الكورسات المسندة للمدرب *@
         <div class="row justify-content-center mb-5">
             <div class="col-md-8 col-lg-6">
                 <div class="quick-access-wrapper">
                     <div class="dropdown">
                         <button class="btn bank-dropdown-btn w-100 d-flex justify-content-between align-items-center shadow-sm" type="button" data-bs-toggle="dropdown">
-                            <span><i class="fa-solid fa-layer-group me-2"></i> تصفح بنوك الأسئلة</span>
+                            <span><i class="fa-solid fa-layer-group me-2"></i> تصفح بنوك الأسئلة الخاصة بك</span>
                             <i class="fa-solid fa-chevron-down small"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark w-100 shadow-lg border-0 animate slideIn">
@@ -44,11 +44,15 @@
                                 foreach (var c in courses)
                                 {
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center py-2" href="/Transcription/QuestionBank?courseId=@c.Id">
+                                        <a class="dropdown-item d-flex align-items-center py-2" href="@Url.Action("QuestionBank", "Transcription", new { courseId = c.Id })">
                                             <i class="fa-solid fa-book-bookmark me-3 text-info"></i> @c.Name
                                         </a>
                                     </li>
                                 }
+                            }
+                            else
+                            {
+                                <li><span class="dropdown-item text-muted">لا توجد كورسات مسندة حالياً</span></li>
                             }
                         </ul>
                     </div>
@@ -64,7 +68,14 @@
                         <p class="text-muted">حول محاضراتك المرئية والصوتية إلى أسئلة تفاعلية بدقائق</p>
                     </div>
 
-                    <form asp-action="UploadMedia" method="post" enctype="multipart/form-data" id="uploadForm">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger border-0 shadow-sm mb-4">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form asp-action="UploadMedia" asp-controller="Transcription" method="post" enctype="multipart/form-data" id="uploadForm">
                         <div class="step-item mb-4">
                             <label class="form-label fw-bold d-flex align-items-center">
                                 <span class="step-number">1</span> اختر الكورس التعليمي
@@ -75,7 +86,15 @@
                                 {
                                     foreach (var c in courses)
                                     {
-                                        <option value="@c.Id">@c.Name</option>
+                                        @* الحفاظ على الكورس المختار في حال حدوث خطأ في الرفع *@
+                                        @if (ViewBag.SelectedCourseId != null && (int)ViewBag.SelectedCourseId == c.Id)
+                                        {
+                                            <option value="@c.Id" selected>@c.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@c.Id">@c.Name</option>
+                                        }
                                     }
                                 }
                             </select>
@@ -105,7 +124,7 @@
                         </button>
                     </form>
 
-                    <div class="separator my-5 text-muted small">أو عبر</div>
+                    <div class="separator my-5 text-muted small">أو عبر التحدث المباشر</div>
 
                     <div class="recording-section text-center">
                         <div class="d-flex justify-content-center gap-3 mb-4">
@@ -125,7 +144,7 @@
                             <p class="text-danger small fw-bold">جاري التسجيل الآن...</p>
                         </div>
 
-                        <form asp-action="UploadMedia" method="post" enctype="multipart/form-data" id="recordedForm">
+                        <form asp-action="UploadMedia" asp-controller="Transcription" method="post" enctype="multipart/form-data" id="recordedForm">
                             <input type="hidden" name="courseId" id="hiddenCourseId" />
                             <input type="file" name="mediaFile" id="recordedFile" style="display:none;" />
                             <button type="submit" id="uploadRecorded" class="btn btn-success-gradient w-100 py-3 d-none">
@@ -149,5 +168,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/Transcription/UploadMedia.js" asp-append-version="true"></script>
+
+    <script>
+        // سكربت بسيط لتحديث رابط بنك الأسئلة والمخفي عند تغيير الكورس
+        document.getElementById('courseSelect').addEventListener('change', function() {
+            const courseId = this.value;
+            const bankBtn = document.getElementById('goToBankBtn');
+            const hiddenId = document.getElementById('hiddenCourseId');
+
+            if(courseId) {
+                bankBtn.href = `/Transcription/QuestionBank?courseId=${courseId}`;
+                bankBtn.style.display = 'inline-block';
+                hiddenId.value = courseId;
+            } else {
+                bankBtn.style.display = 'none';
+                hiddenId.value = '';
+            }
+        });
+    </script>
 </body>
 </html>

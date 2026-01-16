@@ -1,17 +1,49 @@
 ﻿@model IEnumerable<Throb.Data.Entities.UserExamResult>
 @{
     ViewData["Title"] = "سجل إنجازاتي";
+    // تقسيم البيانات برمجياً لسهولة الوصول إليها
+    var finalExams = Model.Where(x => x.ExamType == "Final").OrderByDescending(x => x.CompletedAt);
+    var quizExams = Model.Where(x => x.ExamType == "Quiz").OrderByDescending(x => x.CompletedAt);
+    var practicalExams = Model.Where(x => x.ExamType == "Practical").OrderByDescending(x => x.CompletedAt);
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<div class="container py-5" style="direction: rtl;">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<style>
+    .nav-pills .nav-link {
+        color: #64748b;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+    }
+
+        .nav-pills .nav-link.active {
+            background-color: #4f46e5 !important;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+    .card-stat {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+
+        .card-stat:hover {
+            transform: translateY(-5px);
+        }
+</style>
+
+<div class="container py-5" style="direction: rtl; text-align: right;">
+    @* رأس الصفحة *@
+    <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold" style="color: #4f46e5;">سجل النتائج والاختبارات</h2>
-            <p class="text-muted">هنا يمكنك متابعة تطورك الأكاديمي ونتائج اختباراتك الذكية</p>
+            <h2 class="fw-bold" style="color: #1e293b;">سجل النتائج والاختبارات</h2>
+            <p class="text-muted">نظرة شاملة على مسيرتك التعليمية مقسمة حسب نوع التقييم</p>
         </div>
-        <i class="bi bi-trophy-fill text-warning" style="font-size: 3rem;"></i>
+        <div class="d-none d-md-block">
+            <i class="bi bi-award-fill text-primary" style="font-size: 3.5rem; opacity: 0.2;"></i>
+        </div>
     </div>
 
     @if (!Model.Any())
@@ -19,79 +51,79 @@
         <div class="text-center py-5 shadow-sm rounded-4 bg-white">
             <i class="bi bi-clipboard-x text-muted" style="font-size: 4rem;"></i>
             <h4 class="mt-3">لا توجد نتائج مسجلة بعد</h4>
-            <p>ابدأ رحلتك التعليمية وقم بتقديم أول اختبار لك الآن!</p>
-            <a href="@Url.Action("UploadMedia", "Transcription")" class="btn btn-primary px-4 rounded-pill">ابدأ الآن</a>
+            <a href="@Url.Action("AvailableExams", "Exam")" class="btn btn-primary px-4 rounded-pill mt-3">استعرض الاختبارات المتاحة</a>
         </div>
     }
     else
     {
-        <div class="table-responsive shadow-lg rounded-4 overflow-hidden bg-white">
-            <table class="table table-hover align-middle mb-0">
-                <thead style="background-color: #f8fafc;">
-                    <tr>
-                        <th class="p-4">نوع الاختبار</th>
-                        <th>التاريخ</th>
-                        <th>الإجابات</th>
-                        <th>النسبة المئوية</th>
-                        <th>الحالة</th>
-                        <th>إجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        var isPassed = item.ScorePercentage >= 70;
-                        <tr>
-                            <td class="p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon-box me-3 @(item.ExamType == "Final" ? "bg-primary-subtle" : "bg-info-subtle")"
-                                         style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
-                                        <i class="bi @(item.ExamType == "Final" ? "bi-mortarboard" : "bi-lightning") text-primary"></i>
-                                    </div>
-                                    <span class="fw-bold">
-                                        @(item.ExamType == "Final" ? "Final" :
-                                                                        item.ExamType == "Quiz" ? "Quiz" : item.ExamType == "Practical" ? "Practical" : "")
-                            </span>
-                                </div>
-                            </td>
-                            <td>@item.CompletedAt.ToString("yyyy/MM/dd")</td>
-                            <td>
-                                <span class="badge rounded-pill bg-light text-dark border">
-                                    @item.CorrectAnswers من @item.TotalQuestions
-                                </span>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="progress flex-grow-1 me-2" style="height: 6px; width: 80px;">
-                                        <div class="progress-bar @(isPassed ? "bg-success" : "bg-danger")"
-                                             style="width: @item.ScorePercentage%"></div>
-                                    </div>
-                                    <span class="fw-bold">@item.ScorePercentage%</span>
-                                </div>
-                            </td>
-                            <td>
-                                @if (isPassed)
-                                {
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
-                                        <i class="bi bi-check-circle-fill me-1"></i> ناجح
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2">
-                                        <i class="bi bi-x-circle-fill me-1"></i> لم يجتز
-                                    </span>
-                                }
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-secondary rounded-pill">
-                                    <i class="bi bi-eye"></i> التفاصيل
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        @* نظام التبويبات (Tabs) *@
+        <ul class="nav nav-pills mb-4 g-3 justify-content-center justify-content-md-start" id="examTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active me-2" id="all-tab" data-bs-toggle="pill" data-bs-target="#all" type="button" role="tab">
+                    الكل (@Model.Count())
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link me-2" id="final-tab" data-bs-toggle="pill" data-bs-target="#final" type="button" role="tab">
+                    الاختبارات النهائية (@finalExams.Count())
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link me-2" id="quiz-tab" data-bs-toggle="pill" data-bs-target="#quiz" type="button" role="tab">
+                    الكويزات (@quizExams.Count())
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="practical-tab" data-bs-toggle="pill" data-bs-target="#practical" type="button" role="tab">
+                    التطبيقات العملية (@practicalExams.Count())
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="examTabsContent">
+            @* تبويب الكل *@
+            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                @await Html.PartialAsync("_ExamTablePartial", Model)
+            </div>
+
+            @* تبويب النهائية *@
+            <div class="tab-pane fade" id="final" role="tabpanel">
+                @if (finalExams.Any())
+                {
+                    @await Html.PartialAsync("_ExamTablePartial", finalExams)
+                }
+                else
+                {
+
+                    <p class="text-center py-5 text-muted">لا توجد اختبارات نهائية مسجلة</p>
+                }
+            </div>
+
+            @* تبويب الكويزات *@
+            <div class="tab-pane fade" id="quiz" role="tabpanel">
+                @if (quizExams.Any())
+                {
+                    @await Html.PartialAsync("_ExamTablePartial", quizExams)
+                }
+                else
+                {
+
+                    <p class="text-center py-5 text-muted">لا توجد كويزات مسجلة</p>
+                }
+            </div>
+
+            @* تبويب العملي *@
+            <div class="tab-pane fade" id="practical" role="tabpanel">
+                @if (practicalExams.Any())
+                {
+                    @await Html.PartialAsync("_ExamTablePartial", practicalExams)
+                }
+                else
+                {
+
+                    <p class="text-center py-5 text-muted">لا توجد تطبيقات عملية مسجلة</p>
+                }
+            </div>
         </div>
     }
 </div>

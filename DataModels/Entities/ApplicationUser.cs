@@ -12,5 +12,6 @@ namespace Throb.Data.Entities
         public string  Firstname { get; set; }
         public string Lastname { get; set; }
         public bool IsActive { get; set; }
+        public virtual ICollection<UserExamResult> UserExamResults { get; set; } = new List<UserExamResult>();
     }
 }

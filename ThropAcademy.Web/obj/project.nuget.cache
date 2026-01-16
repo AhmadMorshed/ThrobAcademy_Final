@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MXZeFTPeQrM=",
+  "dgSpecHash": "vfA+mvNE/7Y=",
   "success": true,
   "projectFilePath": "C:\\Users\\Ahmad Nakawa\\Desktop\\Throb - branch01\\ThropAcademy.Web\\ThropAcademy.Web.csproj",
   "expectedPackageFiles": [
@@ -81,7 +81,7 @@
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\serilog\\3.1.1\\serilog.3.1.1.nupkg.sha512",
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\serilog.sinks.console\\5.0.1\\serilog.sinks.console.5.0.1.nupkg.sha512",
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\serilog.sinks.file\\5.0.0\\serilog.sinks.file.5.0.0.nupkg.sha512",
-    "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\stripe.net\\49.1.0\\stripe.net.49.1.0.nupkg.sha512",
+    "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\stripe.net\\50.1.0\\stripe.net.50.1.0.nupkg.sha512",
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\system.clientmodel\\1.2.1\\system.clientmodel.1.2.1.nupkg.sha512",
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\system.codedom\\7.0.0\\system.codedom.7.0.0.nupkg.sha512",
     "C:\\Users\\Ahmad Nakawa\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",

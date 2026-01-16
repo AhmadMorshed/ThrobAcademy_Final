@@ -19,7 +19,6 @@
           "Neuroglia.Serialization.NewtonsoftJson": "4.21.0",
           "Newtonsoft.Json": "13.0.3",
           "OpenAI": "2.1.0",
-          "Stripe.net": "49.1.0",
           "Throb.Service": "1.0.0",
           "UnitsNet.Serialization.JsonNet": "5.50.0",
           "Whisper.net": "1.8.1"
@@ -999,15 +998,15 @@
           }
         }
       },
-      "Stripe.net/49.1.0": {
+      "Stripe.net/50.1.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
           "System.Configuration.ConfigurationManager": "8.0.0"
         },
         "runtime": {
           "lib/net8.0/Stripe.net.dll": {
-            "assemblyVersion": "49.1.0.0",
-            "fileVersion": "49.1.0.0"
+            "assemblyVersion": "50.1.0.0",
+            "fileVersion": "50.1.0.0"
           }
         }
       },
@@ -1322,6 +1321,7 @@
           "Microsoft.AspNetCore.Authentication.Google": "8.0.0",
           "Neuroglia.Serialization.NewtonsoftJson": "4.21.0",
           "OpenAI": "2.1.0",
+          "Stripe.net": "50.1.0",
           "Throb.Repository": "1.0.0",
           "UnitsNet.Serialization.JsonNet": "5.50.0",
           "Whisper.net": "1.8.1"
@@ -1880,12 +1880,12 @@
       "path": "serilog.sinks.file/5.0.0",
       "hashPath": "serilog.sinks.file.5.0.0.nupkg.sha512"
     },
-    "Stripe.net/49.1.0": {
+    "Stripe.net/50.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2mNAPVnaocI5Ub1QsG5UqLMd7HduFa3vKazybeqKwOFWLMkck974MDgiDuvEjM/UHXHLLD9oH2uPPpJM9rJ+8w==",
-      "path": "stripe.net/49.1.0",
-      "hashPath": "stripe.net.49.1.0.nupkg.sha512"
+      "sha512": "sha512-q6mc5CngdCLEWNHpFaa2NEOml/3cZ5jTDp1R7iHNbYHkGX5h0TmDa3theILyVTd2yOH9HqLmeeJMCpCwUeDy0A==",
+      "path": "stripe.net/50.1.0",
+      "hashPath": "stripe.net.50.1.0.nupkg.sha512"
     },
     "System.ClientModel/1.2.1": {
       "type": "package",

@@ -29,7 +29,7 @@ namespace Throb.Service.Services
 
         public async Task<List<Course>> GetAllCoursesForSelectionAsync() => await _repository.GetAllCoursesAsync();
 
-        // تعديل لجلب الأسئلة مع خياراتها من المستودع
+      
         public async Task<List<Question>> GetQuestionsByCourseAsync(int courseId) => await _repository.GetQuestionsByCourseIdAsync(courseId);
 
         public async Task<string> GenerateAndStoreQuestionsAsync(string transcript, string type, int courseId)
@@ -62,7 +62,7 @@ namespace Throb.Service.Services
                         Difficulty = "Medium",
                         CreatedAt = DateTime.Now,
                         IsManual = false,
-                        // إضافة الخيارات تلقائياً للسؤال ليتم حفظها في جدول QuestionOptions
+                        
                         Options = qObj.Options?.Select(optText => new QuestionOption
                         {
                             OptionText = optText.Trim()
@@ -86,7 +86,7 @@ namespace Throb.Service.Services
             var apiKey = _configuration["OpenRouterApiKey"];
             var client = _httpClientFactory.CreateClient();
 
-            // إجبار الـ AI على إرسال مصفوفة خيارات للـ MCQ
+
             string structure = type.Equals("MCQ", StringComparison.OrdinalIgnoreCase)
                 ? "{\"questions\": [{\"text\": \"السؤال؟\", \"options\": [\"خيار 1\", \"خيار 2\", \"خيار 3\", \"خيار 4\"], \"answer\": \"النص المطابق للإجابة الصحيحة\"}]}"
                 : "{\"questions\": [{\"text\": \"السؤال؟\", \"answer\": \"True/False\"}]}";
@@ -123,15 +123,15 @@ namespace Throb.Service.Services
         }
         public async Task<Question> GetQuestionByIdAsync(int id)
         {
-            // افترض أنك تستخدم Repository أو DbContext مباشرة
+            
             return await _repository.GetByIdAsync(id);
-            // أو: return await _context.Questions.FindAsync(id);
+          
         }
         public class AiDetailedResponse { public List<AiQuestionItem> Questions { get; set; } }
         public class AiQuestionItem
         {
             public string Text { get; set; }
-            public List<string> Options { get; set; } // لاستقبال قائمة الـ 4 خيارات
+            public List<string> Options { get; set; } 
             public string Answer { get; set; }
         }
     }

@@ -30,14 +30,35 @@ namespace ThropAcademy.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AvailableExams()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // 1. الحصول على الـ UserName للمستخدم الحالي
+            var currentUserName = User.Identity.Name;
 
-            // جلب كل الاختبارات المتاحة
-            var exams = await _examService.GetAllAsync();
+            // 2. البحث عن الطالب بمطابقة اسمه مع الـ UserName
+            var student = await _context.Students
+                .FirstOrDefaultAsync(s => s.Name == currentUserName);
 
-            // جلب معرفات الاختبارات التي أتمها هذا الطالب لتظليلها أو قفلها في الواجهة
+            if (student == null)
+            {
+                return Content($"خطأ: لم يتم العثور على طالب باسم {currentUserName} في جدول الطلاب.");
+            }
+
+            // 3. جلب معرفات الكورسات المسجل بها الطالب (مثل الرقم 28)
+            var studentCourseIds = await _context.StudentCourses
+                .Where(sc => sc.StudentId == student.Id)
+                .Select(sc => sc.CourseId)
+                .ToListAsync();
+
+            // 4. جلب الاختبارات المتاحة
+            var exams = await _context.ExamRequestModels
+                .Include(e => e.Course)
+                .Include(e => e.ExamRequestQuestions)
+                .Where(e => studentCourseIds.Contains(e.CourseId))
+                .ToListAsync();
+
+            // 5. جلب الاختبارات المكتملة (باستخدام المعرف النصي لـ Identity)
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var completedExamIds = await _context.UserExamResults
-                .Where(r => r.UserId == userId)
+                .Where(r => r.UserId == identityUserId)
                 .Select(r => r.ExamRequestId)
                 .ToListAsync();
 
@@ -45,7 +66,6 @@ namespace ThropAcademy.Web.Controllers
 
             return View(exams);
         }
-
         // 2. دالة معاينة وبدء الاختبار (المدمجة والنهائية)
         [Authorize]
         public async Task<IActionResult> ExamPreview(int id)

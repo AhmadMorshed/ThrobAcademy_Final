@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<Throb.Data.Entities.Course>
-
 @{
     ViewData["Title"] = "Courses and Instructors";
-    // ❌ تم حذف تعريف متغيرات الألوان هنا ونقلها إلى CSS Custom Properties
+
+    // استلام القوائم المرسلة من الـ Controller للتحقق من علاقة المستخدم بالكورس
+    var enrolledIds = ViewBag.EnrolledCourseIds as List<int> ?? new List<int>();
+    var teachingIds = ViewBag.InstructorCourseIds as List<int> ?? new List<int>();
 }
 
-
-@* ⚠️ ملاحظة: يمكن دمج Font-Awesome في ملف _Layout.cshtml لتحميله مرة واحدة لكل الصفحات. *@
+@* تحميل أيقونات Font-Awesome *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
+@* شاشة التحميل *@
 <div id="loading-screen" class="loading-screen">
     <div class="loading-container">
         <i class="fas fa-book-open loading-book"></i>
@@ -16,6 +18,7 @@
     </div>
 </div>
 
+@* تنبيهات النجاح *@
 @if (TempData["RegistrationSuccess"] != null)
 {
     <div class="alert alert-success text-center">
@@ -23,12 +26,15 @@
     </div>
 }
 
+@* رأس الصفحة *@
 <div class="text-center course-header">
     <h1 class="display-4 animated-title">Available Courses</h1>
     <p class="lead animated-description">Explore the courses offered by our skilled instructors.</p>
     <div class="header-buttons">
-        <a href="@Url.Action("Login", "Account")" class="btn btn-header-action">Log In</a>
-
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a href="@Url.Action("Login", "Account")" class="btn btn-header-action">Log In</a>
+        }
     </div>
 </div>
 
@@ -36,6 +42,11 @@
     <div class="row">
         @foreach (var course in Model)
         {
+            // تحديد حالة المستخدم الحالي بالنسبة لهذا الكورس
+            bool isStudentInCourse = enrolledIds.Contains(course.Id);
+            bool isInstructorOfCourse = teachingIds.Contains(course.Id);
+            bool isAnyInstructor = User.IsInRole("Instructor");
+
             <div class="col-md-4 mb-4">
                 <div class="card shadow-lg rounded-lg course-card">
                     <div class="card-body">
@@ -44,7 +55,6 @@
                         </div>
 
                         <h5 class="card-title text-center font-weight-bold text-purple">@course.Name</h5>
-
                         <p class="card-text text-muted text-center mb-3">@course.Description</p>
 
                         <div class="instructor-section d-flex align-items-baseline flex-wrap">
@@ -57,22 +67,58 @@
                             </ul>
                         </div>
 
-                        <h6 class="course-price">Price: @course.CoursePrice.ToString("C")</h6>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="@Url.Action("Details", "Course", new { id = course.Id })" class="btn btn-details btn-sm"><i class="fas fa-eye" ></i> Details</a>
-
-                            @if (!User.Identity.IsAuthenticated)
+                        @* قسم عرض السعر والحالة بناءً على نوع المستخدم *@
+                        <div class="status-price-section mt-3 text-center">
+                            @if (isInstructorOfCourse)
                             {
-                                <a href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("JoinCourse", "Home", new { courseId = course.Id }) })" class="btn btn-action btn-sm">
-                                    <i class="fas fa-sign-in-alt"></i> Login & Join Course
+                                <h6 class="course-price text-info"><i class="fas fa-user-shield"></i> Course Manager</h6>
+                            }
+                            else if (isStudentInCourse)
+                            {
+                                <h6 class="course-price text-success"><i class="fas fa-check-circle"></i> Already Enrolled</h6>
+                            }
+                            else if (!isAnyInstructor)
+                            {
+                                @* السعر يظهر فقط للطالب أو الزائر وليس لأي مدرب *@
+                                <h6 class="course-price">Price: @course.CoursePrice.ToString("C")</h6>
+                            }
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            @* زر التفاصيل متاح للجميع *@
+                            <a href="@Url.Action("Details", "Course", new { id = course.Id })" class="btn btn-details btn-sm">
+                                <i class="fas fa-eye"></i> Details
+                            </a>
+
+                            @if (isInstructorOfCourse)
+                            {
+                                @* إذا كان هو المدرب المشرف على هذا الكورس *@
+                                <a href="@Url.Action("Index", "DriveSession", new { courseId = course.Id })" class="btn btn-action btn-sm">
+                                    <i class="fas fa-tasks"></i> Manage Content
                                 </a>
                             }
-                            else
+                            else if (isStudentInCourse)
                             {
-                                <a href="@Url.Action("Register", "Home", new { courseId = course.Id })" class="btn btn-action btn-sm">
-                                    <i class="fas fa-user-plus"></i> Join Course
+                                @* إذا كان طالب مسجل بالفعل *@
+                                <a href="@Url.Action("Index", "DriveSession", new { courseId = course.Id })" class="btn btn-success btn-sm text-white">
+                                    <i class="fas fa-play-circle"></i> Watch Now
                                 </a>
+                            }
+                            else if (!isAnyInstructor)
+                            {
+                                @* إذا كان زائراً أو طالباً غير مسجل (يمنع المدرب من رؤية أزرار الانضمام) *@
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <a href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("Register", "Home", new { courseId = course.Id }) })" class="btn btn-action btn-sm">
+                                        <i class="fas fa-sign-in-alt"></i> Login & Join
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Register", "Home", new { courseId = course.Id })" class="btn btn-action btn-sm">
+                                        <i class="fas fa-user-plus"></i> Join Course
+                                    </a>
+                                }
                             }
                         </div>
                     </div>
@@ -81,10 +127,10 @@
         }
     </div>
 </div>
-@* 🟢 ربط ملف CSS الخارجي *@
+
+@* ربط ملفات التنسيق والسكربت الخارجية *@
 <link rel="stylesheet" href="~/css/Home/Index.css" />
 
 @section Scripts {
-    @* 🟢 ربط ملف JavaScript الخارجي *@
     <script src="~/js/Home/Index.js"></script>
 }

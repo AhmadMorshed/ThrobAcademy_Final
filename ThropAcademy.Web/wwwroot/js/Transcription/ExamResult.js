@@ -1,22 +1,17 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
-    const progressEl = document.querySelector(".circular-progress-modern");
-    const percentNumber = document.querySelector(".percent-number");
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const progressCircle = document.getElementById('progressCircle');
 
-    if (progressEl && percentNumber) {
-        const target = parseFloat(progressEl.getAttribute("data-percent"));
-        let current = 0;
-        const duration = 1500; // مدة أطول قليلاً لجمالية الحركة
-        const stepTime = 15;
-        const increment = target / (duration / stepTime);
+    if (progressCircle) {
+        // الحصول على النسبة من خاصية data-pct
+        const percentage = parseFloat(progressCircle.getAttribute('data-pct'));
 
-        const counter = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                percentNumber.innerText = target + "%";
-                clearInterval(counter);
-            } else {
-                percentNumber.innerText = Math.ceil(current) + "%";
-            }
-        }, stepTime);
+        // حساب الـ Offset (المحيط هو 565.48)
+        const circumference = 565.48;
+        const offset = circumference - (percentage / 100) * circumference;
+
+        // تفعيل الانيميشن بعد تأخير بسيط لجعل التأثير ملحوظاً
+        setTimeout(() => {
+            progressCircle.style.strokeDashoffset = offset;
+        }, 300);
     }
 });

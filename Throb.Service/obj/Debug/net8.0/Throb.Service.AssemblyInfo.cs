@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Throb.Service")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e78a0c41d426c1167e3e3c978da460ee63257bd2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae365e1b5ea76636bad9b03486f71ca48b4a79bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("Throb.Service")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Throb.Service")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

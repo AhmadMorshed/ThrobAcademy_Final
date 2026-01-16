@@ -18,7 +18,6 @@ namespace Throb.Service.Services
         private readonly IDriveSessionRepository _driveSessionRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly IConfiguration _configuration;
-        // 🛡️ استخدام المسار المحمي خارج wwwroot
         private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "ProtectedVideos");
         private readonly ILogger<DriveSessionService> _logger;
 

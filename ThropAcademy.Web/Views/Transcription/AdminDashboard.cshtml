@@ -1,226 +1,251 @@
 ﻿@model IEnumerable<Throb.Data.Entities.UserExamResult>
 @{
-    ViewData["Title"] = "لوحة تحكم الإدارة";
-    var namesMap = ViewBag.CourseNames as Dictionary<int, string>;
+    ViewData["Title"] = "لوحة التحكم الذكية";
 
-    // حسابات إحصائية سريعة لضمان عدم حدوث خطأ تقسيم على صفر
-    var totalExams = ViewBag.TotalExams ?? 0;
+    // 1. استلام قاموس الأسماء من الكنترولر
+    var namesMap = ViewBag.CourseNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+
+    // 2. تجميع البيانات حسب الطالب (المنطق الجوهري)
+    var groupedByStudent = Model.GroupBy(res => res.UserId).Select(g => new
+    {
+        UserId = g.Key,
+        User = g.First().User,
+        Exams = g.OrderByDescending(x => x.CompletedAt).ToList(),
+        AvgScore = Math.Round(g.Average(x => x.ScorePercentage), 1),
+        Count = g.Count()
+    }).ToList();
 }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="container-fluid py-4 px-md-5" style="direction: rtl; text-align: right; background-color: #f8fafc;">
+
+    @* --- قسم الإحصائيات العلوية --- *@
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-primary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">إجمالي الاختبارات</span>
+                        <h3 class="fw-bold mb-0">@ViewBag.TotalExams</h3>
+                    </div>
+                    <div class="stat-icon bg-primary-subtle text-primary"><i class="bi bi-pencil-square"></i></div>
+                </div>
+            </div>
+        </div>
+        @* بقية كروت الإحصائيات تظل كما هي لجمال التصميم... *@
+        <div class="col-md-3">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-success">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">نسبة النجاح</span>
+                        <h3 class="fw-bold mb-0 text-success">@ViewBag.PassRate%</h3>
+                    </div>
+                    <div class="stat-icon bg-success-subtle text-success"><i class="bi bi-graph-up-arrow"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-info">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">متوسط الدرجات</span>
+                        <h3 class="fw-bold mb-0 text-info">@ViewBag.AverageScore%</h3>
+                    </div>
+                    <div class="stat-icon bg-info-subtle text-info"><i class="bi bi-person-check"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-warning">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">أعلى درجة</span>
+                        <h3 class="fw-bold mb-0 text-warning">@ViewBag.TopScore%</h3>
+                    </div>
+                    <div class="stat-icon bg-warning-subtle text-warning"><i class="bi bi-trophy"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold text-dark mb-4"><i class="bi bi-people me-2"></i> سجل أداء الطلاب ومنح الشهادات التراكمية</h4>
+
+    @* --- قائمة الطلاب (الأكورديون) --- *@
+    <div class="accordion border-0 shadow-sm rounded-4 overflow-hidden" id="studentAccordion">
+        @foreach (var student in groupedByStudent)
+        {
+            var accordionId = "student_" + student.UserId.Replace("-", "");
+
+            // التعديل: الأهلية تعتمد فقط على المعدل التراكمي (مثلاً 75% فما فوق)
+            bool isEligibleForCertificate = student.AvgScore >= 75;
+
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-4 px-4 bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#@accordionId">
+                        <div class="d-flex justify-content-between align-items-center w-100 ms-3">
+                            <div class="d-flex align-items-center">
+                                @* تمييز لون الأفاتار بناءً على حالة المعدل *@
+                                <div class="avatar-circle me-3" style="background: @(isEligibleForCertificate ? "linear-gradient(135deg, #f1c40f, #f39c12)" : "linear-gradient(135deg, #4e73df, #224abe)")">
+                                    @if (isEligibleForCertificate)
+                                    {
+                                        <i class="bi bi-award text-white"></i>
+                                    }
+                                    else
+                                    {
+
+                                        @student.User?.UserName?[0].ToString().ToUpper()
+                                    }
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">@student.User?.UserName?.Split('@')[0]</h6>
+                                    <small class="text-muted">@student.User?.Email</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-4 align-items-center me-auto">
+                                <div class="text-center px-3 border-start">
+                                    <span class="d-block small text-muted">المعدل التراكمي</span>
+                                    <span class="fw-bold @(isEligibleForCertificate ? "text-success" : "text-danger")">@student.AvgScore.ToString("0.0")%</span>
+                                </div>
+                                @if (isEligibleForCertificate)
+                                {
+                                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2"><i class="bi bi-patch-check-fill"></i> مؤهل للشهادة</span>
+                                }
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+
+                <div id="@accordionId" class="accordion-collapse collapse" data-bs-parent="#studentAccordion">
+                    <div class="accordion-body bg-light-subtle p-0">
+
+                        @* --- قسم منح الشهادة بناءً على المعدل --- *@
+                        <div class="mx-4 mt-4 p-4 rounded-4 shadow-sm border-0 d-flex justify-content-between align-items-center"
+                             style="background: @(isEligibleForCertificate ? "linear-gradient(90deg, #fff9e6 0%, #ffffff 100%)" : "#f8f9fa"); border-right: 5px solid @(isEligibleForCertificate ? "#f1c40f" : "#dee2e6") !important;">
+                            <div>
+                                <h5 class="fw-bold @(isEligibleForCertificate ? "text-dark" : "text-muted")">
+                                    <i class="bi @(isEligibleForCertificate ? "bi-award-fill text-warning" : "bi-lock") me-2"></i>
+                                    شهادة الكفاءة العامة
+                                </h5>
+                                <p class="mb-0 text-muted small">
+                                    @if (isEligibleForCertificate)
+                                    {
+                                        <span>تهانينا! حقق الطالب معدلاً تراكمياً ممتازاً (@student.AvgScore%) يؤهله لشهادة التخرج.</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span>يتطلب إصدار الشهادة معدل تراكمي 75% على الأقل. معدل الطالب الحالي هو @student.AvgScore%</span>
+                                    }
+                                </p>
+                            </div>
+
+                            @if (isEligibleForCertificate)
+                            {
+                                @* يتم تمرير UserId هنا لإصدار شهادة واحدة بناءً على متوسط كل نتائجه *@
+                                <a asp-action="DownloadMasterCertificate" asp-route-userId="@student.UserId" class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm">
+                                    <i class="bi bi-printer-fill me-2"></i> طباعة الشهادة الملكية
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-secondary btn-sm rounded-pill px-4 disabled">غير مؤهل حالياً</button>
+                            }
+                        </div>
+
+                        @* جدول الاختبارات التفصيلي للمراجعة فقط *@
+                        <div class="table-responsive p-4">
+                            <h6 class="text-muted mb-3 fw-bold small"><i class="bi bi-list-check me-1"></i> تفاصيل المحاولات السابقة:</h6>
+                            <table class="table table-hover align-middle bg-white rounded-3 overflow-hidden">
+                                <thead class="table-light">
+                                    <tr class="small text-muted">
+                                        <th class="ps-4">الدورة</th>
+                                        <th>النتيجة</th>
+                                        <th>الحالة</th>
+                                        <th>التاريخ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var exam in student.Exams)
+                                    {
+                                        <tr>
+                                            <td class="ps-4 fw-bold">@(namesMap.ContainsKey(exam.CourseId) ? namesMap[exam.CourseId] : "دورة #" + exam.CourseId)</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="fw-bold">@exam.ScorePercentage.ToString("0")%</span>
+                                                    <div class="progress" style="width: 60px; height: 4px;">
+                                                        <div class="progress-bar @(exam.ScorePercentage >= 70 ? "bg-success" : "bg-danger")" style="width: @exam.ScorePercentage%"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if (exam.ScorePercentage >= 70)
+                                                {
+                                                    <span class="badge bg-success-subtle text-success">ناجح</span>
+                                                }
+                                                else
+                                                {
+
+                                                    <span class="badge bg-danger-subtle text-danger">لم ينجح</span>
+                                                }
+                                            </td>
+                                            <td class="small text-muted">@exam.CompletedAt.ToString("yyyy/MM/dd")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 <style>
-    .admin-card {
-        border-radius: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* تم الحفاظ على استايلاتك السابقة مع إضافة لمسات الألوان الذهبية */
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        color: white;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+
+    .stat-card {
+        transition: all 0.3s ease;
         border: none;
     }
 
-        .admin-card:hover {
+        .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
         }
 
-    .table-hover-custom tbody tr {
-        transition: all 0.2s ease;
-        border-bottom: 1px solid #f1f5f9 !important;
-    }
-
-        .table-hover-custom tbody tr:hover {
-            background-color: #f8faff !important;
-        }
-
-    .status-badge {
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .progress-mini {
-        height: 6px;
+    .stat-icon {
+        width: 45px;
+        height: 45px;
         border-radius: 10px;
-        background-color: #eee;
-        overflow: hidden;
-        margin-top: 4px;
-        width: 100px;
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
     }
 
-    .avatar-circle {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 0.9rem;
+    .accordion-button::after {
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #fffdf7 !important;
+        color: #d4ac0d;
+        box-shadow: none;
+    }
+
+    .bg-light-subtle {
+        background-color: #fcfdfe;
     }
 </style>
-
-<div class="container-fluid py-4" style="direction: rtl; background-color: #f4f7fe; min-height: 100vh; text-align: right;">
-    <div class="mb-4 text-end">
-        <h3 class="fw-bold text-dark">لوحة تحكم الأداء العام</h3>
-        <p class="text-muted">مراقبة نتائج الطلاب وإحصائيات الاختبارات الذكية</p>
-    </div>
-
-    @* --- بطاقات الإحصائيات --- *@
-    <div class="row g-4 mb-5">
-        <div class="col-md-3">
-            <div class="card admin-card shadow-sm p-3">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="bg-primary-subtle p-3 rounded-3 text-primary"><i class="bi bi-people-fill fs-3"></i></div>
-                    <div class="text-end">
-                        <h6 class="text-muted mb-0 small">إجمالي الاختبارات</h6>
-                        <h4 class="fw-bold mb-0">@ViewBag.TotalExams</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card admin-card shadow-sm p-3">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="bg-success-subtle p-3 rounded-3 text-success"><i class="bi bi-graph-up-arrow fs-3"></i></div>
-                    <div class="text-end">
-                        <h6 class="text-muted mb-0 small">نسبة النجاح</h6>
-                        <h4 class="fw-bold mb-0">@ViewBag.PassRate%</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card admin-card shadow-sm p-3">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="bg-warning-subtle p-3 rounded-3 text-warning"><i class="bi bi-star-fill fs-3"></i></div>
-                    <div class="text-end">
-                        <h6 class="text-muted mb-0 small">متوسط الدرجات</h6>
-                        <h4 class="fw-bold mb-0">@ViewBag.AverageScore%</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card admin-card shadow-sm p-3">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="bg-danger-subtle p-3 rounded-3 text-danger"><i class="bi bi-trophy fs-3"></i></div>
-                    <div class="text-end">
-                        <h6 class="text-muted mb-0 small">أعلى درجة</h6>
-                        <h4 class="fw-bold mb-0">@ViewBag.TopScore%</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @* --- جدول النتائج --- *@
-    <div class="card border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
-        <div class="card-header bg-white border-0 p-4 d-flex justify-content-between align-items-center">
-            <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-light border"><i class="bi bi-filter me-1"></i> تصفية</button>
-            </div>
-            <h5 class="fw-bold mb-0 text-dark">آخر المحاولات المسجلة</h5>
-        </div>
-        <div class="table-responsive px-4 pb-4">
-            <table class="table table-borderless align-middle text-end table-hover-custom">
-                <thead class="text-muted" style="background-color: #f9fbfd;">
-                    <tr>
-                        <th class="py-3 px-3">المستخدم</th>
-                        <th>اسم الدورة</th>
-                        <th>نوع الامتحان</th>
-                        <th>النسبة المئوية</th>
-                        <th>التاريخ والوقت</th>
-                        <th>الحالة التقديرية</th>
-                        <th class="text-center">الشهادة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        @foreach (var res in Model)
-                        {
-                            <tr>
-                                <td class="py-3 px-3">
-                                    <div class="d-flex align-items-center justify-content-end">
-                                        <div class="text-end me-3">
-                                            <div class="fw-bold text-dark" style="font-size: 0.9rem;">@res.UserId</div>
-                                            <small class="text-muted" style="font-size: 0.75rem;">ID: #@res.Id</small>
-                                        </div>
-                                        <div class="avatar-circle bg-primary-subtle text-primary">
-                                            @(!string.IsNullOrEmpty(res.UserId) ? res.UserId.Substring(0, 1).ToUpper() : "U")
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    @{
-                                        var courseDisplayName = namesMap != null && namesMap.ContainsKey(res.CourseId)
-                                        ? namesMap[res.CourseId]
-                                        : "دورة #" + res.CourseId;
-                                    }
-                                    <span class="fw-semibold text-dark">@courseDisplayName</span>
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3">
-                                        @res.ExamType
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-column align-items-end">
-                                        <span class="fw-bold @(res.ScorePercentage >= 70 ? "text-success" : "text-danger")">
-                                            @res.ScorePercentage%
-                                        </span>
-                                        <div class="progress-mini">
-                                            <div class="progress-bar @(res.ScorePercentage >= 70 ? "bg-success" : "bg-danger")"
-                                                 style="width: @res.ScorePercentage%"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-muted small">
-                                        <i class="bi bi-calendar3 me-1"></i> @res.CompletedAt.ToString("yyyy/MM/dd")<br />
-                                        <i class="bi bi-clock me-1"></i> @res.CompletedAt.ToString("HH:mm")
-                                    </div>
-                                </td>
-                                <td>
-                                    @if (res.ScorePercentage >= 70)
-                                    {
-                                        <span class="status-badge bg-success-subtle text-success border border-success-subtle">
-                                            <i class="bi bi-check-circle-fill ms-1"></i> ناجح
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="status-badge bg-danger-subtle text-danger border border-danger-subtle">
-                                            <i class="bi bi-x-circle-fill ms-1"></i> راسب
-                                        </span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (res.ScorePercentage >= 80)
-                                    {
-                                        <a asp-action="DownloadCertificate" asp-route-resultId="@res.Id"
-                                           class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
-                                            <i class="bi bi-download me-1"></i> تحميل
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted small opacity-50">غير مؤهل</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
-                                لا توجد سجلات متاحة للعرض حالياً
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>

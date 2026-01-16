@@ -31,7 +31,7 @@ namespace Throb.Data.Entities
         public int CourseId { get; set; }
         [ForeignKey("CourseId")]
         public virtual Course? Course { get; set; }
-        [NotMapped] // هذه أهم خطوة لحل تعارض الـ Migration
+        [NotMapped] 
         public List<Question> Questions { get; set; } = new List<Question>();
 
         [NotMapped]

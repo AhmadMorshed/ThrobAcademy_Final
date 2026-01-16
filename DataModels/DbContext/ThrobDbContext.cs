@@ -48,7 +48,7 @@ namespace Throb.Data.DbContext
                 .WithMany(c => c.StudentCourses)
                 .HasForeignKey(sc => sc.CourseId);
 
-            // تكوين LiveSession
+            // تكوين LiveSession 
             modelBuilder.Entity<LiveSession>()
                 .HasOne(ls => ls.Course)
                 .WithOne(c => c.LiveSession)
@@ -98,7 +98,9 @@ namespace Throb.Data.DbContext
 
 
 
-
+            modelBuilder.Entity<InstructorCourse>().ToTable("InstructorCourse");
+            modelBuilder.Entity<StudentCourse>().ToTable("StudentCourses");
+            modelBuilder.Entity<InstructorCourse>().ToTable("InstructorCourse");
         }
 
         public DbSet<Student> Students { get; set; }
@@ -106,10 +108,9 @@ namespace Throb.Data.DbContext
         public DbSet<Course> Courses { get; set; }
         public DbSet<LiveSession> LiveSessions { get; set; }
         public DbSet<DriveSession> DriveSessions { get; set; }
-        public DbSet<Video> Videos { get; set; }
-        public DbSet<Pdf> Pdfs { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
+
         public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<InstructorCourse> InstructorCourses { get; set; }
         public DbSet<Question> Questions { get; set; } // تصحيح الاسم من "questions" إلى "Questions" (اتباع التسمية المناسبة)
         public DbSet<QuestionOption> QuestionOptions { get; set; } // تصحيح الاسم من "questionOptions" إلى "QuestionOptions"
         public DbSet<ExamRequestModel> ExamRequestModels { get; set; }

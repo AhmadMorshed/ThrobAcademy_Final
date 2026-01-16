@@ -341,25 +341,6 @@ namespace Throb.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Throb.Data.Entities.Assignment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Assignments");
-                });
-
             modelBuilder.Entity("Throb.Data.Entities.AttendanceLog", b =>
                 {
                     b.Property<int>("Id")
@@ -563,7 +544,7 @@ namespace Throb.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("InstructorCourse");
+                    b.ToTable("InstructorCourse", (string)null);
                 });
 
             modelBuilder.Entity("Throb.Data.Entities.LiveSession", b =>
@@ -605,27 +586,6 @@ namespace Throb.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("LiveSessions");
-                });
-
-            modelBuilder.Entity("Throb.Data.Entities.Pdf", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pdfs");
                 });
 
             modelBuilder.Entity("Throb.Data.Entities.Question", b =>
@@ -737,7 +697,7 @@ namespace Throb.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("StudentCourses");
+                    b.ToTable("StudentCourses", (string)null);
                 });
 
             modelBuilder.Entity("Throb.Data.Entities.UserExamResult", b =>
@@ -772,34 +732,15 @@ namespace Throb.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserExamResults");
-                });
-
-            modelBuilder.Entity("Throb.Data.Entities.Video", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Videos");
                 });
 
             modelBuilder.Entity("AttendanceRecord", b =>
@@ -1018,7 +959,20 @@ namespace Throb.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Throb.Data.Entities.ApplicationUser", "User")
+                        .WithMany("UserExamResults")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Throb.Data.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("UserExamResults");
                 });
 
             modelBuilder.Entity("Throb.Data.Entities.Course", b =>

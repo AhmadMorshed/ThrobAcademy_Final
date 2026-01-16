@@ -1,310 +1,86 @@
 ﻿@model Throb.Data.Entities.UserExamResult
 @{
     ViewData["Title"] = "نتيجتك - Throb Academy";
-
-    // الاعتماد على الموديل مباشرة مع توفير قيم احتياطية
-    double percentage = Model?.ScorePercentage ?? 0;
+    double percentage = Math.Round(Model?.ScorePercentage ?? 0, 1);
     int correctAnswers = Model?.CorrectAnswers ?? 0;
     int totalQuestions = Model?.TotalQuestions ?? 0;
     bool isPassed = percentage >= 70;
 
-    // تحديد اللون الأساسي بناءً على النتيجة
-    string themeColor = isPassed ? "#10b981" : "#ef4444";
-    string secondaryColor = isPassed ? "#059669" : "#dc2626";
+    // فئات CSS بناءً على الحالة
+    string statusClass = isPassed ? "status-pass" : "status-fail";
 }
-
-<div class="result-container" dir="rtl">
-    <div class="result-glass-card animate-scale-in">
-
-        @* الهيدر العلوي: شعار وحالة الاختبار *@
-        <div class="result-header p-4 d-flex justify-content-between align-items-center">
-            <div class="brand-info text-end">
-                <h5 class="fw-bold mb-0 text-primary">THROB <span class="text-dark">ACADEMY</span></h5>
-                <small class="text-muted">التقرير الذكي لنتائج الاختبارات</small>
-            </div>
-            <div class="exam-type-badge shadow-sm">@Model?.ExamType</div>
-        </div>
-
-        <div class="row g-0 border-top">
-            @* القسم الأيمن (بسبب RTL): العداد والنتيجة الرئيسية *@
-            <div class="col-lg-5 side-visual p-5 text-center border-start">
-                <div class="main-visual-wrapper">
-                    @* العداد الدائري المتطور *@
-                    <div class="modern-progress" style="--p:@((int)percentage); --c:@themeColor;">
-                        <div class="progress-inner">
-                            <span class="percentage-text">@percentage<small>%</small></span>
-                            <span class="status-text">@(isPassed ? "ناجح" : "راسب")</span>
-                        </div>
-                    </div>
-
-                    @* أيقونة الحالة العائمة *@
-                    <div class="floating-badge @(isPassed ? "badge-success" : "badge-danger")">
-                        <i class="bi @(isPassed ? "bi-check-all" : "bi-x-lg")"></i>
+<link href="~/css/Transcription/ExamResult.css" rel="stylesheet" />
+<div class="result-body @statusClass" dir="rtl">
+    <div class="premium-card animate-in">
+        <div class="row g-0">
+            <div class="col-lg-5 status-sidebar">
+                <div class="chart-container">
+                    <svg class="circular-chart" viewBox="0 0 220 220">
+                        <circle class="circle-bg" cx="110" cy="110" r="90"></circle>
+                        <circle class="circle-fill" id="progressCircle" cx="110" cy="110" r="90" data-pct="@percentage"></circle>
+                    </svg>
+                    <div class="chart-info">
+                        <h2>@percentage<small>%</small></h2>
+                        <div class="status-label">@(isPassed ? "نـاجـح" : "راسـب")</div>
                     </div>
                 </div>
 
-                <h3 class="mt-4 fw-bold" style="color: @secondaryColor">
-                    @(isPassed ? "مبروك! لقد أنجزتها" : "فرصة سعيدة في المرة القادمة")
-                </h3>
+                <div class="mt-4 text-center px-3">
+                    <h3 class="fw-bold mb-1 status-title">
+                        @(isPassed ? "مبارك لك النجاح!" : "فرصة سعيدة لاحقاً")
+                    </h3>
+                    <span class="text-muted small">@Model?.ExamType</span>
+                </div>
             </div>
 
-            @* القسم الأيسر: تحليل الأرقام *@
-            <div class="col-lg-7 data-panel p-5">
-                <div class="section-title mb-4 text-end">
-                    <h4 class="fw-bold mb-1">تحليل الأداء</h4>
-                    <div class="title-line ms-auto"></div>
+            <div class="col-lg-7 content-area">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0 text-dark">تحليل الأداء</h4>
+                    <span class="small text-muted"><i class="bi bi-calendar3 me-1"></i> @Model?.CompletedAt.ToString("yyyy/MM/dd")</span>
                 </div>
 
-                <div class="stats-modern-grid">
-                    <div class="stat-item shadow-sm">
-                        <div class="stat-icon bg-success-light"><i class="bi bi-patch-check"></i></div>
-                        <div class="stat-info text-end">
-                            <span class="stat-label">الإجابات الصحيحة</span>
-                            <span class="stat-value">@correctAnswers</span>
-                        </div>
-                    </div>
-                    <div class="stat-item shadow-sm">
-                        <div class="stat-icon bg-primary-light"><i class="bi bi-question-square"></i></div>
-                        <div class="stat-info text-end">
-                            <span class="stat-label">إجمالي الأسئلة</span>
-                            <span class="stat-value">@totalQuestions</span>
-                        </div>
-                    </div>
-                    <div class="stat-item shadow-sm">
-                        <div class="stat-icon bg-warning-light"><i class="bi bi-calendar3"></i></div>
-                        <div class="stat-info text-end">
-                            <span class="stat-label">تاريخ الاختبار</span>
-                            <span class="stat-value">@Model?.CompletedAt.ToString("dd/MM/yyyy")</span>
-                        </div>
-                    </div>
+                <div class="message-box">
+                    <i class="bi bi-info-circle-fill me-2 message-icon"></i>
+                    <span class="message-text">
+                        @(isPassed
+                                                ? "أداء متميز! لقد اجتزت الاختبار بنجاح. يمكنك الآن الانتقال للمرحلة التالية من مسارك التعليمي."
+                                                : "لا تجعل النتيجة تحبطك. الاختبار هو مجرد وسيلة لاكتشاف نقاط الضعف، ننصحك بمراجعة الوحدات التعليمية.")
+                    </span>
                 </div>
 
-                @* صندوق الملاحظات التفاعلي *@
-                <div class="feedback-card mt-4 @(isPassed ? "fb-pass" : "fb-fail")">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="fb-icon">
-                            <i class="bi @(isPassed ? "bi-stars" : "bi-lightbulb")"></i>
-                        </div>
-                        <div class="text-end">
-                            <p class="mb-0 fw-medium">
-                                @(isPassed
-                                                                ? "أداء متميز يعكس فهمك العميق للمحتوى. يمكنك الآن الانتقال للمرحلة التالية بنجاح."
-                                                                : "لا تقلق، هذا الاختبار مجرد خطوة للتعلم. نوصي بمراجعة الموضوعات التي واجهت فيها صعوبة.")
-                            </p>
-                        </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <div class="item-icon"><i class="bi bi-check2-all"></i></div>
+                        <div class="item-label">الإجابات الصحيحة</div>
+                        <div class="item-value">@correctAnswers من @totalQuestions</div>
+                    </div>
+                    <div class="bento-item">
+                        <div class="item-icon"><i class="bi bi-bar-chart-line"></i></div>
+                        <div class="item-label">مستوى الأداء</div>
+                        <div class="item-value">@(percentage >= 90 ? "امتياز" : percentage >= 70 ? "جيد جداً" : "يحتاج تحسين")</div>
+                    </div>
+                    <div class="bento-item">
+                        <div class="item-icon"><i class="bi bi-clock"></i></div>
+                        <div class="item-label">وقت الإكمال</div>
+                        <div class="item-value">@Model?.CompletedAt.ToString("HH:mm tt")</div>
+                    </div>
+                    <div class="bento-item">
+                        <div class="item-icon"><i class="bi bi-trophy"></i></div>
+                        <div class="item-label">الرتبة المحققة</div>
+                        <div class="item-value">@(isPassed ? "طالب متفوق" : "طالب مكافح")</div>
                     </div>
                 </div>
 
-                @* أزرار التحكم *@
-                <div class="actions-group mt-5 d-flex gap-3">
-                    <button onclick="window.print()" class="btn-premium-print flex-grow-1 shadow-sm">
-                        <i class="bi bi-printer me-2"></i> طباعة النتيجة
+                <div class="btn-stack mt-4">
+                    <button onclick="window.print()" class="btn-print">
+                        <i class="bi bi-printer me-2"></i> طباعة التقرير
                     </button>
-                    <a href="/" class="btn-premium-home shadow-sm">
+                    <a href="/" class="btn-home">
                         <i class="bi bi-house-door"></i>
                     </a>
                 </div>
             </div>
         </div>
     </div>
+    <script src="~/js/Transcription/ExamResult.js" asp-append-version="true"></script>
 </div>
-
-@section Styles {
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
-            --glass-bg: rgba(255, 255, 255, 0.98);
-        }
-
-        .result-container {
-            min-height: 100vh;
-            background: #f1f5f9;
-            padding: 40px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        .result-glass-card {
-            background: var(--glass-bg);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 950px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-        }
-
-        .exam-type-badge {
-            background: #eef2ff;
-            color: #4f46e5;
-            padding: 6px 16px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* العداد الدائري */
-        .modern-progress {
-            --size: 200px;
-            width: var(--size);
-            height: var(--size);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: radial-gradient(closest-side, white 82%, transparent 0 99.9%, white 0), conic-gradient(var(--c) calc(var(--p) * 1%), #f1f5f9 0);
-            position: relative;
-        }
-
-        .percentage-text {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .status-text {
-            color: #64748b;
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .floating-badge {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.4rem;
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        .stats-modern-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-        }
-
-        .stat-item {
-            background: white;
-            padding: 16px;
-            border-radius: 18px;
-            border: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: 0.3s ease;
-        }
-
-            .stat-item:hover {
-                transform: translateY(-3px);
-                border-color: #cbd5e1;
-            }
-
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .feedback-card {
-            padding: 20px;
-            border-radius: 18px;
-            border-right: 5px solid;
-        }
-
-        .fb-pass {
-            background: #f0fdf4;
-            border-color: #10b981;
-            color: #166534;
-        }
-
-        .fb-fail {
-            background: #fef2f2;
-            border-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .btn-premium-print {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-            .btn-premium-print:hover {
-                background: #334155;
-            }
-
-        .btn-premium-home {
-            background: #f1f5f9;
-            color: #475569;
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .title-line {
-            height: 3px;
-            width: 35px;
-            background: #4f46e5;
-            border-radius: 2px;
-        }
-
-        keyframes floating {
-            0%, 100%
-
-        {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-8px);
-        }
-
-        }
-
-       keyframes scale-in {
-            from
-
-        {
-            opacity: 0;
-            transform: scale(0.97);
-        }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        }
-
-        .animate-scale-in {
-            animation: scale-in 0.5s ease-out;
-        }
-
-        @@media (max-width: 991px) {
-            .side-visual {
-                border-start: none !important;
-                border-bottom: 1px solid #f1f5f9;
-            }
-        }
-    </style>
-}

@@ -1,0 +1,302 @@
+﻿@model Throb.Data.Entities.ApplicationUser
+@{
+    Layout = null;
+
+    // 1. استخراج اسم الطالب من البيانات الأساسية للمستخدم
+    string studentName = Model.UserName?.Split('@')[0] ?? "اسم المتدرب المتميز";
+
+    // 2. حساب المعدل التراكمي من قائمة النتائج المرتبطة
+    double avgScore = Model.UserExamResults?.Any() == true
+                      ? Model.UserExamResults.Average(x => x.ScorePercentage)
+                      : 0;
+
+    // 3. تحديد تاريخ منح الشهادة (تاريخ آخر اختبار اجتازه)
+    var issueDate = Model.UserExamResults?.OrderByDescending(x => x.CompletedAt).FirstOrDefault()?.CompletedAt
+                    ?? DateTime.Now;
+
+    // 4. استخراج أسماء الكورسات التي اجتازها الطالب بنجاح (أكبر من أو يساوي 75)
+    // نستخدم Distinct لضمان عدم تكرار اسم الكورس إذا كان له أكثر من امتحان
+    var passedCourses = Model.UserExamResults?
+                             .Where(r => r.ScorePercentage >= 75 && r.Course != null)
+                             .Select(r => r.Course.Name)
+                             .Distinct()
+                             .ToList() ?? new List<string>();
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>الشهادة الملكية للتفوق - @studentName</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Cinzel:wght@600;800;900&family=Alex+Brush&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            background: #05070a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #d4af37, #f5e7a1);
+            color: #1a1c2c;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0,0,0,.4);
+        }
+
+        .certificate-shell {
+            width: 1050px;
+            height: 750px;
+            padding: 25px;
+            background: linear-gradient(135deg, #8a6d3b 0%, #e8d07a 45%, #b8860b 50%, #e8d07a 55%, #8a6d3b 100%);
+            border-radius: 15px;
+            box-shadow: 0 50px 100px rgba(0,0,0,.9);
+            position: relative;
+        }
+
+        .certificate {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            position: relative;
+            padding: 40px 70px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 4px double #d4af37;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
+
+            .certificate::after {
+                content: "✦";
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 30px;
+                color: #d4af37;
+            }
+
+            .certificate::before {
+                content: "✦";
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                font-size: 30px;
+                color: #d4af37;
+            }
+
+        .academy-name {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            color: #5d4a13;
+            font-size: 24px;
+            letter-spacing: 6px;
+        }
+
+        .main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 80px;
+            margin: 0;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #cfad4b 22%, #af8f33 50%, #6b5311 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mastery-badge {
+            display: inline-block;
+            padding: 5px 20px;
+            background: #1a1c2c;
+            color: #d4af37;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .student-name {
+            font-size: 60px;
+            font-weight: 900;
+            color: #1a1c2c;
+            margin: 10px 0;
+            border-bottom: 2px solid #eee;
+        }
+
+        .description {
+            font-size: 18px;
+            color: #444;
+            line-height: 1.4;
+            max-width: 85%;
+            margin: 0 auto;
+        }
+
+        .course-list-box {
+            font-size: 24px;
+            font-weight: 900;
+            color: #8c6d1f;
+            margin: 10px 0;
+            min-height: 35px;
+        }
+
+        .score-box {
+            margin: 10px auto;
+            width: fit-content;
+            padding: 8px 25px;
+            border: 2px solid #d4af37;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 22px;
+            color: #8c6d1f;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+
+        .footer-item {
+            width: 250px;
+            text-align: center;
+        }
+
+        .footer-date {
+            font-size: 18px;
+            font-weight: 900;
+            color: #333;
+        }
+
+        .seal-img {
+            width: 130px;
+            border-radius: 50%;
+            filter: sepia(0.5);
+        }
+
+        .signature-img {
+            font-family: 'Alex Brush', cursive;
+            font-size: 45px;
+            color: #1a1c2c;
+        }
+
+        .line {
+            height: 2px;
+            background: #d4af37;
+            margin: 8px 0;
+        }
+
+        .label {
+            font-size: 10px;
+            color: #999;
+            font-weight: bold;
+        }
+
+        @@media print {
+            body {
+                background: white;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .certificate-shell {
+                transform: scale(1);
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">
+        <i class="bi bi-patch-check-fill me-2"></i> تصدير الشهادة الملكية
+    </button>
+
+    <div class="certificate-shell">
+        <div class="certificate">
+
+            <div class="academy-name">THROB ACADEMY ELITE</div>
+
+            <div>
+                <div class="mastery-badge">GRAND MASTERY RECOGNITION</div>
+                <h1 class="main-title">ROYAL DIPLOMA</h1>
+            </div>
+
+            <div class="content-box">
+                <p style="font-size: 18px; margin-bottom: 5px;">تشهد إدارة الأكاديمية بأن المتدرب القدير / This is to certify that</p>
+                <div class="student-name">@studentName</div>
+
+                <p class="description">
+                    قد أتم بنجاح كافة المسارات التدريبية المقررة في:
+                </p>
+
+                @* عرض أسماء الكورسات هنا *@
+                <div class="course-list-box">
+                    @if (passedCourses.Any())
+                    {
+                        @string.Join(" & ", passedCourses)
+                    }
+                    else
+                    {
+                        <span>المسارات الأكاديمية المعتمدة</span>
+                    }
+                </div>
+
+                <p class="description" style="margin-top:5px;">
+                    وأظهر كفاءة استثنائية بمعدل تراكمي عام يعكس تفوقه العلمي والعملي.
+                </p>
+
+                <div class="score-box">
+                    المعدل التراكمي العام: @avgScore.ToString("0.0")%
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-item">
+                    <div class="footer-date">@issueDate.ToString("dd / MM / yyyy")</div>
+                    <div class="line"></div>
+                    <div class="label">تاريخ الاستحقاق / GRADUATION DATE</div>
+                </div>
+
+                <div class="footer-item">
+                    <img src="/Images/ima.jpg" class="seal-img" alt="Royal Seal">
+                </div>
+
+                <div class="footer-item">
+                    <span class="signature-img">Eng. Ahmed</span>
+                    <div class="line"></div>
+                    <div class="label">الاعتماد الأكاديمي / ACADEMIC APPROVAL</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Throb.Data.Entities.UserExamResult>
+
+<div class="table-responsive shadow-sm rounded-4 border bg-white">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+            <tr>
+                <th class="p-4">نوع الاختبار</th>
+                <th>التاريخ</th>
+                <th>الإجابات</th>
+                <th>النسبة</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var isPassed = item.ScorePercentage >= 70;
+                <tr>
+                    <td class="p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box ms-3 @(item.ExamType == "Final" ? "bg-primary-subtle" : item.ExamType == "Quiz" ? "bg-info-subtle" : "bg-warning-subtle")"
+                                 style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <i class="bi @(item.ExamType == "Final" ? "bi-mortarboard" : item.ExamType == "Quiz" ? "bi-lightning" : "bi-tools") text-dark"></i>
+                            </div>
+                            <span class="fw-bold">@item.ExamType</span>
+                        </div>
+                    </td>
+                    <td>@item.CompletedAt.ToString("yyyy/MM/dd")</td>
+                    <td>
+                        <span class="badge rounded-pill bg-light text-dark border">@item.CorrectAnswers من @item.TotalQuestions</span>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-bold me-2">@item.ScorePercentage%</span>
+                            <div class="progress flex-grow-1" style="height: 5px; width: 60px;">
+                                <div class="progress-bar @(isPassed ? "bg-success" : "bg-danger")" style="width: @item.ScorePercentage%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (isPassed)
+                        {
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">ناجح</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2">لم يجتز</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ExamResult", "Transcription", new { id = item.Id })" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                            <i class="bi bi-search ms-1"></i> التفاصيل
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

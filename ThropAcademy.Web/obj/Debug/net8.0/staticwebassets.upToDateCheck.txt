@@ -49,6 +49,7 @@ wwwroot\js\LiveSession\Index.js
 wwwroot\js\Shared\_Layout.js
 wwwroot\js\site.js
 wwwroot\js\Transcription\CreateExam.js
+wwwroot\js\Transcription\ExamPreview.js
 wwwroot\js\Transcription\ExamResult.js
 wwwroot\js\Transcription\QuestionBank.js
 wwwroot\js\Transcription\UploadMedia.js

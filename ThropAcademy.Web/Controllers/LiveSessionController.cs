@@ -9,6 +9,8 @@ using Throb.Service.Interfaces;
 using ThropAcademy.Web.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Throb.Data.DbContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace ThropAcademy.Web.Controllers
 {
@@ -17,43 +19,100 @@ namespace ThropAcademy.Web.Controllers
         private readonly ILiveSession _liveSessionService;
         private readonly ICourseService _courseService;
         private readonly IConfiguration _config;
+        private readonly ThrobDbContext _context;
 
-        public LiveSessionController(ILiveSession liveSessionService, ICourseService courseService, IConfiguration config)
+        public LiveSessionController(ILiveSession liveSessionService, ICourseService courseService, IConfiguration config,ThrobDbContext context)
         {
             _liveSessionService = liveSessionService;
             _courseService = courseService;
             _config = config;
+            _context = context;
         }
 
         [Authorize(Roles = "Admin,Instructor")]
 
-        
+
+        [Authorize(Roles = "Admin,Instructor")]
         [HttpGet]
-        public IActionResult Create() 
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Courses = _courseService.GetAll(); 
+            var currentUserName = User.Identity.Name;
+
+            if (User.IsInRole("Instructor") && !User.IsInRole("Admin"))
+            {
+                // جلب معرفات الكورسات التي يشرف عليها هذا المدرب فقط بناءً على اسمه
+                var instructorCourseIds = await _context.InstructorCourses
+                    .Include(ic => ic.Instructor)
+                    .Where(ic => ic.Instructor.Name == currentUserName)
+                    .Select(ic => ic.CourseId)
+                    .ToListAsync();
+
+                // وضع الكورسات المفلترة فقط في ViewBag
+                ViewBag.Courses = await _context.Courses
+                    .Where(c => instructorCourseIds.Contains(c.Id))
+                    .ToListAsync();
+            }
+            else
+            {
+                // إذا كان مسؤولاً (Admin)، تظهر له كل الكورسات
+                ViewBag.Courses = _courseService.GetAll();
+            }
+
             return View();
         }
-
-       
         [Authorize(Roles = "Admin,Instructor")]
 
+        [Authorize(Roles = "Admin,Instructor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Date,DurationMinutes,CourseId")] LiveSession session)
         {
+            var currentUserName = User.Identity.Name;
+
+            // 1. التحقق من صحة اختيار الكورس
             if (session.CourseId <= 0)
             {
                 ModelState.AddModelError("CourseId", "الرجاء اختيار كورس صالح من القائمة.");
             }
+
+            // 2. حماية إضافية: التأكد أن المدرب يملك صلاحية على الكورس المختار
+            if (User.IsInRole("Instructor") && !User.IsInRole("Admin"))
+            {
+                var isAuthorized = await _context.InstructorCourses
+                    .Include(ic => ic.Instructor)
+                    .AnyAsync(ic => ic.Instructor.Name == currentUserName && ic.CourseId == session.CourseId);
+
+                if (!isAuthorized)
+                {
+                    ModelState.AddModelError("CourseId", "ليس لديك صلاحية لإنشاء جلسة في هذا الكورس.");
+                }
+            }
+
+            // تنظيف ModelState من أي كائنات مرتبطة تلقائياً
             if (ModelState.ContainsKey("Course"))
             {
                 ModelState.Remove("Course");
             }
 
+            // 3. في حال وجود خطأ في البيانات، أعد تحميل الكورسات المفلترة فقط
             if (!ModelState.IsValid)
             {
-                ViewBag.Courses = _courseService.GetAll();
+                if (User.IsInRole("Instructor") && !User.IsInRole("Admin"))
+                {
+                    var instructorCourseIds = await _context.InstructorCourses
+                        .Include(ic => ic.Instructor)
+                        .Where(ic => ic.Instructor.Name == currentUserName)
+                        .Select(ic => ic.CourseId)
+                        .ToListAsync();
+
+                    ViewBag.Courses = await _context.Courses
+                        .Where(c => instructorCourseIds.Contains(c.Id))
+                        .ToListAsync();
+                }
+                else
+                {
+                    ViewBag.Courses = _courseService.GetAll();
+                }
                 return View(session);
             }
 
@@ -67,6 +126,7 @@ namespace ThropAcademy.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                // إنشاء الجلسة عبر الخدمة المخصصة (Zoom API)
                 var createdSession = await _liveSessionService.CreateZoomSessionAsync(session, masterEmail);
 
                 TempData["SuccessMessage"] = $"تم إنشاء جلسة Zoom بنجاح: {createdSession.Title}. الرابط تم حفظه.";
@@ -81,15 +141,63 @@ namespace ThropAcademy.Web.Controllers
                 TempData["ErrorMessage"] = $"حدث خطأ غير متوقع أثناء إنشاء الجلسة. {ex.Message}";
             }
 
-            ViewBag.Courses = _courseService.GetAll(); 
+            // إعادة تعبئة القائمة في حال فشل الاتصال بـ Zoom
+            if (User.IsInRole("Instructor") && !User.IsInRole("Admin"))
+            {
+                var instructorCourseIds = await _context.InstructorCourses
+                    .Include(ic => ic.Instructor)
+                    .Where(ic => ic.Instructor.Name == currentUserName)
+                    .Select(ic => ic.CourseId)
+                    .ToListAsync();
+
+                ViewBag.Courses = await _context.Courses
+                    .Where(c => instructorCourseIds.Contains(c.Id))
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.Courses = _courseService.GetAll();
+            }
+
             return View(session);
         }
-
-       
         public async Task<IActionResult> Index()
         {
-            var liveSessions = await _liveSessionService.GetAllAsync();
-            var courses = _courseService.GetAll(); 
+            var currentUserName = User.Identity.Name;
+            IEnumerable<LiveSession> liveSessions;
+            IEnumerable<Course> courses;
+
+            if (User.IsInRole("Instructor"))
+            {
+                // 1. جلب الكورسات التي يشرف عليها المدرب
+                var instructorCourseIds = await _context.InstructorCourses
+                    .Include(ic => ic.Instructor)
+                    .Where(ic => ic.Instructor.Name == currentUserName)
+                    .Select(ic => ic.CourseId)
+                    .ToListAsync();
+
+                courses = await _context.Courses.Where(c => instructorCourseIds.Contains(c.Id)).ToListAsync();
+                liveSessions = await _liveSessionService.GetAllAsync();
+                liveSessions = liveSessions.Where(ls => instructorCourseIds.Contains(ls.CourseId)).ToList();
+            }
+            else if (User.IsInRole("Student"))
+            {
+                // 2. جلب الكورسات التي سجل فيها الطالب
+                var studentCourseIds = await _context.StudentCourses
+                    .Include(sc => sc.Student)
+                    .Where(sc => sc.Student.Name == currentUserName)
+                    .Select(sc => sc.CourseId)
+                    .ToListAsync();
+
+                courses = await _context.Courses.Where(c => studentCourseIds.Contains(c.Id)).ToListAsync();
+                liveSessions = await _liveSessionService.GetAllAsync();
+                liveSessions = liveSessions.Where(ls => studentCourseIds.Contains(ls.CourseId)).ToList();
+            }
+            else // Admin
+            {
+                liveSessions = await _liveSessionService.GetAllAsync();
+                courses = _courseService.GetAll();
+            }
 
             var model = new LiveSessionViewModel
             {

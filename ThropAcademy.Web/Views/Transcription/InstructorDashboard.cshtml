@@ -1,0 +1,210 @@
+﻿@model IEnumerable<Throb.Data.Entities.UserExamResult>
+@{
+    ViewData["Title"] = "لوحة تحكم المدرب";
+
+    // 1. استلام قاموس الأسماء من الكنترولر (أسماء الكورسات)
+    var namesMap = ViewBag.CourseNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+
+    // 2. تجميع البيانات حسب الطالب لمراقبة أداء طلاب المدرب
+    var groupedByStudent = Model.GroupBy(res => res.UserId).Select(g => new
+    {
+        UserId = g.Key,
+        User = g.First().User,
+        Exams = g.OrderByDescending(x => x.CompletedAt).ToList(),
+        AvgScore = Math.Round(g.Average(x => x.ScorePercentage), 1),
+        Count = g.Count()
+    }).ToList();
+}
+
+<div class="container-fluid py-4 px-md-5" style="direction: rtl; text-align: right; background-color: #f8fafc;">
+
+    @* --- قسم الترحيب --- *@
+    <div class="mb-4">
+        <h2 class="fw-bold" style="color: #2D3192;">أهلاً بك، أيها المدرب 👋</h2>
+        <p class="text-muted">إليك نظرة شاملة على أداء طلابك في الدورات التي تشرف عليها.</p>
+    </div>
+
+    @* --- قسم الإحصائيات العلوية (نفس تصميم الأدمن) --- *@
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-primary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">إجمالي اختبارات طلابك</span>
+                        <h3 class="fw-bold mb-0">@ViewBag.TotalExams</h3>
+                    </div>
+                    <div class="stat-icon bg-primary-subtle text-primary"><i class="bi bi-journal-check"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-info">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">متوسط درجات الطلاب</span>
+                        <h3 class="fw-bold mb-0 text-info">@ViewBag.AverageScore%</h3>
+                    </div>
+                    <div class="stat-icon bg-info-subtle text-info"><i class="bi bi-graph-up"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card p-4 shadow-sm rounded-4 bg-white border-bottom border-4 border-warning">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted d-block mb-1">أعلى درجة محققة</span>
+                        <h3 class="fw-bold mb-0 text-warning">@ViewBag.TopScore%</h3>
+                    </div>
+                    <div class="stat-icon bg-warning-subtle text-warning"><i class="bi bi-star-fill"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- جدول أداء الطلاب (الأكورديون) --- *@
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold text-dark mb-0"><i class="bi bi-mortarboard me-2"></i> قائمة طلابك ونشاطهم</h4>
+        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">عدد الطلاب النشطين: @groupedByStudent.Count</span>
+    </div>
+
+    <div class="accordion border-0 shadow-sm rounded-4 overflow-hidden" id="instructorStudentAccordion">
+        @foreach (var student in groupedByStudent)
+        {
+            var accordionId = "instr_student_" + student.UserId.Replace("-", "");
+            bool isExcellent = student.AvgScore >= 85;
+
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-4 px-4 bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#@accordionId">
+                        <div class="d-flex justify-content-between align-items-center w-100 ms-3">
+                            <div class="d-flex align-items-center">
+                                @* أفاتار ملون بناءً على الأداء *@
+                                <div class="avatar-circle me-3" style="background: @(isExcellent ? "linear-gradient(135deg, #2ecc71, #27ae60)" : "linear-gradient(135deg, #6c757d, #495057)")">
+                                    @student.User?.UserName?[0].ToString().ToUpper()
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">@student.User?.UserName?.Split('@')[0]</h6>
+                                    <small class="text-muted">@student.User?.Email</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-4 align-items-center me-auto">
+                                <div class="text-center px-3 border-start">
+                                    <span class="d-block small text-muted">إجمالي المحاولات</span>
+                                    <span class="fw-bold text-primary">@student.Count</span>
+                                </div>
+                                <div class="text-center px-3 border-start border-end">
+                                    <span class="d-block small text-muted">المتوسط الحالي</span>
+                                    <span class="fw-bold @(student.AvgScore >= 70 ? "text-success" : "text-danger")">@student.AvgScore%</span>
+                                </div>
+                                @if (isExcellent)
+                                {
+                                    <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2"><i class="bi bi-lightning-fill"></i> طالب متميز</span>
+                                }
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+
+                <div id="@accordionId" class="accordion-collapse collapse" data-bs-parent="#instructorStudentAccordion">
+                    <div class="accordion-body bg-light-subtle p-4">
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle bg-white rounded-3 overflow-hidden shadow-sm">
+                                <thead class="table-light">
+                                    <tr class="small text-muted text-uppercase">
+                                        <th class="ps-4">الدورة التدريبية</th>
+                                        <th>العلامة</th>
+                                        <th>نوع الاختبار</th>
+                                        <th>التوقيت</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var exam in student.Exams)
+                                    {
+                                        <tr>
+                                            <td class="ps-4">
+                                                <span class="fw-bold text-dark">@(namesMap.ContainsKey(exam.CourseId) ? namesMap[exam.CourseId] : "دورة #" + exam.CourseId)</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="fw-bold @(exam.ScorePercentage >= 70 ? "text-success" : "text-danger")">@exam.ScorePercentage%</span>
+                                                    <div class="progress" style="width: 50px; height: 5px;">
+                                                        <div class="progress-bar @(exam.ScorePercentage >= 70 ? "bg-success" : "bg-danger")" style="width: @exam.ScorePercentage%"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-light text-dark border">@exam.ExamType</span></td>
+                                            <td class="small text-muted">@exam.CompletedAt.ToString("g")</td>
+                                            <td>
+                                                <a asp-action="ExamResult" asp-route-id="@exam.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                    <i class="bi bi-eye"></i> مراجعة
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    /* التنسيقات الأساسية المتوافقة مع داشبورد الأدمن */
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        color: white;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .stat-card {
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+        }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 1.4rem;
+    }
+
+    .accordion-button::after {
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9ff !important;
+        color: #2D3192;
+        box-shadow: none;
+    }
+
+    .bg-light-subtle {
+        background-color: #f8fafc;
+    }
+
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 10px;
+    }
+</style>

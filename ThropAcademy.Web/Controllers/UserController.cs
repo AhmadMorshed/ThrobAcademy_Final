@@ -65,44 +65,59 @@ namespace ThropAcademy.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
-            return await Details(id, "Update");
+            if (string.IsNullOrEmpty(id)) return NotFound();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            // التحويل اليدوي من ApplicationUser إلى UserUpdateViewModel
+            var model = new UserUpdateViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                LockoutEnabled = user.LockoutEnabled
+            };
+
+            return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(string? id, UserUpdateViewModel applicationUser)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(string id, UserUpdateViewModel model)
         {
-            if (id != applicationUser.Id)
-                return NotFound();
+            if (id != model.Id) return NotFound();
+
             if (ModelState.IsValid)
             {
-                try
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null) return NotFound();
+
+                // تحديث البيانات الأساسية
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.LockoutEnabled = model.LockoutEnabled;
+
+                // تحديث كلمة المرور إذا تم إدخال كلمة جديدة فقط
+                if (!string.IsNullOrEmpty(model.NewPassword))
                 {
-                    var user = await _userManager.FindByIdAsync(id);
-                    if (user is null)
-                        return NotFound();
-
-                    user.UserName = applicationUser.UserName;
-                   
-
-                    var result = await _userManager.UpdateAsync(user);
-
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User Update Successfully");
-                        return RedirectToAction("Index");
-
-                    }
-                    foreach (var item in result.Errors)
-                    {
-                        _logger.LogError(item.Description);
-                    }
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
                 }
-                catch (Exception ex)
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
                 {
-                    _logger.LogError(ex, "Error updating user: {Message}", ex.Message);
+                    _logger.LogInformation("User Updated Successfully");
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(applicationUser);
-
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(string id)

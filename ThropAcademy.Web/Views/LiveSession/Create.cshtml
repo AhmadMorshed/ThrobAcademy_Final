@@ -116,7 +116,6 @@
                         <input asp-for="Title" class="form-control form-control-modern" placeholder="أدخل عنوان الجلسة (الدرس)" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
-
                     @* 2. حقل الكورس المربوط *@
                     <div class="form-group mb-3">
                         <label asp-for="CourseId" class="form-label">ربط الجلسة بالكورس</label>
@@ -124,9 +123,14 @@
                             <option value="">-- اختر الكورس --</option>
                             @if (ViewBag.Courses != null)
                             {
-                                foreach (var course in ViewBag.Courses)
+                                @* تحويل ViewBag.Courses إلى قائمة صريحة لتجنب مشاكل النوع *@
+                                var courses = ViewBag.Courses as IEnumerable<Throb.Data.Entities.Course>;
+                                if (courses != null)
                                 {
-                                    <option value="@course.Id">@course.Name</option>
+                                    foreach (var course in courses)
+                                    {
+                                        <option value="@course.Id">@course.Name</option>
+                                    }
                                 }
                             }
                         </select>

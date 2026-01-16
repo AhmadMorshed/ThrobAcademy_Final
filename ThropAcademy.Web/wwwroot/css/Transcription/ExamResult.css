@@ -1,217 +1,183 @@
-﻿.result-horizontal-wrapper {
-    background: #f1f5f9;
+﻿/* Variables & Themes */
+:root {
+    --res-pass: #10b981;
+    --res-pass-soft: #f0fdf4;
+    --res-fail: #f43f5e;
+    --res-fail-soft: #fff1f2;
+}
+
+/* التحويل التلقائي للألوان */
+.status-pass {
+    --accent: var(--res-pass);
+    --accent-soft: var(--res-pass-soft);
+}
+
+.status-fail {
+    --accent: var(--res-fail);
+    --accent-soft: var(--res-fail-soft);
+}
+
+.result-body {
+    background-color: #f1f5f9;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    font-family: 'Cairo', sans-serif;
 }
 
-.result-main-card {
-    background: white;
-    border-radius: 30px;
-    overflow: hidden;
-    max-width: 950px;
+.premium-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     width: 100%;
-    border: none;
+    max-width: 950px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
 }
 
-/* الألواح الجانبية */
-.side-panel {
+/* Sidebar & Chart */
+.status-sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, var(--accent-soft) 100%);
+    padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-left: 1px solid #f1f5f9;
+}
+
+.chart-container {
     position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.circular-chart {
+    transform: rotate(-90deg);
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 8;
+}
+
+.circle-fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: 565.48; /* سيتغير بواسطة JS */
+    transition: stroke-dashoffset 1.5s ease-out;
+}
+
+.chart-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    direction: ltr;
+}
+
+    .chart-info h2 {
+        font-size: 3rem;
+        font-weight: 900;
+        margin: 0;
+        color: #1e293b;
+    }
+
+.status-label {
+    background: var(--accent);
     color: white;
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
 }
 
-.pass-bg {
-    background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
+/* Bento Grid */
+.content-area {
+    padding: 40px;
 }
 
-.fail-bg {
-    background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 100%);
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 25px 0;
 }
 
-/* الدائرة المحدثة */
-.circular-progress-modern {
-    --size: 200px;
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255,255,255,0.15) 85%, transparent 86%), conic-gradient(white calc(var(--p) * 1%), rgba(255,255,255,0.1) 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.inner-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.percent-number {
-    font-size: 3rem;
-    font-weight: 900;
-    line-height: 1;
-    color:black;
-}
-
-.inner-content .label {
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-/* البطاقات الصغيرة */
-.stats-grid {
-    display: flex;
-    gap: 15px;
-}
-
-.stat-card {
-    flex: 1;
+.bento-item {
     background: #f8fafc;
     padding: 20px;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.75rem;
-    color: #64748b;
-    margin-bottom: 5px;
-}
-
-.stat-value {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: 800;
-}
-
-/* أزرار الأكشن */
-.btn-action-primary {
-    background: #1e293b;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 15px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.3s;
-    text-align: center;
-}
-
-    .btn-action-primary:hover {
-        background: #0f172a;
-        transform: translateY(-3px);
-        color: white;
-    }
-
-.btn-action-secondary {
-    background: #f1f5f9;
-    color: #475569;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: none;
-    transition: 0.3s;
-}
-
-    .btn-action-secondary:hover {
-        background: #e2e8f0;
-    }
-
-/* التنبيهات */
-.feedback-box {
-    padding: 20px;
     border-radius: 18px;
-    border-right: 5px solid;
+    border: 1px solid #f1f5f9;
 }
 
-.fb-success {
-    background: #ecfdf5;
-    color: #065f46;
-    border-color: #10b981;
+.item-icon i {
+    color: var(--accent);
+    font-size: 1.2rem;
 }
 
-.fb-danger {
-    background: #fef2f2;
-    color: #991b1b;
-    border-color: #ef4444;
+.item-label {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
-@media (max-width: 992px) {
-    .result-main-card {
-        max-width: 500px;
-    }
-
-    .side-panel {
-        padding: 40px 20px !important;
-    }
-}
-.btn-print-premium {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 25px;
-    background: rgba(99, 102, 241, 0.1); /* لون نيلي خفيف شفاف */
-    border: 2px solid #6366f1;
-    color: #6366f1;
-    border-radius: 15px;
+.item-value {
+    color: #0f172a;
     font-weight: 700;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    text-decoration: none;
 }
 
-    .btn-print-premium .icon-wrapper {
-        font-size: 1.4rem;
-        display: flex;
-        align-items: center;
-        transition: transform 0.3s ease;
-    }
-
-    .btn-print-premium .btn-text {
-        font-size: 0.95rem;
-        letter-spacing: 0.5px;
-    }
-
-    /* تأثير عند مرور الماوس */
-    .btn-print-premium:hover {
-        background: #6366f1;
-        color: white;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-    }
-
-        .btn-print-premium:hover .icon-wrapper {
-            transform: rotate(-10deg) scale(1.1);
-        }
-
-/* تأثير اللمعان (Shine Effect) */
-.btn-shine {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.3), transparent );
-    transition: all 0.6s ease;
+.message-box {
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--accent-soft);
+    border-right: 4px solid var(--accent);
+    margin-bottom: 25px;
 }
 
-.btn-print-premium:hover .btn-shine {
-    left: 100%;
+/* Buttons */
+.btn-print {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    flex-grow: 1;
+    font-weight: 600;
 }
 
-/* التنسيق عند الطباعة (لإخفاء الأزرار في الورقة المطبوعة) */
-@media print {
-    .btn-print-premium, .btn-action-primary, .actions-row {
-        display: none !important;
+.btn-home {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: #64748b;
+}
+
+.btn-stack {
+    display: flex;
+    gap: 10px;
+}
+
+/* Animations */
+.animate-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

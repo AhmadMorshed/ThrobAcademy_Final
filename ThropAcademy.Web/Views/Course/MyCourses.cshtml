@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Throb.Data.Entities.Course>
+@{
+    ViewData["Title"] = "كورساتي (لوحة المدرب)";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 text-primary"><i class="fas fa-chalkboard-teacher me-2"></i> الكورسات التي أشرف عليها</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">لم يتم إسناد أي كورسات لك حتى الآن.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-dark">@item.Name</h5>
+                            <p class="text-muted small">@item.Description</p>
+                            <hr />
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Lecture" asp-action="Index" asp-route-courseId="@item.Id" class="btn btn-outline-primary">
+                                    <i class="fas fa-video me-1"></i> إدارة المحاضرات
+                                </a>
+                                <a asp-controller="Exam" asp-action="Create" asp-route-courseId="@item.Id" class="btn btn-outline-success">
+                                    <i class="fas fa-file-alt me-1"></i> إنشاء اختبار
+                                </a>
+                                <a asp-controller="Student" asp-action="InstructorStudentList" asp-route-courseId="@item.Id" class="btn btn-outline-info">
+                                    <i class="fas fa-users me-1"></i> عرض الطلاب
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

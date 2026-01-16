@@ -1479,7 +1479,7 @@
           }
         }
       },
-      "Stripe.net/49.1.0": {
+      "Stripe.net/50.1.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
@@ -2185,6 +2185,7 @@
           "Microsoft.AspNetCore.Authentication.Google": "8.0.0",
           "Neuroglia.Serialization.NewtonsoftJson": "4.21.0",
           "OpenAI": "2.1.0",
+          "Stripe.net": "50.1.0",
           "Throb.Repository": "1.0.0",
           "UnitsNet.Serialization.JsonNet": "5.50.0",
           "Whisper.net": "1.8.1"
@@ -4359,10 +4360,10 @@
         "serilog.sinks.file.nuspec"
       ]
     },
-    "Stripe.net/49.1.0": {
-      "sha512": "2mNAPVnaocI5Ub1QsG5UqLMd7HduFa3vKazybeqKwOFWLMkck974MDgiDuvEjM/UHXHLLD9oH2uPPpJM9rJ+8w==",
+    "Stripe.net/50.1.0": {
+      "sha512": "q6mc5CngdCLEWNHpFaa2NEOml/3cZ5jTDp1R7iHNbYHkGX5h0TmDa3theILyVTd2yOH9HqLmeeJMCpCwUeDy0A==",
       "type": "package",
-      "path": "stripe.net/49.1.0",
+      "path": "stripe.net/50.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4383,7 +4384,7 @@
         "lib/net9.0/Stripe.net.xml",
         "lib/netstandard2.0/Stripe.net.dll",
         "lib/netstandard2.0/Stripe.net.xml",
-        "stripe.net.49.1.0.nupkg.sha512",
+        "stripe.net.50.1.0.nupkg.sha512",
         "stripe.net.nuspec"
       ]
     },
@@ -5624,7 +5625,6 @@
       "Neuroglia.Serialization.NewtonsoftJson >= 4.21.0",
       "Newtonsoft.Json >= 13.0.3",
       "OpenAI >= 2.1.0",
-      "Stripe.net >= 49.1.0",
       "Throb.Service >= 1.0.0",
       "UnitsNet.Serialization.JsonNet >= 5.50.0",
       "Whisper.net >= 1.8.1"
@@ -5729,10 +5729,6 @@
           "OpenAI": {
             "target": "Package",
             "version": "[2.1.0, )"
-          },
-          "Stripe.net": {
-            "target": "Package",
-            "version": "[49.1.0, )"
           },
           "UnitsNet.Serialization.JsonNet": {
             "target": "Package",

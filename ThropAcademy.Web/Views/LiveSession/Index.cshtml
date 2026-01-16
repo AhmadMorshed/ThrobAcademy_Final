@@ -121,7 +121,7 @@
     }
 
     <div class="d-flex justify-content-end mb-4">
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
         {
             <a asp-controller="LiveSession" asp-action="Create" class="btn btn-primary btn-lg rounded-pill shadow">
                 <i class="fas fa-plus-circle me-2"></i> إنشاء اجتماع Zoom جديد
@@ -159,16 +159,17 @@
                         </div>
 
                         <div class="mt-auto">
-                            @if (!isEnded)
+                            @* التعديل 1: يظهر زر الانضمام للطالب فقط *@
+                            @if (!isEnded && User.IsInRole("Student"))
                             {
                                 <a href="@session.JoinUrl" target="_blank" class="btn btn-join-live shadow-sm">انضم الآن (للطالب)</a>
                             }
 
-                            @if (User.IsInRole("Admin"))
+                            @* التعديل 2: السماح للمدرب أيضاً برؤية لوحة التحكم *@
+                            @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
                             {
                                 <div class="admin-zone border-top pt-3">
 
-                                    @* 🟢 التعديل: يختفي زر "ابدأ كمدرب" تلقائياً عند انتهاء الجلسة *@
                                     @if (!isEnded && !string.IsNullOrEmpty(session.StartUrl))
                                     {
                                         <a href="@session.StartUrl" target="_blank" class="btn btn-purple-start shadow-sm mb-2 w-100">

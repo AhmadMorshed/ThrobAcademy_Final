@@ -1,0 +1,56 @@
+﻿@model dynamic
+<div class="accordion shadow-sm" id="studentsAccordion">
+    @foreach (var student in Model)
+    {
+        var studentId = "student_" + student.UserId.Replace("-", "");
+        // منطق الشهادة: متوسط > 75% + أكثر من محاولتين
+        bool isEligibleForCertificate = student.AvgScore >= 75 && student.Count >= 2;
+
+        <div class="accordion-item border-0 mb-3 rounded-4 overflow-hidden">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed p-4" type="button" data-bs-toggle="collapse" data-bs-target="#@studentId">
+                    <div class="d-flex justify-content-between align-items-center w-100 ms-3">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                @student.User.UserName.Substring(0, 1).ToUpper()
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">@student.User.UserName.Split('@')[0]</span>
+                                <small class="text-muted">@student.Count اختبارات</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            @if (isEligibleForCertificate)
+                            {
+                                <span class="badge bg-gold text-dark border border-warning" style="background-color: #fff9c4;">
+                                    <i class="bi bi-patch-check-fill text-warning"></i> مؤهل لشهادة التميز
+                                </span>
+                            }
+                            <span class="fw-bold @(student.AvgScore >= 70 ? "text-success" : "text-danger")">
+                                المعدل: @student.AvgScore%
+                            </span>
+                        </div>
+                    </div>
+                </button>
+            </h2>
+            <div id="@studentId" class="accordion-collapse collapse" data-bs-parent="#studentsAccordion">
+                <div class="accordion-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            @* هنا تضع نفس كود الجدول الذي كان لديك سابقاً *@
+                        </table>
+                    </div>
+                    @if (isEligibleForCertificate)
+                    {
+                        <div class="p-3 bg-light text-center">
+                            <button class="btn btn-success btn-sm rounded-pill px-4">
+                                <i class="bi bi-award me-1"></i> إصدار شهادة أكاديمية معتمدة
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

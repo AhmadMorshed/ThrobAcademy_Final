@@ -8,7 +8,9 @@ using Throb.Repository.Repositories;
 using Throb.Service.Implementations.GeminiAI;
 using Throb.Service.Interfaces;
 using Throb.Service.Interfaces.GeminiAI;
+using Throb.Service.Interfaces.Payment;
 using Throb.Service.Services;
+using Throb.Service.Services.Payment;
 using Throb.Services;
 
 namespace ThropAcademy.Web
@@ -19,14 +21,12 @@ namespace ThropAcademy.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // إضافة الخدمات
+     
             builder.Services.AddControllersWithViews();
 
-            // الاتصال بقاعدة البيانات
             builder.Services.AddDbContext<ThrobDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // تفعيل الهوية
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Lockout.MaxFailedAccessAttempts = 3;
@@ -35,14 +35,13 @@ namespace ThropAcademy.Web
             .AddEntityFrameworkStores<ThrobDbContext>()
             .AddDefaultTokenProviders();
 
-            // تفعيل رفع الملفات حتى 100MB
             builder.Services.Configure<FormOptions>(options =>
             {
                 options.MultipartBodyLengthLimit = 104857600; // 100MB
             });
             builder.Services.AddHttpClient("Deepgram", client =>
             {
-                client.Timeout = TimeSpan.FromMinutes(10); // تمديد الوقت لتجنب انتهاء الاتصال
+                client.Timeout = TimeSpan.FromMinutes(10); 
             });
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                      .AddEnvironmentVariables();
@@ -77,14 +76,14 @@ namespace ThropAcademy.Web
                 options.Cookie.SameSite = SameSiteMode.Lax;
             });
 
-            // الجلسات
+            
             builder.Services.AddSession(options =>
             {
                 options.Cookie.Name = ".Throb.Session";
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
-            // المستودعات والخدمات
+            
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
@@ -104,11 +103,16 @@ namespace ThropAcademy.Web
             builder.Services.AddScoped<IStudentService, StudentServer>();
             builder.Services.AddHttpClient<IGeminiService, GeminiService>();
             builder.Services.AddHttpClient<CohereService>();
+
+
+            builder.Services.AddScoped<IPaymentProvider, PaymentProvider>();
+            builder.Services.AddScoped<IPaymentStrategy, StripePaymentStrategy>();
+            builder.Services.AddScoped<IPaymentStrategy, CashPaymentStrategy>();
             builder.Services.AddControllers();
 
             var app = builder.Build();
 
-            // الـ middleware
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -119,7 +123,7 @@ namespace ThropAcademy.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication(); // الترتيب الصحيح
+            app.UseAuthentication(); 
             app.UseAuthorization();
             app.UseSession();
 
